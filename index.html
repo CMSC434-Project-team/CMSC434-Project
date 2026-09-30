@@ -1,221 +1,204 @@
 <!doctype html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Phase 1.2</title>
 
-    <script src="/js/chart.js"></script>
-    <script src="/js/chartjs-plugin-datalabels.js"></script>
-    <style>
-      body {
-        font-family:
-          Georgia,
-          Times,
-          serif sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: lightgray;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phase 1.2</title>
+
+  <script src="/js/chart.js"></script>
+  <script src="/js/chartjs-plugin-datalabels.js"></script>
+  <style>
+    body {
+      font-family:
+        Georgia,
+        Times,
+        serif sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: lightgray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .device {
+      margin: auto;
+      width: 640px;
+      height: 960px;
+      overflow: hidden;
+      background-color: pink;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 28pt;
+    }
+
+    .tabcontent {
+      display: none;
+      position: absolute;
+      top: 0;
+      bottom: 90px;
+      left: 0;
+      right: 0;
+      padding: 10px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .tabs {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 90px;
+      display: flex;
+      background-color: navy;
+    }
+
+    .tabs button {
+      width: 16.66%;
+      border: none;
+      background-color: navy;
+      color: yellow;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .tabs button:hover {
+      background-color: gray;
+    }
+
+    .icon {
+      display: block;
+      font-size: 28px;
+
+      svg {
+        width: 3rem;
+        height: 3rem;
       }
+    }
 
-      .device {
-        margin: auto;
-        width: 640px;
-        height: 960px;
-        overflow: hidden;
-        background-color: pink;
-        position: relative;
-      }
+    #LR p {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      font-size: 18px;
+      margin: 0;
+    }
 
-      h1 {
-        font-size: 28pt;
-      }
+    #Colors h2 {
+      width: 100%;
+      text-align: center;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      margin: 0;
+    }
+  </style>
+</head>
 
-      .tabcontent {
-        display: none;
-        position: absolute;
-        top: 0;
-        bottom: 90px;
-        left: 0;
-        right: 0;
-        padding: 10px;
-        overflow-y: auto;
-        box-sizing: border-box;
-      }
+<body>
+  <div class="device">
+    <div id="Text" class="tabcontent">
+      <h1>-Text Screen-</h1>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+    </div>
 
-      .tabs {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 90px;
-        display: flex;
-        background-color: navy;
-      }
+    <div id="LR" class="tabcontent">
+      <h1>-Text in Lower Right-</h1>
+      <p>Down Here</p>
+    </div>
 
-      .tabs button {
-        width: 16.66%;
-        border: none;
-        background-color: navy;
-        color: yellow;
-        font-size: 15px;
-        cursor: pointer;
-      }
+    <div id="Colors" class="tabcontent">
+      <h1>-Colors Example-</h1>
 
-      .tabs button:hover {
-        background-color: gray;
-      }
-
-      .icon {
-        display: block;
-        font-size: 28px;
-
-        svg {
-          width: 3rem;
-          height: 3rem;
-        }
-      }
-
-      #LR p {
-        position: absolute;
-        right: 20px;
-        bottom: 20px;
-        font-size: 18px;
-        margin: 0;
-      }
-
-      #Colors h2 {
-        width: 100%;
-        text-align: center;
-        background-color: var(--color-bg);
-        color: var(--color-text);
-        margin: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="device">
-      <div id="Text" class="tabcontent">
-        <h1>-Text Screen-</h1>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-      </div>
-
-      <div id="LR" class="tabcontent">
-        <h1>-Text in Lower Right-</h1>
-        <p>Down Here</p>
-      </div>
-
-      <div id="Colors" class="tabcontent">
-        <h1>-Colors Example-</h1>
-
-        <h2 style="--color-text: yellow; --color-bg: black">Hello There</h2>
-        <h2 style="--color-text: black; --color-bg: yellow">Hi Again</h2>
-        <div style="width: 600px; height: 600px; margin: 0 auto">
-          <canvas
-            id="myPieChart"
-            width="900"
-            height="900"
-            style="
+      <h2 style="--color-text: yellow; --color-bg: black">Hello There</h2>
+      <h2 style="--color-text: black; --color-bg: yellow">Hi Again</h2>
+      <div style="width: 600px; height: 600px; margin: 0 auto">
+        <canvas id="myPieChart" width="900" height="900" style="
               display: block;
               box-sizing: border-box;
               height: 600px;
               width: 600px;
-            "
-          ></canvas>
-        </div>
+            "></canvas>
       </div>
+    </div>
 
-      <div id="Profile" class="tabcontent">
-        <h1>-User Profile-</h1>
-        <div
-          style="
+    <div id="Profile" class="tabcontent">
+      <h1>-User Profile-</h1>
+      <div style="
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-          "
-        >
-          <button
-            onclick="
+          ">
+        <button onclick="
               document.getElementById('thealert').style.display = 'block'
-            "
-            style="
+            " style="
               border: none;
               background: none;
               padding: 0;
               border-radius: 50px;
               overflow: clip;
-            "
-          >
-            <img
-              src="/assets/SmileyFace.png"
-              alt="Profile"
-              style="width: 120px; height: 120px"
-            />
-          </button>
-          <h2 style="margin: 0">Smiley J. Smile</h2>
-        </div>
-        <!-- Profile content -->
-        <div
-          id="thealert"
-          class="alert"
-          style="
+            ">
+          <img src="/assets/SmileyFace.png" alt="Profile" style="width: 120px; height: 120px" />
+        </button>
+        <h2 style="margin: 0">Smiley J. Smile</h2>
+      </div>
+      <!-- Profile content -->
+      <div id="thealert" class="alert" style="
             display: none;
             font-size: 24px;
             padding: 20px;
             background-color: red;
             color: white;
             position: relative;
-          "
-        >
-          <b>Warning!</b> Do not click on the profile image.
-          <button
-            style="
+          ">
+        <b>Warning!</b> Do not click on the profile image.
+        <button style="
               background: none;
               border: none;
               font-size: 20px;
@@ -224,177 +207,173 @@
               right: 1rem;
               cursor: pointer;
               color: inherit;
-            "
-            onclick="this.parentElement.style.display = 'none'"
-          >
-            ×
-          </button>
-        </div>
-      </div>
-
-      <div id="Choices" class="tabcontent"></div>
-
-      <div id="ToDo" class="tabcontent"></div>
-
-      <div class="tabs">
-        <button onclick="openTab('Text')">
-          <span class="icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2h7v5h5v11H6zm2 8v2h8v-2zm0 4v2h5v-2z"
-              />
-            </svg> </span
-          >Text
-        </button>
-        <button onclick="openTab('LR')">
-          <span class="icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M3 3h4v7.5c0 1.93 1.57 3.5 3.5 3.5H13v-4l7 6l-7 6v-4h-2.5C6.36 18 3 14.64 3 10.5z"
-              />
-            </svg> </span
-          >LR
-        </button>
-        <button onclick="openTab('Colors')">
-          <span class="icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M12 22A10 10 0 0 1 2 12A10 10 0 0 1 12 2c5.5 0 10 4 10 9a6 6 0 0 1-6 6h-1.8c-.3 0-.5.2-.5.5c0 .1.1.2.1.3c.4.5.6 1.1.6 1.7c.1 1.4-1 2.5-2.4 2.5m0-18a8 8 0 0 0-8 8a8 8 0 0 0 8 8c.3 0 .5-.2.5-.5c0-.2-.1-.3-.1-.4c-.4-.5-.6-1-.6-1.6c0-1.4 1.1-2.5 2.5-2.5H16a4 4 0 0 0 4-4c0-3.9-3.6-7-8-7m-5.5 6c.8 0 1.5.7 1.5 1.5S7.3 13 6.5 13S5 12.3 5 11.5S5.7 10 6.5 10m3-4c.8 0 1.5.7 1.5 1.5S10.3 9 9.5 9S8 8.3 8 7.5S8.7 6 9.5 6m5 0c.8 0 1.5.7 1.5 1.5S15.3 9 14.5 9S13 8.3 13 7.5S13.7 6 14.5 6m3 4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5s-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5"
-              />
-            </svg> </span
-          >Colors
-        </button>
-        <button onclick="openTab('Profile')">
-          <span class="icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2M7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.5.88 4.93 1.78A7.9 7.9 0 0 1 12 20c-1.86 0-3.57-.64-4.93-1.72m11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33A7.93 7.93 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.5-1.64 4.83M12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6m0 5a1.5 1.5 0 0 1-1.5-1.5A1.5 1.5 0 0 1 12 8a1.5 1.5 0 0 1 1.5 1.5A1.5 1.5 0 0 1 12 11"
-              />
-            </svg> </span
-          >Profile
-        </button>
-        <button onclick="openTab('Choices')">
-          <span class="icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M20 20.5c0 .8-.7 1.5-1.5 1.5H13c-.4 0-.7-.1-1-.4l-4-4.2l.7-.8c.2-.2.5-.3.8-.3h.2L12 18V9c0-.6.4-1 1-1s1 .4 1 1v4.5l1.2.1l3.9 2.2c.5.2.9.8.9 1.3zM20 2H4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h4v-2H4V4h16v8h-2v2h2c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2"
-              />
-            </svg> </span
-          >Choices
-        </button>
-        <button onclick="openTab('ToDo')">
-          <span class="icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M19 19H5V8h14m0-5h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-2.47 8.06L15.47 10l-4.88 4.88l-2.12-2.12l-1.06 1.06L10.59 17z"
-              />
-            </svg> </span
-          >ToDo
+            " onclick="this.parentElement.style.display = 'none'">
+          ×
         </button>
       </div>
     </div>
 
-    <script>
-      // Tabs
-      function openTab(tabName) {
-        var tabs = document.getElementsByClassName("tabcontent");
-        for (var i = 0; i < tabs.length; i++) {
-          tabs[i].style.display = "none";
-        }
-        document.getElementById(tabName).style.display = "block";
+    <div id="Choices" class="tabcontent">
+      <h1>-Choices Screen-</h1>
+
+      <div>
+        <p style="font-size: 24px; margin: 0">Camera Type #1:</p>
+        <input type="radio" id="dSLR" value="dSLR" name="camera1">
+        <label for="dSLR" style="font-size: 16px">dSLR</label><br>
+        <input type="radio" id="mirror" value="Mirrorless" name="camera1">
+        <label for="mirror" style="font-size: 16px">Mirrorless</label><br>
+
+        <br>
+        <label for="CameraType2" style="font-size: 24px">Camera Type #2: </label>
+        <br>
+        <select id="CameraType2" style="font-size: 16px">
+          <option value="dSLR">dSLR</option>
+          <option value="Mirrorless">Mirrorless</option>
+        </select>
+      </div>
+
+      <button onclick="showChoices()" style="font-size: 18px; margin-top: 15px">Submit</button>
+      <p id="choiceResult" style="font-size: 18px"></p>
+
+    </div>
+
+
+
+
+    <div id="ToDo" class="tabcontent"></div>
+
+    <div class="tabs">
+      <button onclick="openTab('Text')">
+        <span class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2h7v5h5v11H6zm2 8v2h8v-2zm0 4v2h5v-2z" />
+          </svg> </span>Text
+      </button>
+      <button onclick="openTab('LR')">
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M3 3h4v7.5c0 1.93 1.57 3.5 3.5 3.5H13v-4l7 6l-7 6v-4h-2.5C6.36 18 3 14.64 3 10.5z" />
+          </svg> </span>LR
+      </button>
+      <button onclick="openTab('Colors')">
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M12 22A10 10 0 0 1 2 12A10 10 0 0 1 12 2c5.5 0 10 4 10 9a6 6 0 0 1-6 6h-1.8c-.3 0-.5.2-.5.5c0 .1.1.2.1.3c.4.5.6 1.1.6 1.7c.1 1.4-1 2.5-2.4 2.5m0-18a8 8 0 0 0-8 8a8 8 0 0 0 8 8c.3 0 .5-.2.5-.5c0-.2-.1-.3-.1-.4c-.4-.5-.6-1-.6-1.6c0-1.4 1.1-2.5 2.5-2.5H16a4 4 0 0 0 4-4c0-3.9-3.6-7-8-7m-5.5 6c.8 0 1.5.7 1.5 1.5S7.3 13 6.5 13S5 12.3 5 11.5S5.7 10 6.5 10m3-4c.8 0 1.5.7 1.5 1.5S10.3 9 9.5 9S8 8.3 8 7.5S8.7 6 9.5 6m5 0c.8 0 1.5.7 1.5 1.5S15.3 9 14.5 9S13 8.3 13 7.5S13.7 6 14.5 6m3 4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5s-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5" />
+          </svg> </span>Colors
+      </button>
+      <button onclick="openTab('Profile')">
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2M7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.5.88 4.93 1.78A7.9 7.9 0 0 1 12 20c-1.86 0-3.57-.64-4.93-1.72m11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33A7.93 7.93 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.5-1.64 4.83M12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6m0 5a1.5 1.5 0 0 1-1.5-1.5A1.5 1.5 0 0 1 12 8a1.5 1.5 0 0 1 1.5 1.5A1.5 1.5 0 0 1 12 11" />
+          </svg> </span>Profile
+      </button>
+      <button onclick="openTab('Choices')">
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M20 20.5c0 .8-.7 1.5-1.5 1.5H13c-.4 0-.7-.1-1-.4l-4-4.2l.7-.8c.2-.2.5-.3.8-.3h.2L12 18V9c0-.6.4-1 1-1s1 .4 1 1v4.5l1.2.1l3.9 2.2c.5.2.9.8.9 1.3zM20 2H4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h4v-2H4V4h16v8h-2v2h2c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2" />
+          </svg> </span>Choices
+      </button>
+      <button onclick="openTab('ToDo')">
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M19 19H5V8h14m0-5h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-2.47 8.06L15.47 10l-4.88 4.88l-2.12-2.12l-1.06 1.06L10.59 17z" />
+          </svg> </span>ToDo
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Tabs
+    function openTab(tabName) {
+      var tabs = document.getElementsByClassName("tabcontent");
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].style.display = "none";
       }
+      document.getElementById(tabName).style.display = "block";
+    }
 
-      openTab("Text");
+    openTab("Text");
 
-      // Colors Tab
-      const myContext = document.getElementById("myPieChart").getContext("2d");
+    // Colors Tab
+    const myContext = document.getElementById("myPieChart").getContext("2d");
 
-      const myData = {
-        labels: ["Roses  ", "Violets  ", "Tulips  "],
-        datasets: [
-          {
-            label: "Flowers",
-            data: [300, 500, 100],
-            backgroundColor: ["#F33A6A", "#EE82EE", "#FFD662"],
+    const myData = {
+      labels: ["Roses  ", "Violets  ", "Tulips  "],
+      datasets: [
+        {
+          label: "Flowers",
+          data: [300, 500, 100],
+          backgroundColor: ["#F33A6A", "#EE82EE", "#FFD662"],
+        },
+      ],
+    };
+
+    const chartConfig = {
+      type: "pie",
+      data: myData,
+      plugins: [ChartDataLabels],
+      options: {
+        events: [],
+        layout: {
+          padding: {
+            top: 30,
           },
-        ],
-      };
-
-      const chartConfig = {
-        type: "pie",
-        data: myData,
-        plugins: [ChartDataLabels],
-        options: {
-          events: [],
-          layout: {
-            padding: {
-              top: 30,
+        },
+        plugins: {
+          legend: {
+            labels: {
+              font: {family: "Consolas", size: 20},
+              padding: 5,
             },
+            position: "bottom",
+            align: "start",
           },
-          plugins: {
-            legend: {
-              labels: {
-                font: { family: "Consolas", size: 20 },
-                padding: 5,
-              },
-              position: "bottom",
-              align: "start",
-            },
 
-            datalabels: {
-              color: "#000000",
-              anchor: "end",
-              align: "end",
-              offset: 5,
-              font: {
-                weight: "bold",
-                size: 16,
-              },
-              formatter: (value) => {
-                return value;
-              },
+          datalabels: {
+            color: "#000000",
+            anchor: "end",
+            align: "end",
+            offset: 5,
+            font: {
+              weight: "bold",
+              size: 16,
+            },
+            formatter: (value) => {
+              return value;
             },
           },
         },
-      };
+      },
+    };
 
-      myChart = new Chart(myContext, chartConfig);
-    </script>
-  </body>
+    myChart = new Chart(myContext, chartConfig);
+
+
+    // Choices tab
+    function showChoices() {
+      var selectedRadio = document.querySelector('input[name="camera1"]:checked');
+      var dropdown = document.getElementById("CameraType2").value;
+      var result = document.getElementById("choiceResult");
+
+      if (!selectedRadio) {
+        result.textContent = "Please pick a Camera Type #1 option.";
+        return;
+      }
+
+      var radioChoice = selectedRadio.value;
+
+      if (radioChoice === dropdown) {
+        result.textContent = "You picked " + radioChoice + " for both!";
+      } else {
+        result.textContent = "Camera #1: " + radioChoice + ", Camera #2: " + dropdown;
+      }
+    }
+
+  </script>
+
+
+
+</body>
+
 </html>
