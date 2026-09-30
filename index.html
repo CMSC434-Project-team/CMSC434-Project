@@ -151,7 +151,7 @@
 
         <h2 style="--color-text: yellow; --color-bg: black">Hello There</h2>
         <h2 style="--color-text: black; --color-bg: yellow">Hi Again</h2>
-        <div style="width: 600px; height: 600px; margin: 0 auto;">
+        <div style="width: 600px; height: 600px; margin: 0 auto">
           <canvas
             id="myPieChart"
             width="900"
@@ -166,7 +166,58 @@
         </div>
       </div>
 
-      <div id="Profile" class="tabcontent"></div>
+      <div id="Profile" class="tabcontent">
+        <h1>-User Profile-</h1>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+          "
+        >
+          <button
+            onclick="
+              document.getElementById('thealert').style.display = 'block'
+            "
+            style="
+              border: none;
+              background: none;
+              padding: 0;
+              border-radius: 50px;
+              overflow: clip;
+            "
+          >
+            <img
+              src="/assets/SmileyFace.png"
+              alt="Profile"
+              style="width: 120px; height: 120px"
+            />
+          </button>
+          <h2 style="margin: 0">Smiley J. Smile</h2>
+        </div>
+        <!-- Profile content -->
+        <div
+          id="thealert"
+          class="alert"
+          style="
+            display: none;
+            font-size: 24px;
+            padding: 20px;
+            background-color: red;
+            color: white;
+            position: relative;
+          "
+        >
+          <b>Warning!</b> Do not click on the profile image.
+          <button
+            style="background: none; border: none; font-size: 20px; position: absolute; top: 1rem; right: 1rem; cursor: pointer; color: inherit"
+            onclick="this.parentElement.style.display = 'none'"
+          >
+            ×
+          </button>
+        </div>
+      </div>
 
       <div id="Choices" class="tabcontent"></div>
 
