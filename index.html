@@ -1,180 +1,260 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phase 1.2</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: lightgray;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    
-    .device {
-      margin: auto;
-      width: 640px;
-      height: 960px;
-      overflow: hidden;
-      background-color: powderblue;
-      position: relative;
-    }
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phase 1.2</title>
 
-    h1 {
-      font-size: 28pt;
-    }
-
-    .tabcontent {
-      display: none;
-      position: absolute;
-      top: 0;
-      bottom: 90px;
-      left: 0;
-      right: 0;
-      padding: 10px;
-      overflow-y: auto;
-      box-sizing: border-box;
-    }
-
-    .tabs {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 90px;
-      display: flex;
-      background-color: navy;
-    }
-
-    .tabs button {
-      width: 16.66%;
-      border: none;
-      background-color: navy;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    .tabs button:hover {
-      background-color: royalblue;
-    }
-
-    .icon {
-      display: block;
-      font-size: 28px;
-      margin-bottom: 4px;
-    }
-
-    #LR p {
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-      font-size: 18px;
-      margin: 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="device">
-    <div id="Text" class="tabcontent">
-    <h1>-Text Screen-</h1>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-      <p>This is the text tab.</p>
-    </div>
-
-    <div id="LR" class="tabcontent">
-      <h1>-Text in Lower Right-</h1>
-      <p>Down Here</p>
-    </div>
-
-    
-    <div id="Colors" class="tabcontent">
-
-    </div>
-
-
-
-    <div id="Profile" class="tabcontent">
-
-    </div>
-
-
-
-    <div id="Choices" class="tabcontent">
-
-    </div>
-
-
-
-    <div id="ToDo" class="tabcontent">
-
-    </div>
-
-    <div class="tabs">
-      <button onclick="openTab('Text')"><span class="icon">X</span>Text</button>
-      <button onclick="openTab('LR')"><span class="icon">X</span>LR</button>
-      <button onclick="openTab('Colors')"><span class="icon">X</span>Colors</button>
-      <button onclick="openTab('Profile')"><span class="icon">X</span>Profile</button>
-      <button onclick="openTab('Choices')"><span class="icon">X</span>Choices</button>
-      <button onclick="openTab('ToDo')"><span class="icon">X</span>ToDo</button>
-    </div>
-  </div>
-
-  <script>
-    function openTab(tabName) {
-      var tabs = document.getElementsByClassName("tabcontent");
-      for (var i = 0; i < tabs.length; i++) {
-        tabs[i].style.display = "none";
+    <script src="/js/chart.js"></script>
+    <script src="/js/chartjs-plugin-datalabels.js"></script>
+    <style>
+      body {
+        font-family: Georgia, Times, serif sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: lightgray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
       }
-      document.getElementById(tabName).style.display = "block";
-    }
 
-    openTab("Text");
-  </script>
-</body>
+      .device {
+        margin: auto;
+        width: 640px;
+        height: 960px;
+        overflow: hidden;
+        background-color: pink;
+        position: relative;
+      }
+
+      h1 {
+        font-size: 28pt;
+      }
+
+      .tabcontent {
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 90px;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        overflow-y: auto;
+        box-sizing: border-box;
+      }
+
+      .tabs {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 90px;
+        display: flex;
+        background-color: navy;
+      }
+
+      .tabs button {
+        width: 16.66%;
+        border: none;
+        background-color: navy;
+        color: yellow;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .tabs button:hover {
+        background-color: gray;
+      }
+
+      .icon {
+        display: block;
+        font-size: 28px;
+        margin-bottom: 4px;
+      }
+
+      #LR p {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        font-size: 18px;
+        margin: 0;
+      }
+
+      #Colors p {
+        font-size: 2rem;
+        width: 100%;
+        text-align: center;
+        background-color: var(--color-bg);
+        color: var(--color-text);
+        margin: 0;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="device">
+      <div id="Text" class="tabcontent">
+        <h1>-Text Screen-</h1>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+        <p>This is the text tab.</p>
+      </div>
+
+      <div id="LR" class="tabcontent">
+        <h1>-Text in Lower Right-</h1>
+        <p>Down Here</p>
+      </div>
+
+      <div id="Colors" class="tabcontent">
+        <h1>-Colors Example-</h1>
+        <div>
+          <p style="--color-text: yellow; --color-bg: black">Hello There</p>
+          <p style="--color-text: black; --color-bg: yellow">Hi Again</p>
+        </div>
+        <canvas
+          id="myPieChart"
+          width="900"
+          height="900"
+          style="
+            display: block;
+            box-sizing: border-box;
+            height: 600px;
+            width: 600px;
+          "
+        ></canvas>
+      </div>
+
+      <div id="Profile" class="tabcontent"></div>
+
+      <div id="Choices" class="tabcontent"></div>
+
+      <div id="ToDo" class="tabcontent"></div>
+
+      <div class="tabs">
+        <button onclick="openTab('Text')">
+          <span class="icon">X</span>Text
+        </button>
+        <button onclick="openTab('LR')"><span class="icon">X</span>LR</button>
+        <button onclick="openTab('Colors')">
+          <span class="icon">X</span>Colors
+        </button>
+        <button onclick="openTab('Profile')">
+          <span class="icon">X</span>Profile
+        </button>
+        <button onclick="openTab('Choices')">
+          <span class="icon">X</span>Choices
+        </button>
+        <button onclick="openTab('ToDo')">
+          <span class="icon">X</span>ToDo
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Tabs
+      function openTab(tabName) {
+        var tabs = document.getElementsByClassName("tabcontent");
+        for (var i = 0; i < tabs.length; i++) {
+          tabs[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+      }
+
+      openTab("Text");
+
+      // Colors Tab
+      const myContext = document.getElementById("myPieChart").getContext("2d");
+
+      const myData = {
+        labels: ["Roses  ", "Violets  ", "Tulips  "],
+        datasets: [
+          {
+            label: "Flowers",
+            data: [300, 500, 100],
+            backgroundColor: ["#F33A6A", "#EE82EE", "#FFD662"],
+          },
+        ],
+      };
+
+      const chartConfig = {
+        type: "pie",
+        data: myData,
+        plugins: [ChartDataLabels],
+        options: {
+          events: [],
+          layout: {
+            padding: {
+              top: 30,
+            },
+          },
+          plugins: {
+            legend: {
+              labels: {
+                font: { family: "Consolas", size: 20 },
+                padding: 5,
+              },
+              position: "bottom",
+              align: "start",
+            },
+
+            datalabels: {
+              color: "#000000",
+              anchor: "end",
+              align: "end",
+              offset: 5,
+              font: {
+                weight: "bold",
+                size: 16,
+              },
+              formatter: (value) => {
+                return value;
+              },
+            },
+          },
+        },
+      };
+
+      myChart = new Chart(myContext, chartConfig);
+    </script>
+  </body>
 </html>
