@@ -88,63 +88,64 @@
       margin: 0;
     }
 
-      #Colors h2 {
-        width: 100%;
-        text-align: center;
-        background-color: var(--color-bg);
-        color: var(--color-text);
-        margin: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="device">
-      <div id="Text" class="tabcontent">
-        <h1>-Text Screen-</h1>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-        <p>This is the text tab.</p>
-      </div>
+    #Colors h2 {
+      width: 100%;
+      text-align: center;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="device">
+    <div id="Text" class="tabcontent">
+      <h1>-Text Screen-</h1>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+      <p>This is the text tab.</p>
+    </div>
 
     <div id="LR" class="tabcontent">
       <h1>-Text in Lower Right-</h1>
@@ -239,7 +240,7 @@
 
 
 
-      <div id="ToDo" class="tabcontent"></div>
+    <div id="ToDo" class="tabcontent"></div>
 
     <div class="tabs">
       <button onclick="openTab('Text')">
@@ -322,7 +323,7 @@
         plugins: {
           legend: {
             labels: {
-              font: {family: "Consolas", size: 20},
+              font: { family: "Consolas", size: 20 },
               padding: 5,
             },
             position: "bottom",
@@ -346,7 +347,28 @@
       },
     };
 
-      myChart = new Chart(myContext, chartConfig);
-    </script>
-  </body>
+    // Choices Tab
+    function showChoices() {
+      var selectedRadio = document.querySelector('input[name="camera1"]:checked');
+      var dropdown = document.getElementById("CameraType2").value;
+      var result = document.getElementById("choiceResult");
+
+      if (!selectedRadio) {
+        result.textContent = "Please pick a Camera Type #1 option.";
+        return;
+      }
+
+      var radioChoice = selectedRadio.value;
+
+      if (radioChoice === dropdown) {
+        result.textContent = "You picked " + radioChoice + " for both!";
+      } else {
+        result.textContent = "Camera #1: " + radioChoice + ", Camera #2: " + dropdown;
+      }
+    }
+
+    myChart = new Chart(myContext, chartConfig);
+  </script>
+</body>
+
 </html>
