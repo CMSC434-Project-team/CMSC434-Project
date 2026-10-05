@@ -2,7 +2,7 @@
 
 Kitchen Kompanion is a static web application for managing kitchen inventory,
 shopping lists, recipes, and a user profile. The project currently uses plain
-HTML and CSS, so pages can be opened directly in a browser. It has restrictions on device size (640px * 960px) and others due to CMSC434 project requirements.
+HTML and CSS, so pages can be opened directly in a browser. It has restrictions on device size (640px \* 960px) and others due to CMSC434 project requirements.
 
 ## File structure
 
@@ -36,3 +36,20 @@ HTML and CSS, so pages can be opened directly in a browser. It has restrictions 
 
 Every HTML page loads `assets/styles/_global.css`. That file imports
 `assets/styles/_theme.css`, so pages should normally include only `_global.css`. Read more in the [style guide](assets/styles/_README.md).
+
+## Styling
+
+### EditorConfig
+
+This project uses [EditorConfig](https://editorconfig.org) to maintain consistent basic formatting across editors. The repository's [`.editorconfig`](.editorconfig) file defines UTF-8 encoding, LF line endings, final newlines, and specific indentation rules:
+
+* **Tabs:** HTML, CSS, and JavaScript.
+* **Spaces:** Dotfiles, Markdown, JSON, TOML, YAML, and JSON5.
+* **Trailing whitespace:** (may break code so) preserved. 
+
+### VS Code Setup
+
+1. Install the [EditorConfig for VS Code extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
+2. Open the project folder. The extension automatically applies `.editorconfig` settings. Do not override these settings per file.
+
+The included [`.vscode/settings.json`](.vscode/settings.json) enables default formatting on save/paste and disables indentation detection to keep EditorConfig authoritative. It also locks in VS Code's built-in formatters for HTML, CSS, JavaScript, and JSON to prevent external formatters (like Prettier) from overriding them.

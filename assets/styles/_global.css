@@ -92,7 +92,7 @@ body {
 :where(.test) {
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(#9c9fde , #9ceed8);
+	background: linear-gradient(#9c9fde, #9ceed8);
 }
 
 a {
@@ -243,7 +243,7 @@ footer {
 	right: var(--safe-right);
 	height: var(--spacing-footer);
 
-	& > div {
+	&>div {
 		display: flex;
 		padding: 0.5rem 1rem;
 		border-radius: 2.5rem;
@@ -251,7 +251,7 @@ footer {
 		width: fit-content;
 		margin: 0 auto;
 
-		& > a {
+		&>a {
 			display: flex;
 			align-items: center;
 			color: var(--color-text);
@@ -278,6 +278,7 @@ Other Utility Classes ==========================================
 
 /* Prose styles for readable text/articles */
 .prose {
+
 	/* Headings */
 	h1,
 	h2,
