@@ -8,6 +8,7 @@ Global Color Palette ===========================================
 	/* [Fixed] Font (Inter is the best font) */
 	font-family: "InterVariable", ui-sans-serif, system-ui, sans-serif;
 	font-feature-settings: "calt", "ss03", "cv02", "cv05", "cv11";
+	scroll-behavior: smooth;
 
 	/* Color variables */
 	--color-text-bright: var(--text-bright);
@@ -31,8 +32,10 @@ Global Color Palette ===========================================
 	--backdrop: rgba(0, 0, 0, 0.5);
 
 	/* Layout styles */
-	--padding-side: 1.5rem;
-	--radius: 0.5rem;
+	--spacing-side: 1.5rem;
+	--spacing-header: 4rem;
+	--spacing-footer: 4rem;
+	--radius: 1rem;
 }
 
 ::selection {
@@ -72,7 +75,11 @@ body {
 		overflow: auto;
 		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 		position: relative;
-		padding: var(--padding-side);
+		padding: 1rem var(--spacing-side);
+
+		&:has(> footer) {
+			padding-bottom: calc(var(--spacing-footer) + 1.5rem);
+		}
 	}
 }
 
@@ -80,7 +87,7 @@ body {
 :where(.test) {
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(#ff8a00, #e52e71);
+	background: linear-gradient(#9c9fde , #9ceed8);
 }
 
 a {
@@ -215,15 +222,51 @@ textarea {
 }
 
 /***************************************************************
+Footer =========================================================
+***************************************************************/
+
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0.75rem;
+	right: 0;
+	height: var(--spacing-footer);
+
+	& > div {
+		display: flex;
+		padding: 0.5rem 1rem;
+		border-radius: 2.5rem;
+		height: calc(var(--spacing-footer) - 1rem);
+		width: fit-content;
+		margin: 0 auto;
+
+		& > a {
+			display: flex;
+			align-items: center;
+			color: var(--color-text);
+			font-size: calc(var(--spacing-footer) - 1.5rem);
+			text-decoration: none;
+			padding: 0 0.75rem;
+
+			&:hover {
+				color: var(--color-text-bright);
+				background-color: rgba(0, 0, 0, 0.05);
+				border-radius: 2.5rem;
+			}
+
+			&.active {
+				color: var(--color-primary-hover);
+			}
+		}
+	}
+}
+
+/***************************************************************
 Other Utility Classes ==========================================
 ***************************************************************/
 
 /* Prose styles for readable text/articles */
 .prose {
-	.mt-0 {
-		margin-top: 0;
-	}
-
 	/* Headings */
 	h1,
 	h2,
@@ -260,4 +303,14 @@ Other Utility Classes ==========================================
 			background-color: var(--color-primary-hover);
 		}
 	}
+}
+
+/* Glassmorphism effect: overwrite styles if needed */
+:where(.glass) {
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: var(--radius);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border: 1px solid rgba(255, 255, 255, 0.25);
 }
