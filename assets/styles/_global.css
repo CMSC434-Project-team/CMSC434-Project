@@ -225,8 +225,7 @@ input[type="password"],
 input[type="number"],
 input[type="time"],
 textarea {
-	width: 100%;
-	padding: 0.5rem;
+	padding: 0.5rem 1rem;
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius);
 	background-color: var(--color-background);
@@ -298,10 +297,11 @@ Other Utility Classes ==========================================
 .btn {
 	display: inline-block;
 	padding: 0.5rem 1rem;
-	border: none;
+		border: 1px solid var(--color-primary);
 	border-radius: var(--radius);
-	background-color: var(--color-border);
+	background-color: var(--color-background);
 	font-size: var(--text-base);
+	font-weight: bold;
 	text-align: center;
 	text-decoration: none;
 	cursor: pointer;
