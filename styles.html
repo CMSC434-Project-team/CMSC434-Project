@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=640, initial-scale=1.0" />
+		<title>Style Guide | Kitchen Kompanion</title>
+		<meta
+			name="description"
+			content="Style guide for Kitchen Kompanion, a web application for managing your kitchen inventory, shopping lists, and recipes."
+		/>
+
+		<!-- Favicon -->
+		<link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" />
+		<link rel="mask-icon" href="assets/favicons/favicon.svg" />
+
+		<!-- Styles -->
+		<link rel="preload" href="assets/styles/global.css" as="style" />
+		<link rel="stylesheet" href="assets/styles/global.css" />
+
+		<!-- Fonts -->
+		<link
+			rel="preload"
+			href="assets/fonts/InterVariable.woff2"
+			as="font"
+			crossorigin=""
+			type="font/woff2"
+		/>
+
+		<!-- Custom Styles -->
+		<style>
+			/* Custom styles for the styles.html page */
+			section {
+				margin-bottom: 2rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<section class="prose">
+				<!-- Headings H1 through H4 -->
+				<h1 class="mt-0">Heading level 1: Document Title</h1>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+				<h2>Heading level 2: Main Section</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+				<h3>Heading level 3: Subsection</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+				<h4>Heading level 4: Deep Subsection</h4>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</section>
+
+			<!-- Image -->
+			<section>
+				<h2>Image</h2>
+				<p>
+					An image should be displayed here:
+				</p>
+				<img src="assets/images/example.png" alt="Example Image" />
+			</section>
+
+			<!-- Interactive Elements Section -->
+			<section class="flex-col gap-2">
+				<h2>Interactive Components</h2>
+				<p>
+					Style these distinct button elements and their hover/active states:
+					<a href="index.html">Link</a>
+				</p>
+				<!-- Input fields -->
+				<input type="text" placeholder="Enter your name" />
+				<!-- At least two buttons -->
+				<button class="btn">Default Button</button>
+				<button class="btn btn-primary">Primary Button</button>
+			</section>
+
+			<!-- Markdown and Inline Text Formatting Types -->
+			<section class="prose mb-0">
+				<h2>Markdown-Equivalent Text Elements</h2>
+				<p>
+					This section includes standard semantic tags used to render rich text
+					elements:
+				</p>
+
+				<ul>
+					<li>
+						Ordered list
+						<ol>
+							<li>Ordered list item 1</li>
+							<li>Ordered list item 2</li>
+							<li>Ordered list item 3</li>
+						</ol>
+					</li>
+					<li>
+						<strong>Bold text</strong> (equivalent to markdown `**text**`)
+					</li>
+					<li><em>Italicized text</em> (equivalent to markdown `*text*`)</li>
+					<li>
+						<del>Strikethrough text</del> (equivalent to markdown `~~text~~`)
+					</li>
+				</ul>
+
+				<p class="mb-0">
+					For technical and mathematical layouts, you can style:
+					<!-- Superscript and Subscript -->
+					The chemical formula for water is H<sub>2</sub>O (subscript), and
+					Einstein's equation is E = mc<sup>2</sup> (superscript).
+				</p>
+			</section>
+			<footer>
+				<div class="glass">
+					<a href="#content" title="Home" class="active"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="1em"
+							height="1em"
+							viewBox="0 0 24 24"
+						>
+							<path
+								fill="currentColor"
+								d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"
+							/>
+						</svg>
+					</a>
+					<a href="shopping.html" title="Shopping List"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="1em"
+							height="1em"
+							viewBox="0 0 24 24"
+						>
+							<path
+								fill="currentColor"
+								d="M17 18a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2M1 2h3.27l.94 2H20a1 1 0 0 1 1 1c0 .17-.05.34-.12.5l-3.58 6.47c-.34.61-1 1.03-1.75 1.03H8.1l-.9 1.63l-.03.12a.25.25 0 0 0 .25.25H19v2H7a2 2 0 0 1-2-2c0-.35.09-.68.24-.96l1.36-2.45L3 4H1zm6 16a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2m9-7l2.78-5H6.14l2.36 5z"
+							/>
+						</svg>
+					</a>
+					<a href="recipes.html" title="Recipes"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="1em"
+							height="1em"
+							viewBox="0 0 24 24"
+						>
+							<path
+								fill="currentColor"
+								d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4"
+							/>
+						</svg>
+					</a>
+					<a href="profile.html" title="Profile"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="1em"
+							height="1em"
+							viewBox="0 0 24 24"
+						>
+							<path
+								fill="currentColor"
+								d="M12 19.2c-2.5 0-4.71-1.28-6-3.2c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"
+							/>
+						</svg>
+					</a>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

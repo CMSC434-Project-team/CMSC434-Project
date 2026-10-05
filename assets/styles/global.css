@@ -1,0 +1,322 @@
+@import "theme.css";
+
+/***************************************************************
+Global Color Palette ===========================================
+***************************************************************/
+
+:root {
+	/* [Fixed] Font (Inter is the best font) */
+	font-family: "InterVariable", ui-sans-serif, system-ui, sans-serif;
+	font-feature-settings: "calt", "ss03", "cv02", "cv05", "cv11";
+	scroll-behavior: smooth;
+
+	/* Color variables */
+	--color-text-bright: var(--text-bright);
+	--color-text: var(--text);
+	--color-text-muted: var(--text-muted);
+
+	--color-background: var(--bg);
+	--color-border: var(--border);
+	--color-outline: var(--outline);
+
+	--color-primary-bg: var(--primary-bg);
+	--color-primary: var(--primary);
+	--color-primary-hover: var(--primary-hover);
+
+	--color-success: var(--success);
+	--color-warning: var(--warning);
+	--color-error: var(--error);
+
+	/* Set colors (unified colors with modules) */
+	--shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+	--backdrop: rgba(0, 0, 0, 0.5);
+
+	/* Layout styles */
+	--spacing-side: 1.5rem;
+	--spacing-header: 4rem;
+	--spacing-footer: 4rem;
+	--radius: 1rem;
+}
+
+::selection {
+	background-color: var(--color-border);
+	color: var(--color-primary-hover);
+}
+
+/***************************************************************
+Base Styles ====================================================
+***************************************************************/
+
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100vh;
+	min-width: 640px;
+	min-height: 960px;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: darkGray;
+	color: var(--color-text);
+	line-height: 1.5;
+	font-size: clamp(8px, calc(0px + 2.5vw), 16px);
+	transition: color 0.3s;
+	overflow-y: auto;
+
+	.container {
+		width: 100%;
+		height: 100%;
+		max-width: 640px;
+		max-height: 960px;
+		background-color: var(--color-background);
+		box-sizing: border-box;
+		overflow: auto;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+		position: relative;
+		padding: 1rem var(--spacing-side);
+
+		&:has(> footer) {
+			padding-bottom: calc(var(--spacing-footer) + 1.5rem);
+		}
+	}
+}
+
+/* 0 specificity so that it can be easily overridden */
+:where(.test) {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(#9c9fde , #9ceed8);
+}
+
+a {
+	color: var(--color-link);
+	text-decoration: none;
+
+	&:hover {
+		color: var(--color-link-hover);
+	}
+}
+
+/* Reset default margins for headings and paragraphs */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin-block: 0;
+}
+
+/* Headings */
+h1 {
+	font-size: var(--text-4xl);
+	line-height: var(--text-4xl--line-height);
+}
+
+h2 {
+	font-size: var(--text-2xl);
+	line-height: var(--text-3xl--line-height);
+}
+
+h3 {
+	font-size: var(--text-xl);
+	line-height: var(--text-2xl--line-height);
+}
+
+/* Body Text, Links, and Forms */
+p,
+a,
+label {
+	font-size: var(--text-base);
+	line-height: var(--text-base--line-height);
+}
+
+button,
+a {
+	color: var(--color-primary);
+
+	&:hover {
+		color: var(--color-primary-hover);
+	}
+}
+
+/* Lists (ul, ol) */
+ul,
+ol {
+	padding-left: 1.5rem;
+	margin-block: 0.5rem;
+	color: var(--color-text);
+
+	ul,
+	ol {
+		padding-left: 1.5rem;
+		margin-block: 0.5rem;
+	}
+
+	li {
+		margin-bottom: 0.5rem;
+		line-height: 1.5;
+
+		&::marker {
+			color: var(--color-text-muted);
+		}
+	}
+}
+
+input:focus,
+button:focus,
+a:focus {
+	outline: 2px solid var(--color-primary);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	border-radius: var(--radius);
+}
+
+/***************************************************************
+Cursors ========================================================
+***************************************************************/
+
+/* Clickable interactive elements */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"] {
+	cursor: pointer;
+}
+
+/* Typing inputs (including Number and Time) */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="time"],
+textarea {
+	cursor: text;
+}
+
+/* Disabled state override */
+button:disabled,
+input:disabled,
+textarea:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/***************************************************************
+Interactive Elements ===========================================
+***************************************************************/
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="time"],
+textarea {
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius);
+	background-color: var(--color-background);
+}
+
+/***************************************************************
+Footer =========================================================
+***************************************************************/
+
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0.75rem;
+	right: 0;
+	height: var(--spacing-footer);
+
+	& > div {
+		display: flex;
+		padding: 0.5rem 1rem;
+		border-radius: 2.5rem;
+		height: calc(var(--spacing-footer) - 1rem);
+		width: fit-content;
+		margin: 0 auto;
+
+		& > a {
+			display: flex;
+			align-items: center;
+			color: var(--color-text);
+			font-size: calc(var(--spacing-footer) - 1.5rem);
+			text-decoration: none;
+			padding: 0 0.75rem;
+
+			&:hover {
+				color: var(--color-text-bright);
+				background-color: rgba(0, 0, 0, 0.05);
+				border-radius: 2.5rem;
+			}
+
+			&.active {
+				color: var(--color-primary-hover);
+			}
+		}
+	}
+}
+
+/***************************************************************
+Other Utility Classes ==========================================
+***************************************************************/
+
+/* Prose styles for readable text/articles */
+.prose {
+	/* Headings */
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin-block: 1em 0.5rem;
+	}
+
+	p {
+		margin-bottom: 0.5rem;
+	}
+}
+
+/* Custom Button Styles */
+.btn {
+	display: inline-block;
+	padding: 0.5rem 1rem;
+	border: none;
+	border-radius: var(--radius);
+	background-color: var(--color-border);
+	font-size: var(--text-base);
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background-color 0.3s;
+
+	&.btn-primary {
+		color: var(--color-background);
+		background-color: var(--color-primary);
+
+		&:hover {
+			background-color: var(--color-primary-hover);
+		}
+	}
+}
+
+/* Glassmorphism effect: overwrite styles if needed */
+:where(.glass) {
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: var(--radius);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border: 1px solid rgba(255, 255, 255, 0.25);
+}
