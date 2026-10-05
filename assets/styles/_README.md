@@ -82,14 +82,20 @@ Use the semantic color aliases exposed by `_global.css` when custom CSS is
 needed, including `--color-text`, `--color-background`, `--color-primary`,
 and `--color-primary-hover`.
 
-## Style guide
+### Layout variables
 
-Open [`styles.html`](/styles.html) in a browser to see the shared design
-system in action. It includes:
+Use these variables for consistent spacing, sizing, and viewport offsets in
+page-specific styles:
 
-- Heading and prose examples
-- Image behavior
-- Links, text inputs, and button variants
-- Ordered and unordered lists
-- Bold, italic, strikethrough, subscript, and superscript text
-- The shared footer navigation with `.glass` surface
+| Variable | Purpose |
+| -------- | ------- |
+| `--spacing-side` | Horizontal padding inside the page container |
+| `--spacing-footer` | Space reserved for the fixed footer navigation |
+| `--radius` | Shared border radius for surfaces and controls |
+| `--safe-top` | Top offset for the centered layout |
+| `--safe-bottom` | Bottom offset for the centered layout |
+| `--safe-left` | Left offset for the centered layout |
+| `--safe-right` | Right offset for the centered layout |
+
+These variables are defined on `:root` by `_global.css`, so they are
+available to local page styles after importing `_global.css`.

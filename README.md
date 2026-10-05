@@ -34,8 +34,10 @@ HTML and CSS, so pages can be opened directly in a browser. It has restrictions 
         └── styles.css          # [local] Style guide page styles
 ```
 
-Every HTML page loads `assets/styles/_global.css`. That file imports
-`assets/styles/_theme.css`, so pages should normally include only `_global.css`. Read more in the [style guide](assets/styles/_README.md).
+Each page stylesheet imports `assets/styles/_global.css` first. That file
+imports `assets/styles/_theme.css`, so local styles can use the global
+variables while each HTML page only loads its page stylesheet. Read more in
+the [style guide](assets/styles/_README.md).
 
 ## Styling
 
