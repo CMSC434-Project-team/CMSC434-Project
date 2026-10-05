@@ -33,9 +33,14 @@ Global Color Palette ===========================================
 
 	/* Layout styles */
 	--spacing-side: 1.5rem;
-	--spacing-header: 4rem;
 	--spacing-footer: 4rem;
 	--radius: 1rem;
+
+	/* Offsets from the viewport to the centered container */
+	--safe-top: max(0px, calc((100vh - 960px) / 2));
+	--safe-bottom: max(0px, calc((100vh - 960px) / 2));
+	--safe-left: max(0px, calc((100vw - 640px) / 2));
+	--safe-right: max(0px, calc((100vw - 640px) / 2));
 }
 
 ::selection {
@@ -233,9 +238,9 @@ Footer =========================================================
 
 footer {
 	position: fixed;
-	left: 0;
-	bottom: 0.75rem;
-	right: 0;
+	left: var(--safe-left);
+	bottom: calc(var(--safe-bottom) + 0.75rem);
+	right: var(--safe-right);
 	height: var(--spacing-footer);
 
 	& > div {
@@ -253,11 +258,11 @@ footer {
 			font-size: calc(var(--spacing-footer) - 1.5rem);
 			text-decoration: none;
 			padding: 0 0.75rem;
+			border-radius: 2.5rem;
 
 			&:hover {
 				color: var(--color-text-bright);
 				background-color: rgba(0, 0, 0, 0.05);
-				border-radius: 2.5rem;
 			}
 
 			&.active {
