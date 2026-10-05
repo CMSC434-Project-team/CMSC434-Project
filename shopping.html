@@ -1,90 +1,61 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=640, initial-scale=1.0" />
-		<title>Shopping List | Kitchen Kompanion</title>
-		<meta
-			name="description"
-			content="A web application for managing your kitchen inventory, shopping lists, and recipes."
-		/>
 
-		<!-- Favicon -->
-		<link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" />
-		<link rel="mask-icon" href="assets/favicons/favicon.svg" />
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=640, initial-scale=1.0" />
+	<title>Shopping List | Kitchen Kompanion</title>
+	<meta name="description"
+		content="A web application for managing your kitchen inventory, shopping lists, and recipes." />
 
-		<!-- Styles -->
-		<link rel="preload" href="assets/styles/global.css" as="style" />
-		<link rel="stylesheet" href="assets/styles/global.css" />
+	<!-- Favicon -->
+	<link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" />
+	<link rel="mask-icon" href="assets/favicons/favicon.svg" />
 
-		<!-- Fonts -->
-		<link
-			rel="preload"
-			href="assets/fonts/InterVariable.woff2"
-			as="font"
-			crossorigin=""
-			type="font/woff2"
-		/>
-	</head>
-	<body>
-		<div id="content" class="container">
-			<main class="test"></main>
-			<footer>
-				<div class="glass">
-					<a href="index.html" title="Home"
-						><svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="1em"
-							height="1em"
-							viewBox="0 0 24 24"
-						>
-							<path
-								fill="currentColor"
-								d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"
-							/>
-						</svg>
-					</a>
-					<a href="#content" title="Shopping List" class="active"
-						><svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="1em"
-							height="1em"
-							viewBox="0 0 24 24"
-						>
-							<path
-								fill="currentColor"
-								d="M17 18a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2M1 2h3.27l.94 2H20a1 1 0 0 1 1 1c0 .17-.05.34-.12.5l-3.58 6.47c-.34.61-1 1.03-1.75 1.03H8.1l-.9 1.63l-.03.12a.25.25 0 0 0 .25.25H19v2H7a2 2 0 0 1-2-2c0-.35.09-.68.24-.96l1.36-2.45L3 4H1zm6 16a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2m9-7l2.78-5H6.14l2.36 5z"
-							/>
-						</svg>
-					</a>
-					<a href="recipes.html" title="Recipes"
-						><svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="1em"
-							height="1em"
-							viewBox="0 0 24 24"
-						>
-							<path
-								fill="currentColor"
-								d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4"
-							/>
-						</svg>
-					</a>
-					<a href="profile.html" title="Profile"
-						><svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="1em"
-							height="1em"
-							viewBox="0 0 24 24"
-						>
-							<path
-								fill="currentColor"
-								d="M12 19.2c-2.5 0-4.71-1.28-6-3.2c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"
-							/>
-						</svg>
-					</a>
-				</div>
-			</footer>
-		</div>
-	</body>
+	<!-- Styles -->
+	<link rel="preload" href="assets/styles/shopping.css" as="style" />
+	<link rel="stylesheet" href="assets/styles/shopping.css" />
+
+	<!-- Fonts -->
+	<link rel="preload" href="assets/fonts/InterVariable.woff2" as="font" crossorigin="" type="font/woff2" />
+	<script type="module" src="scripts/shopping.js"></script>
+</head>
+
+<body>
+	<div id="content" class="container">
+		<main class="test">
+			<!-- START OF MAIN CONTENT -->
+
+			<!-- END OF MAIN CONTENT -->
+		</main>
+		<footer>
+			<div class="glass">
+				<a href="index.html" title="Home"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+						viewBox="0 0 24 24">
+						<path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z" />
+					</svg>
+				</a>
+				<a href="#content" title="Shopping List" class="active"><svg xmlns="http://www.w3.org/2000/svg" width="1em"
+						height="1em" viewBox="0 0 24 24">
+						<path fill="currentColor"
+							d="M17 18a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2M1 2h3.27l.94 2H20a1 1 0 0 1 1 1c0 .17-.05.34-.12.5l-3.58 6.47c-.34.61-1 1.03-1.75 1.03H8.1l-.9 1.63l-.03.12a.25.25 0 0 0 .25.25H19v2H7a2 2 0 0 1-2-2c0-.35.09-.68.24-.96l1.36-2.45L3 4H1zm6 16a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2m9-7l2.78-5H6.14l2.36 5z" />
+					</svg>
+				</a>
+				<a href="recipes.html" title="Recipes"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+						viewBox="0 0 24 24">
+						<path fill="currentColor"
+							d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4" />
+					</svg>
+				</a>
+				<a href="profile.html" title="Profile"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+						viewBox="0 0 24 24">
+						<path fill="currentColor"
+							d="M12 19.2c-2.5 0-4.71-1.28-6-3.2c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10" />
+					</svg>
+				</a>
+			</div>
+		</footer>
+	</div>
+</body>
+
 </html>

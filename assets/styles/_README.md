@@ -1,29 +1,29 @@
 # Styling workflow
 
-1. Start with the design tokens in `theme.css` for colors and typography.
+1. Start with the design tokens in `_theme.css` for colors and typography.
 2. Use the existing utilities and components before adding page-specific CSS.
 3. Add page-specific styles in the page's `<style>` block only when a shared
    rule is not appropriate.
 4. Open [`styles.html`](/styles.html) to preview the available typography,
    form controls, buttons, links, lists, images, and navigation styles.
 
-## `theme.css` utilities
+## `_theme.css` utilities
 
 ### Typography
 
 The text utilities set both font size and line height:
 
-| Class | Size |
-| --- | --- |
-| `.text-xs` | 0.75rem |
-| `.text-sm` | 0.875rem |
-| `.text-base` | 1rem |
-| `.text-lg` | 1.125rem |
-| `.text-xl` | 1.25rem |
-| `.text-2xl` | 1.5rem |
-| `.text-3xl` | 1.875rem |
-| `.text-4xl` | 2.25rem |
-| `.text-5xl` | 3rem |
+| Class        | Size     |
+| ------------ | -------- |
+| `.text-xs`   | 0.75rem  |
+| `.text-sm`   | 0.875rem |
+| `.text-base` | 1rem     |
+| `.text-lg`   | 1.125rem |
+| `.text-xl`   | 1.25rem  |
+| `.text-2xl`  | 1.5rem   |
+| `.text-3xl`  | 1.875rem |
+| `.text-4xl`  | 2.25rem  |
+| `.text-5xl`  | 3rem     |
 
 ### Layout and spacing
 
@@ -46,9 +46,9 @@ Use the semantic variables rather than hard-coding colors:
 The underlying stone and green palettes are also available as variables such
 as `--color-stone-800` and `--color-green-500`.
 
-## `global.css` utilities and components
+## `_global.css` utilities and components
 
-`global.css` applies the application-wide font, layout, color aliases, and
+`_global.css` applies the application-wide font, layout, color aliases, and
 element styles. It also provides these reusable classes:
 
 - `.container` provides the centered, device page surface.
@@ -78,18 +78,24 @@ Example:
 </section>
 ```
 
-Use the semantic color aliases exposed by `global.css` when custom CSS is
+Use the semantic color aliases exposed by `_global.css` when custom CSS is
 needed, including `--color-text`, `--color-background`, `--color-primary`,
 and `--color-primary-hover`.
 
-## Style guide
+### Layout variables
 
-Open [`styles.html`](/styles.html) in a browser to see the shared design
-system in action. It includes:
+Use these variables for consistent spacing, sizing, and viewport offsets in
+page-specific styles:
 
-- Heading and prose examples
-- Image behavior
-- Links, text inputs, and button variants
-- Ordered and unordered lists
-- Bold, italic, strikethrough, subscript, and superscript text
-- The shared footer navigation with `.glass` surface
+| Variable | Purpose |
+| -------- | ------- |
+| `--spacing-side` | Horizontal padding inside the page container |
+| `--spacing-footer` | Space reserved for the fixed footer navigation |
+| `--radius` | Shared border radius for surfaces and controls |
+| `--safe-top` | Top offset for the centered layout |
+| `--safe-bottom` | Bottom offset for the centered layout |
+| `--safe-left` | Left offset for the centered layout |
+| `--safe-right` | Right offset for the centered layout |
+
+These variables are defined on `:root` by `_global.css`, so they are
+available to local page styles after importing `_global.css`.

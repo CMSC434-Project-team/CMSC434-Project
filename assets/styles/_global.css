@@ -1,4 +1,4 @@
-@import "theme.css";
+@import "_theme.css";
 
 /***************************************************************
 Global Color Palette ===========================================
@@ -33,9 +33,14 @@ Global Color Palette ===========================================
 
 	/* Layout styles */
 	--spacing-side: 1.5rem;
-	--spacing-header: 4rem;
-	--spacing-footer: 4rem;
+	--spacing-footer: 3.5rem;
 	--radius: 1rem;
+
+	/* Offsets from the viewport to the centered container */
+	--safe-top: max(0px, calc((100vh - 960px) / 2));
+	--safe-bottom: max(0px, calc((100vh - 960px) / 2));
+	--safe-left: max(0px, calc((100vw - 640px) / 2));
+	--safe-right: max(0px, calc((100vw - 640px) / 2));
 }
 
 ::selection {
@@ -87,7 +92,7 @@ body {
 :where(.test) {
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(#9c9fde , #9ceed8);
+	background: linear-gradient(#9c9fde, #9ceed8);
 }
 
 a {
@@ -220,8 +225,7 @@ input[type="password"],
 input[type="number"],
 input[type="time"],
 textarea {
-	width: 100%;
-	padding: 0.5rem;
+	padding: 0.5rem 1rem;
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius);
 	background-color: var(--color-background);
@@ -233,12 +237,12 @@ Footer =========================================================
 
 footer {
 	position: fixed;
-	left: 0;
-	bottom: 0.75rem;
-	right: 0;
+	left: var(--safe-left);
+	bottom: calc(var(--safe-bottom) + 0.75rem);
+	right: var(--safe-right);
 	height: var(--spacing-footer);
 
-	& > div {
+	&>div {
 		display: flex;
 		padding: 0.5rem 1rem;
 		border-radius: 2.5rem;
@@ -246,18 +250,18 @@ footer {
 		width: fit-content;
 		margin: 0 auto;
 
-		& > a {
+		&>a {
 			display: flex;
 			align-items: center;
 			color: var(--color-text);
 			font-size: calc(var(--spacing-footer) - 1.5rem);
 			text-decoration: none;
 			padding: 0 0.75rem;
+			border-radius: 2.5rem;
 
 			&:hover {
 				color: var(--color-text-bright);
 				background-color: rgba(0, 0, 0, 0.05);
-				border-radius: 2.5rem;
 			}
 
 			&.active {
@@ -273,6 +277,7 @@ Other Utility Classes ==========================================
 
 /* Prose styles for readable text/articles */
 .prose {
+
 	/* Headings */
 	h1,
 	h2,
@@ -292,10 +297,11 @@ Other Utility Classes ==========================================
 .btn {
 	display: inline-block;
 	padding: 0.5rem 1rem;
-	border: none;
+		border: 1px solid var(--color-primary);
 	border-radius: var(--radius);
-	background-color: var(--color-border);
+	background-color: var(--color-background);
 	font-size: var(--text-base);
+	font-weight: bold;
 	text-align: center;
 	text-decoration: none;
 	cursor: pointer;
