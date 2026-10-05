@@ -1,13 +1,13 @@
 # Styling workflow
 
-1. Start with the design tokens in `theme.css` for colors and typography.
+1. Start with the design tokens in `_theme.css` for colors and typography.
 2. Use the existing utilities and components before adding page-specific CSS.
 3. Add page-specific styles in the page's `<style>` block only when a shared
    rule is not appropriate.
 4. Open [`styles.html`](/styles.html) to preview the available typography,
    form controls, buttons, links, lists, images, and navigation styles.
 
-## `theme.css` utilities
+## `_theme.css` utilities
 
 ### Typography
 
@@ -46,9 +46,9 @@ Use the semantic variables rather than hard-coding colors:
 The underlying stone and green palettes are also available as variables such
 as `--color-stone-800` and `--color-green-500`.
 
-## `global.css` utilities and components
+## `_global.css` utilities and components
 
-`global.css` applies the application-wide font, layout, color aliases, and
+`_global.css` applies the application-wide font, layout, color aliases, and
 element styles. It also provides these reusable classes:
 
 - `.container` provides the centered, device page surface.
@@ -78,7 +78,7 @@ Example:
 </section>
 ```
 
-Use the semantic color aliases exposed by `global.css` when custom CSS is
+Use the semantic color aliases exposed by `_global.css` when custom CSS is
 needed, including `--color-text`, `--color-background`, `--color-primary`,
 and `--color-primary-hover`.
 
