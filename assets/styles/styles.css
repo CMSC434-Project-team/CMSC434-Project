@@ -4,3 +4,24 @@
 section {
 	margin-bottom: 2rem;
 }
+
+/* 139 pixels per inch */
+/* Width: 4.6 inches (139 * 4.6 = 639.4 pixels) */
+/* Height: 6.9 inches (139 * 6.9 = 959.1 pixels) */
+/* (139/16)*3 = 26.0625px */
+.square {
+	width: 139px;
+	height: 26.0625px;
+	background-color: #3498db80;
+	/* Base color for the grid */
+	position: fixed;
+	top: 50vh;
+	left: 50vw;
+	cursor: grab;
+	user-select: none;
+	z-index: 1000;
+}
+
+.square:active {
+	cursor: grabbing;
+}
