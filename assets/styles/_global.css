@@ -1,4 +1,5 @@
 @import "_theme.css";
+@import "icons.css";
 
 /***************************************************************
 Global Color Palette ===========================================
@@ -34,7 +35,8 @@ Global Color Palette ===========================================
 
 	/* Layout styles */
 	--spacing-side: 1rem;
-	--spacing-footer: 2.5rem;
+	--spacing-footer: 2rem;
+	--spacing-top: 0.5rem;
 	--radius: 1rem;
 
 	/* Offsets from the viewport to the centered container */
@@ -81,10 +83,10 @@ body {
 		overflow: auto;
 		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 		position: relative;
-		padding: var(--spacing-side);
+		padding: var(--spacing-top) var(--spacing-side);
 
 		&:has(> footer) {
-			padding-bottom: calc(var(--spacing-footer) + var(--spacing-side));
+			padding-bottom: calc(var(--spacing-footer) + var(--spacing-top));
 		}
 	}
 }
@@ -225,21 +227,10 @@ textarea:disabled {
 	cursor: not-allowed;
 }
 
-/***************************************************************
-Interactive Elements ===========================================
-***************************************************************/
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="time"],
-textarea {
-
-	padding: 0.25rem 0.75rem;
-	border: 1px solid var(--color-border);
-	border-radius: var(--radius);
-	background-color: var(--color-background);
+:where(button, input, textarea) {
+	all: unset;
+	box-sizing: border-box;
+	/* Ensures padding doesn't affect width */
 }
 
 /***************************************************************
@@ -249,36 +240,54 @@ Footer =========================================================
 footer {
 	position: fixed;
 	left: var(--safe-left);
-	bottom: calc(var(--safe-bottom) + (var(--spacing-side)/2));
+	bottom: calc(var(--safe-bottom) + (var(--spacing-top) *3/4));
 	right: var(--safe-right);
 	height: var(--spacing-footer);
-	font-size: calc(var(--spacing-footer) - 0.75em);
 
-	&>div {
-		display: flex;
-		padding: 0.25em 0.5em;
+	&>.footer-wrapper {
+		padding: 0.125rem 0.5rem;
 		border-radius: var(--spacing-footer);
 		height: calc(var(--spacing-footer) - 0.5em);
 		width: fit-content;
 		margin: 0 auto;
 
-		&>a {
+		&>:where(.default) {
 			display: flex;
-			align-items: center;
-			color: var(--color-text);
-			font-size: calc(var(--spacing-footer) - 0.75em);
-			text-decoration: none;
-			padding: 0 0.75em;
-			border-radius: 2.5em;
+			width: fit-content;
+			height: 100%;
 
-			&:hover {
-				color: var(--color-text-bright);
-				background-color: rgba(0, 0, 0, 0.05);
+			&>a {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: var(--color-text);
+				text-decoration: none;
+				border-radius: 2.5em;
+				padding: 0.25rem 0.5rem;
+
+				&:hover {
+					color: var(--color-text-bright);
+					background-color: rgba(0, 0, 0, 0.05);
+				}
+
+				&.active {
+					color: var(--color-primary-hover);
+				}
+			}
+		}
+		&:has(> .active) {
+			>.default {
+				display: none;
 			}
 
-			&.active {
-				color: var(--color-primary-hover);
+			> button {
+				display: flex;
 			}
+		}
+
+		> button {
+			display: none;
+			outline: none;
 		}
 	}
 }
@@ -305,38 +314,14 @@ Other Utility Classes ==========================================
 	}
 }
 
-/* Custom Button Styles */
-.btn {
-	display: inline-block;
-	padding: 0.25rem 0.75rem;
-	border: 1px solid var(--color-primary);
-	border-radius: var(--radius);
-	background-color: var(--color-background);
-	font-size: var(--text-base);
-	font-weight: bold;
-	text-align: center;
-	text-decoration: none;
-	cursor: pointer;
-	transition: background-color 0.3s;
-
-	&.btn-primary {
-		color: var(--color-background);
-		background-color: var(--color-primary);
-
-		&:hover {
-			background-color: var(--color-primary-hover);
-		}
-	}
-}
-
 /* Glassmorphism effect: overwrite styles if needed */
 :where(.glass) {
-	background: rgba(255, 255, 255, 0.25);
+	background: rgba(250, 250, 250, 0.25);
 	border-radius: var(--radius);
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
-	border: 1px solid rgba(255, 255, 255, 0.25);
+	border: 1px solid rgba(250, 250, 250, 0.25);
 }
 
 .no-scrollbar,

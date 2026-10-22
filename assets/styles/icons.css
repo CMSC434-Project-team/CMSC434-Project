@@ -1,0 +1,48 @@
+.svg-icon {
+	display: inline-block;
+	width: 1.25rem;
+	height: 1.25rem;
+	flex: 0 0 auto;
+	background-color: currentColor;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: contain;
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: contain;
+}
+
+.svg-icon.icon-add {
+	mask-image: url("../icons/add.svg");
+	-webkit-mask-image: url("../icons/add.svg");
+}
+
+.svg-icon.icon-edit {
+	mask-image: url("../icons/edit.svg");
+	-webkit-mask-image: url("../icons/edit.svg");
+}
+
+.svg-icon.icon-search {
+	mask-image: url("../icons/search.svg");
+	-webkit-mask-image: url("../icons/search.svg");
+}
+
+.svg-icon.icon-home {
+	mask-image: url("../icons/home.svg");
+	-webkit-mask-image: url("../icons/home.svg");
+}
+
+.svg-icon.icon-shopping {
+	mask-image: url("../icons/shopping.svg");
+	-webkit-mask-image: url("../icons/shopping.svg");
+}
+
+.svg-icon.icon-recipes {
+	mask-image: url("../icons/recipes.svg");
+	-webkit-mask-image: url("../icons/recipes.svg");
+}
+
+.svg-icon.icon-profile {
+	mask-image: url("../icons/profile.svg");
+	-webkit-mask-image: url("../icons/profile.svg");
+}
