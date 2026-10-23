@@ -27,17 +27,16 @@
 			<!-- START OF MAIN CONTENT -->
 			<header>
 				<h1 class="text-lg">Inventory</h1>
-				<div class="glass flex-row">
-					<button aria-label="Add item"><span role="img" aria-label="Add item"
+				<div class="btn-group">
+					<button aria-label="Add item" class="btn"><span role="img" aria-label="Add item"
 							class="svg-icon icon-add"></span></button>
-					<button id="edit-button" aria-label="Edit item"><span role="img" aria-label="Edit item"
+					<button id="edit-button" aria-label="Edit item" class="btn"><span role="img" aria-label="Edit item"
 							class="svg-icon icon-edit"></span></button>
 				</div>
 			</header>
 			<div id="search">
 				<span role="img" aria-label="Search" class="svg-icon icon-search"></span>
-				<input type="text" placeholder="Search..." class="text-sm" />
-				<span id="search-clear" role="img" aria-label="Clear" class="svg-icon icon-add" style="rotate: 45deg;"></span>
+				<input type="search" placeholder="Search..." class="text-sm" />
 			</div>
 			<div>
 				<ul id="inventory-list">
