@@ -1,3 +1,55 @@
 @import "_global.css";
 
 /* Local styles for the "/index.html" page */
+header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: baseline;
+	height: 72px;
+}
+
+#search {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0.25rem 0;
+	border-radius: 1.5rem;
+	border: 0.125rem solid var(--color-border);
+
+	span {
+		position: absolute;
+		top: 0.25rem;
+		left: 0.25rem;
+	}
+
+	input {
+		width: 100%;
+		padding: 0.125rem 0 0.125rem 1.75rem;
+
+		&::-webkit-search-cancel-button {
+			width: 1.25rem;
+			height: 1.25rem;
+			margin-right: 0.25rem;
+			background-color: var(--color-error);
+			-webkit-appearance: none;
+			appearance: none;
+			cursor: pointer;
+			--svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 12h6m0 0h6m-6 0v6m0-6V6'/%3E%3C/svg%3E");
+			mask-image: var(--svg);
+			-webkit-mask-image: var(--svg);
+			transform: rotate(45deg);
+			mask-position: center;
+			mask-repeat: no-repeat;
+			mask-size: contain;
+			-webkit-mask-position: center;
+			-webkit-mask-repeat: no-repeat;
+			-webkit-mask-size: contain;
+		}
+	}
+
+	&:has(input:focus) {
+		border-color: var(--color-outline);
+	}
+}
