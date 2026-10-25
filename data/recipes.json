@@ -1,0 +1,71 @@
+[
+	{
+		"name": "Black Bean Rice Bowl",
+		"time": 25,
+		"ingredients": [
+			{
+				"ingredient": {
+					"name": "Brown rice",
+					"category": "Grains",
+					"unit": "cup"
+				},
+				"quantity": 1
+			},
+			{
+				"ingredient": {
+					"name": "Black beans",
+					"category": "Canned goods",
+					"unit": "can"
+				},
+				"quantity": 1
+			}
+		],
+		"steps": ["Cook the brown rice.", "Warm the black beans.", "Serve the beans over the rice."]
+	},
+	{
+		"name": "Tomato Rice",
+		"time": 20,
+		"ingredients": [
+			{
+				"ingredient": {
+					"name": "Tomato",
+					"category": "Produce",
+					"unit": "each"
+				},
+				"quantity": 2
+			},
+			{
+				"ingredient": {
+					"name": "Brown rice",
+					"category": "Grains",
+					"unit": "cup"
+				},
+				"quantity": 1
+			}
+		],
+		"steps": ["Cook the brown rice.", "Dice and sauté the tomatoes.", "Stir the tomatoes into the rice."]
+	},
+	{
+		"name": "Three Ingredient Salad",
+		"time": 10,
+		"ingredients": [
+			{
+				"ingredient": {
+					"name": "Tomato",
+					"category": "Produce",
+					"unit": "each"
+				},
+				"quantity": 1
+			},
+			{
+				"ingredient": {
+					"name": "Black beans",
+					"category": "Canned goods",
+					"unit": "can"
+				},
+				"quantity": 1
+			}
+		],
+		"steps": ["Dice the tomato.", "Rinse the black beans.", "Combine and serve."]
+	}
+]

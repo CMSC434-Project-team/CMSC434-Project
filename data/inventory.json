@@ -1,0 +1,35 @@
+[
+	{
+		"name": "Tomato",
+		"ingredient": {
+			"name": "Tomato",
+			"category": "Produce",
+			"unit": "each"
+		},
+		"stock": 4,
+		"low_stock_threshold": 2,
+		"tags": ["vegan", "vegetarian", "organic"]
+	},
+	{
+		"name": "Brown rice",
+		"ingredient": {
+			"name": "Brown rice",
+			"category": "Grains",
+			"unit": "cup"
+		},
+		"stock": 6,
+		"low_stock_threshold": 2,
+		"tags": ["gluten-free", "vegan", "vegetarian", "high-fiber"]
+	},
+	{
+		"name": "Black beans",
+		"ingredient": {
+			"name": "Black beans",
+			"category": "Canned goods",
+			"unit": "can"
+		},
+		"stock": 1,
+		"low_stock_threshold": 2,
+		"tags": ["gluten-free", "vegan", "vegetarian", "high-protein"]
+	}
+]
