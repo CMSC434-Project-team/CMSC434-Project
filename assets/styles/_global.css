@@ -79,19 +79,23 @@ body {
 		max-height: 960px;
 		background-color: var(--color-background);
 		box-sizing: border-box;
-		overflow: auto;
+		overflow: hidden;
 		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 		position: relative;
 		padding: var(--spacing-top) var(--spacing-side);
-		scroll-behavior: smooth;
+		
+        > div {
+            overflow: auto;
+            scroll-behavior: smooth;
 
-		main {
-			scroll-margin: var(--spacing-top);
-		}
+            main {
+                scroll-margin: var(--spacing-top);
+            }
 
-		&:has(> footer) {
-			padding-bottom: calc(var(--spacing-footer) + var(--spacing-top));
-		}
+            &:has(> footer) {
+                padding-bottom: calc(--spacing-footer);
+            }
+        }
 	}
 }
 
