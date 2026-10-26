@@ -25,6 +25,10 @@ console.log("_global.js loaded");
  * @property {Ingredient | null} ingredient
  * @property {number} stock
  * @property {number} low_stock_threshold
+ * @property {string} location
+ * @property {string} notes
+ * @property {Date} expiration_date
+ * @property {Date} last_updated
  * @property {Tag[]} tags
  */
 
