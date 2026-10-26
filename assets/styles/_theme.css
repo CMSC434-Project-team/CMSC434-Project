@@ -54,8 +54,7 @@
 	--outline: var(--color-stone-300);
 
 	--primary-bg: var(--color-green-100);
-	--primary: var(--color-green-700);
-	--primary-hover: var(--color-green-600);
+	--primary: var(--color-green-600);
 
 	--success: #20974c;
 	--warning: #faad14;
