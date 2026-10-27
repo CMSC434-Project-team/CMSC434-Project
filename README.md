@@ -16,7 +16,6 @@ requirements.
 ├── profile.html                # Profile page
 ├── styles.html                 # Shared style guide and component examples
 ├── scripts/
-│   ├── data.js                # Embedded data used for direct file opening
 │   ├── _global.js              # Global script
 │   ├── index.js                # [local] Home page scripts
 │   ├── shopping.js             # [local] Shopping list page scripts
@@ -30,6 +29,7 @@ requirements.
     └── styles/
         ├── _theme.css          # Global design tokens and small reusable utilities
         ├── _global.css         # Global styles and components
+        ├── icons.css           # Global icons
         ├── index.css           # [local] Home page styles
         ├── shopping.css        # [local] Shopping list page styles
         ├── recipes.css         # [local] Recipes page styles
