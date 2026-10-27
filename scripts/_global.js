@@ -182,5 +182,18 @@ appWindow.KitchenData = {
             steps: ["Dice tomatoes.", "Toss together in a bowl."]
         }
     ],
-    people: []
+    people: [
+        {
+            name: "Alex",
+            restricted_tags: ["nut-free"]
+        },
+        {
+            name: "Jordan",
+            restricted_tags: ["dairy-free", "vegetarian"]
+        },
+        {
+            name: "Sam",
+            restricted_tags: ["gluten-free"]
+        }
+    ]
 };
