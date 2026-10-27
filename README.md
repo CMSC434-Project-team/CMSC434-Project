@@ -1,8 +1,10 @@
 # Kitchen Kompanion
 
 Kitchen Kompanion is a static web application for managing kitchen inventory,
-shopping lists, recipes, and a user profile. The project currently uses plain
-HTML and CSS, so pages can be opened directly in a browser. It has restrictions on device size (640px \* 960px) and others due to CMSC434 project requirements.
+shopping lists, recipes, and a user profile. Pages can be opened directly in a
+browser by opening any HTML file; no web server is required. It has
+restrictions on device size (640px \* 960px) and others due to CMSC434 project
+requirements.
 
 ## File structure
 
@@ -14,6 +16,7 @@ HTML and CSS, so pages can be opened directly in a browser. It has restrictions 
 ├── profile.html                # Profile page
 ├── styles.html                 # Shared style guide and component examples
 ├── scripts/
+│   ├── data.js                # Embedded data used for direct file opening
 │   ├── _global.js              # Global script
 │   ├── index.js                # [local] Home page scripts
 │   ├── shopping.js             # [local] Shopping list page scripts
@@ -34,24 +37,11 @@ HTML and CSS, so pages can be opened directly in a browser. It has restrictions 
         └── styles.css          # [local] Style guide page styles
 ```
 
+The JSON files in `data/` remain the editable source/reference data. The
+browser pages use the matching data embedded in `scripts/data.js`, because
+browser security prevents loading JSON with `fetch()` from a `file://` page.
+
 Each page stylesheet imports `assets/styles/_global.css` first. That file
 imports `assets/styles/_theme.css`, so local styles can use the global
 variables while each HTML page only loads its page stylesheet. Read more in
 the [style guide](assets/styles/_README.md).
-
-## Styling
-
-### EditorConfig
-
-This project uses [EditorConfig](https://editorconfig.org) to maintain consistent basic formatting across editors. The repository's [`.editorconfig`](.editorconfig) file defines UTF-8 encoding, LF line endings, final newlines, and specific indentation rules:
-
-* **Tabs:** HTML, CSS, and JavaScript.
-* **Spaces:** Dotfiles, Markdown, JSON, TOML, YAML, and JSON5.
-* **Trailing whitespace:** (may break code so) preserved. 
-
-### VS Code Setup
-
-1. Install the [EditorConfig for VS Code extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig).
-2. Open the project folder. The extension automatically applies `.editorconfig` settings. Do not override these settings per file.
-
-The included [`.vscode/settings.json`](.vscode/settings.json) enables default formatting on save/paste and disables indentation detection to keep EditorConfig authoritative. It also locks in VS Code's built-in formatters for HTML, CSS, JavaScript, and JSON to prevent external formatters (like Prettier) from overriding them.

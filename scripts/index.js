@@ -1,10 +1,9 @@
-import * as shared from "./_global.js";
 // Run check: node --check scripts/index.js
 
 console.log("index.js loaded");
 
 // CONSTANTS used for the index page
-const json = await shared.JsonData.create("data/inventory.json");
+const json = new JsonData("inventory");
 const container = document.querySelector(".container");
 const inventoryList = document.getElementById("inventory-list");
 

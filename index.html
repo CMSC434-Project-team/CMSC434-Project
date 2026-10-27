@@ -2,156 +2,158 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=640, initial-scale=1.0" />
-	<title>Kitchen Kompanion</title>
-	<meta name="description"
-		content="A web application for managing your kitchen inventory, shopping lists, and recipes." />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=640, initial-scale=1.0" />
+    <title>Kitchen Kompanion</title>
+    <meta name="description"
+        content="A web application for managing your kitchen inventory, shopping lists, and recipes." />
 
-	<!-- Favicon -->
-	<link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" />
-	<link rel="mask-icon" href="assets/favicons/favicon.svg" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" />
+    <link rel="mask-icon" href="assets/favicons/favicon.svg" />
 
-	<!-- Styles -->
-	<link rel="preload" href="assets/styles/index.css" as="style" />
-	<link rel="stylesheet" href="assets/styles/index.css" />
+    <!-- Styles -->
+    <link rel="preload" href="assets/styles/index.css" as="style" />
+    <link rel="stylesheet" href="assets/styles/index.css" />
 
-	<!-- Fonts -->
-	<link rel="preload" href="assets/fonts/InterVariable.woff2" as="font" crossorigin="" type="font/woff2" />
-	<script type="module" src="scripts/index.js"></script>
+    <!-- Scripts -->
+    <script src="scripts/_global.js" defer></script>
+    <script src="scripts/index.js" defer></script>
 </head>
 
 <body>
-	<div class="container">
-		<main id="content">
-			<!-- START OF MAIN CONTENT -->
-			<header>
-				<div>
-					<button id="add-item-button" aria-label="Add item" aria-expanded="false" class="btn-solo"><span role="img"
-							aria-label="Add item" class="svg-icon icon-add"></span></button>
-					<button id="discard-edit-button" aria-label="Discard Edit" aria-expanded="false"
-						class="btn-solo error hidden"><span role="img" aria-label="Discard edit"
-							class="svg-icon icon-discard"></span></button>
-				</div>
-				<h1 class="text-lg">Inventory</h1>
-				<div>
-					<button id="edit-button" aria-label="Edit items" aria-pressed="false" class="btn-solo"><span role="img"
-							aria-label="Edit item" class="svg-icon icon-edit"></span></button>
-					<button id="save-edit-button" aria-label="Save Edit" aria-pressed="false" class="btn-solo active hidden"><span
-							role="img" aria-label="Save edit" class="svg-icon icon-check"></span></button>
-				</div>
-			</header>
-			<div id="search">
-				<span role="img" aria-label="Search" class="svg-icon icon-search"></span>
-				<input id="inventory-search" type="search" placeholder="Search..." class="text-sm" />
-			</div>
-			<div class="inventory-filters">
-				<div class="checkbox-switch-wrapper btn-solo active">
-					<input type="checkbox" id="inventory-grouped-categories" type="button">
-					<label for="inventory-grouped-categories" class="unchecked">
-						<span role="img" aria-label="Group by categories" class="svg-icon icon-group"></span>
-					</label>
-					<label for="inventory-grouped-categories" class="checked">
-						<span role="img" aria-label="Ungroup categories" class="svg-icon icon-ungroup"></span>
-					</label>
-				</div>
-				<form id="inventory-sort-type" aria-label="Filter inventory by" class="btn-group">
-					<input type="radio" id="sort-name" name="sort" value="name" checked>
-					<label for="sort-name" class="btn">Name</label>
-					<input type="radio" id="sort-expiration" name="sort" value="expiration">
-					<label for="sort-expiration" class="btn">Expiration</label>
-					<input type="radio" id="sort-amount" name="sort" value="stock">
-					<label for="sort-amount" class="btn">Stock</label>
-				</form>
-				<div class="checkbox-switch-wrapper btn-solo active">
-					<input type="checkbox" id="inventory-sort-direction" type="button">
-					<label for="inventory-sort-direction" class="unchecked">
-						<span role="img" aria-label="Sort ascending" class="svg-icon icon-ascending"></span>
-					</label>
-					<label for="inventory-sort-direction" class="checked">
-						<span role="img" aria-label="Sort descending" class="svg-icon icon-descending"></span>
-					</label>
-				</div>
-			</div>
-			<div>
-				<ul id="inventory-list">
-					<!-- Inventory items will be added here dynamically -->
-				</ul>
-			</div>
-			<!-- END OF MAIN CONTENT -->
+    <div class="container">
+        <main id="content">
+            <!-- START OF MAIN CONTENT -->
+            <header>
+                <div>
+                    <button id="add-item-button" aria-label="Add item" aria-expanded="false" class="btn-solo"><span
+                            role="img" aria-label="Add item" class="svg-icon icon-add"></span></button>
+                    <button id="discard-edit-button" aria-label="Discard Edit" aria-expanded="false"
+                        class="btn-solo error hidden"><span role="img" aria-label="Discard edit"
+                            class="svg-icon icon-discard"></span></button>
+                </div>
+                <h1 class="text-lg">Inventory</h1>
+                <div>
+                    <button id="edit-button" aria-label="Edit items" aria-pressed="false" class="btn-solo"><span
+                            role="img" aria-label="Edit item" class="svg-icon icon-edit"></span></button>
+                    <button id="save-edit-button" aria-label="Save Edit" aria-pressed="false"
+                        class="btn-solo active hidden"><span role="img" aria-label="Save edit"
+                            class="svg-icon icon-check"></span></button>
+                </div>
+            </header>
+            <div id="search">
+                <span role="img" aria-label="Search" class="svg-icon icon-search"></span>
+                <input id="inventory-search" type="search" placeholder="Search..." class="text-sm" />
+            </div>
+            <div class="inventory-filters">
+                <div class="checkbox-switch-wrapper btn-solo active">
+                    <input type="checkbox" id="inventory-grouped-categories" type="button">
+                    <label for="inventory-grouped-categories" class="unchecked">
+                        <span role="img" aria-label="Group by categories" class="svg-icon icon-group"></span>
+                    </label>
+                    <label for="inventory-grouped-categories" class="checked">
+                        <span role="img" aria-label="Ungroup categories" class="svg-icon icon-ungroup"></span>
+                    </label>
+                </div>
+                <form id="inventory-sort-type" aria-label="Filter inventory by" class="btn-group">
+                    <input type="radio" id="sort-name" name="sort" value="name" checked>
+                    <label for="sort-name" class="btn">Name</label>
+                    <input type="radio" id="sort-expiration" name="sort" value="expiration">
+                    <label for="sort-expiration" class="btn">Expiration</label>
+                    <input type="radio" id="sort-amount" name="sort" value="stock">
+                    <label for="sort-amount" class="btn">Stock</label>
+                </form>
+                <div class="checkbox-switch-wrapper btn-solo active">
+                    <input type="checkbox" id="inventory-sort-direction" type="button">
+                    <label for="inventory-sort-direction" class="unchecked">
+                        <span role="img" aria-label="Sort ascending" class="svg-icon icon-ascending"></span>
+                    </label>
+                    <label for="inventory-sort-direction" class="checked">
+                        <span role="img" aria-label="Sort descending" class="svg-icon icon-descending"></span>
+                    </label>
+                </div>
+            </div>
+            <div>
+                <ul id="inventory-list">
+                    <!-- Inventory items will be added here dynamically -->
+                </ul>
+            </div>
+            <!-- END OF MAIN CONTENT -->
 
-			<form id="add-item-form" class="no-scrollbar" novalidate>
-				<header>
-					<div class="btn-group">
-						<button type="button" id="close-add-item-form" aria-label="Close form" class="btn"><span role="img"
-								aria-label="Close form" class="svg-icon icon-back"></span>
-						</button>
-						<button type="button" id="discard-item-button" aria-label="Discard changes" class="btn error"><span
-								role="img" aria-label="Discard changes" class="svg-icon icon-discard"></span>
-						</button>
-					</div>
-					<h1 id="item-form-title" class="text-lg">Add item</h1>
-					<button type="submit" id="save-item-button" aria-label="Save changes" class="btn-solo active"><span role="img"
-							aria-label="Save changes" class="svg-icon icon-check"></span>
-					</button>
-				</header>
-				<!-- Required fields -->
-				<label for="item-name">Item Name:</label>
-				<input type="text" id="item-name" name="item-name" required>
+            <form id="add-item-form" class="no-scrollbar" novalidate>
+                <header>
+                    <div class="btn-group">
+                        <button type="button" id="close-add-item-form" aria-label="Close form" class="btn"><span
+                                role="img" aria-label="Close form" class="svg-icon icon-back"></span>
+                        </button>
+                        <button type="button" id="discard-item-button" aria-label="Discard changes"
+                            class="btn error"><span role="img" aria-label="Discard changes"
+                                class="svg-icon icon-discard"></span>
+                        </button>
+                    </div>
+                    <h1 id="item-form-title" class="text-lg">Add item</h1>
+                    <button type="submit" id="save-item-button" aria-label="Save changes" class="btn-solo active"><span
+                            role="img" aria-label="Save changes" class="svg-icon icon-check"></span>
+                    </button>
+                </header>
+                <!-- Required fields -->
+                <label for="item-name">Item Name:</label>
+                <input type="text" id="item-name" name="item-name" required>
 
-				<label for="item-quantity">Quantity:</label>
-				<input type="number" id="item-quantity" name="item-quantity" min="1" required>
+                <label for="item-quantity">Quantity:</label>
+                <input type="number" id="item-quantity" name="item-quantity" min="1" required>
 
-				<label for="item-unit">Unit:</label>
-				<select id="item-unit" name="item-unit">
-					<option value="pcs">pcs</option>
-					<option value="kg">kg</option>
-					<option value="g">g</option>
-					<option value="l">l</option>
-					<option value="ml">ml</option>
-				</select>
+                <label for="item-unit">Unit:</label>
+                <select id="item-unit" name="item-unit">
+                    <option value="pcs">pcs</option>
+                    <option value="kg">kg</option>
+                    <option value="g">g</option>
+                    <option value="l">l</option>
+                    <option value="ml">ml</option>
+                </select>
 
-				<!-- Alerts -->
-				<label for="item-expiration">Expiration Date:</label>
-				<input type="date" id="item-expiration" name="item-expiration">
-				<p class="help-text">If the item has an expiration date, it will be highlighted when it's close
-					to
-					expiring.</p>
+                <!-- Alerts -->
+                <label for="item-expiration">Expiration Date:</label>
+                <input type="date" id="item-expiration" name="item-expiration">
+                <p class="help-text">If the item has an expiration date, it will be highlighted when it's close
+                    to
+                    expiring.</p>
 
-				<label for="item-low-stock">Low Stock Threshold:</label>
-				<input type="number" id="item-low-stock" name="item-low-stock" min="0">
-				<p class="help-text">When stock falls below this value, an alert will be shown.</p>
+                <label for="item-low-stock">Low Stock Threshold:</label>
+                <input type="number" id="item-low-stock" name="item-low-stock" min="0">
+                <p class="help-text">When stock falls below this value, an alert will be shown.</p>
 
-				<!-- Optional fields -->
-				<label for="item-location">Location:</label>
-				<input type="text" id="item-location" name="item-location">
+                <!-- Optional fields -->
+                <label for="item-location">Location:</label>
+                <input type="text" id="item-location" name="item-location">
 
-				<label for="item-tags">Tags (comma-separated):</label>
-				<input type="text" id="item-tags" name="item-tags">
+                <label for="item-tags">Tags (comma-separated):</label>
+                <input type="text" id="item-tags" name="item-tags">
 
-				<label for="item-notes">Notes:</label>
-				<textarea id="item-notes" name="item-notes"></textarea>
-			</form>
-		</main>
-		<footer>
-			<div id="footer-bar" class="btn-group-wrapper">
-				<nav id="group-default" class="btn-group">
-					<a href="#content" title="Home" class="btn active"><span role="img" aria-label="Home"
-							class="svg-icon icon-home"></span>
-					</a>
-					<a href="shopping.html" title="Shopping List" class="btn"><span role="img" aria-label="Shopping List"
-							class="svg-icon icon-shopping"></span>
-					</a>
-					<a href="recipes.html" title="Recipes" class="btn"><span role="img" aria-label="Recipes"
-							class="svg-icon icon-recipes"></span>
-					</a>
-					<a href="profile.html" title="Profile" class="btn"><span role="img" aria-label="Profile"
-							class="svg-icon icon-profile"></span>
-					</a>
-				</nav>
-			</div>
-		</footer>
-	</div>
+                <label for="item-notes">Notes:</label>
+                <textarea id="item-notes" name="item-notes"></textarea>
+            </form>
+        </main>
+        <footer>
+            <div id="footer-bar" class="btn-group-wrapper">
+                <nav id="group-default" class="btn-group">
+                    <a href="#content" title="Home" class="btn active"><span role="img" aria-label="Home"
+                            class="svg-icon icon-home"></span>
+                    </a>
+                    <a href="shopping.html" title="Shopping List" class="btn"><span role="img"
+                            aria-label="Shopping List" class="svg-icon icon-shopping"></span>
+                    </a>
+                    <a href="recipes.html" title="Recipes" class="btn"><span role="img" aria-label="Recipes"
+                            class="svg-icon icon-recipes"></span>
+                    </a>
+                    <a href="profile.html" title="Profile" class="btn"><span role="img" aria-label="Profile"
+                            class="svg-icon icon-profile"></span>
+                    </a>
+                </nav>
+            </div>
+        </footer>
+    </div>
 </body>
 
 </html>

@@ -1,6 +1,9 @@
-import * as shared from "./_global.js";
+// Run check: node --check scripts/recipes.js
+
+console.log("recipes.js loaded");
 
 const list = document.getElementById("recipe-list");
+const recipesJson = new JsonData("recipes");
 
 function showView(view) {
     const elements = {
@@ -70,34 +73,11 @@ document.getElementById("back-button").addEventListener("click", () => {
 showView("list");
 list.textContent = "Loading recipes...";
 
-fetch("data/recipes.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Cannot load recipes: ${response.status}`);
-        }
-
-        return response.json();
-    })
+recipesJson.ready
     .then(recipes => {
-        let savedRecipes = [];
-
-        try {
-            const saved = JSON.parse(
-                localStorage.getItem("created_recipes") || "[]"
-            );
-
-            if (Array.isArray(saved)) {
-                savedRecipes = saved;
-            }
-        } catch (error) {
-            console.error("Could not load saved recipes:", error);
-        }
-
-        const allRecipes = recipes.concat(savedRecipes);
-
         list.textContent = "";
 
-        for (const recipe of allRecipes) {
+        for (const recipe of recipes) {
             const button = document.createElement("button");
 
             button.type = "button";
@@ -174,16 +154,13 @@ document.getElementById("save-recipe").addEventListener("click", () => {
     };
 
     try {
-        const savedRecipes = JSON.parse(
-            localStorage.getItem("created_recipes") || "[]"
-        );
+        const recipes = recipesJson.getData();
+        if (!Array.isArray(recipes)) {
+            throw new Error("Recipe data is not available.");
+        }
 
-        savedRecipes.push(recipe);
-
-        localStorage.setItem(
-            "created_recipes",
-            JSON.stringify(savedRecipes)
-        );
+        recipes.push(recipe);
+        recipesJson.saveData();
     } catch (error) {
         alert("Could not save the recipe in this browser.");
         console.error(error);
