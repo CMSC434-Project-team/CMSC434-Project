@@ -2,99 +2,99 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=640, initial-scale=1.0" />
-    <title>Recipes | Kitchen Kompanion</title>
-    <meta name="description"
-        content="A web application for managing your kitchen inventory, shopping lists, and recipes." />
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=640, initial-scale=1.0" />
+	<title>Recipes | Kitchen Kompanion</title>
+	<meta name="description"
+		content="A web application for managing your kitchen inventory, shopping lists, and recipes." />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" />
-    <link rel="mask-icon" href="assets/favicons/favicon.svg" />
+	<!-- Favicon -->
+	<link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" />
+	<link rel="mask-icon" href="assets/favicons/favicon.svg" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="assets/styles/recipes.css?v=2" />
+	<!-- Styles -->
+	<link rel="stylesheet" href="assets/styles/recipes.css?v=2" />
 
-    <!-- Fonts -->
-    <link rel="preload" href="assets/fonts/InterVariable.woff2" as="font" crossorigin="" type="font/woff2" />
-    <script type="module" src="scripts/recipes.js"></script>
+	<!-- Scripts -->
+    <script src="scripts/_global.js" defer></script>
+	<script src="scripts/recipes.js" defer></script>
 </head>
 
 <body>
-    <div class="container">
-        <main id="content">
-            <!-- START OF MAIN CONTENT -->
-            <h1 class="text-lg">Recipes</h1>
-            <button id="create-button">+ Create recipe</button>
-            <div id="recipe-list"></div>
-            <section id="recipe-details" hidden>
-                <button id="back-button">← Back</button>
+	<div class="container">
+		<main id="content">
+			<!-- START OF MAIN CONTENT -->
+			<h1 class="text-lg">Recipes</h1>
+			<button id="create-button">+ Create recipe</button>
+			<div id="recipe-list"></div>
+			<section id="recipe-details" hidden>
+				<button id="back-button">← Back</button>
 
-                <h2 id="recipe-name"></h2>
-                <p id="recipe-time"></p>
+				<h2 id="recipe-name"></h2>
+				<p id="recipe-time"></p>
 
-                <h3>Ingredients</h3>
-                <ul id="recipe-ingredients"></ul>
-
-
-                <h3>Steps</h3>
-                <ol id="recipe-steps"></ol>
-            </section>
-            <section id="create-recipe" hidden>
-                <h2>Create recipe</h2>
-
-                <label for="new-name">Recipe name</label>
-                <input id="new-name" type="text" required />
-
-                <label for="new-time">Total time in minutes</label>
-                <input id="new-time" type="number" min="1" required />
-
-                <h3>Ingredients</h3>
-
-                <label for="ingredient-name">Ingredient name</label>
-                <input id="ingredient-name" type="text" />
-
-                <label for="ingredient-category">Food group</label>
-                <input id="ingredient-category" type="text" />
-
-                <label for="ingredient-quantity">Quantity</label>
-                <input id="ingredient-quantity" type="number" min="0.01" step="any" />
-
-                <label for="ingredient-unit">Unit</label>
-                <input id="ingredient-unit" type="text" placeholder="cup, can, each" />
-
-                <button type="button" id="add-ingredient">+ Add ingredient</button>
-                <ul id="added-ingredients"></ul>
-
-                <h3>Steps</h3>
-                <label for="new-steps">Enter one instruction per line</label>
-                <textarea id="new-steps" rows="4"></textarea>
+				<h3>Ingredients</h3>
+				<ul id="recipe-ingredients"></ul>
 
 
-                <button id="save-recipe">Save recipe</button>
-                <button id="cancel-create">Cancel</button>
-            </section>
-            <!-- END OF MAIN CONTENT -->
-        </main>
-        <footer>
-            <div id="footer-bar" class="btn-group-wrapper">
-                <nav id="group-default" class="btn-group">
-                    <a href="index.html" title="Home" class="btn"><span role="img" aria-label="Home"
-                            class="svg-icon icon-home"></span>
-                    </a>
-                    <a href="shopping.html" title="Shopping List" class="btn"><span role="img"
-                            aria-label="Shopping List" class="svg-icon icon-shopping"></span>
-                    </a>
-                    <a href="#content" title="Recipes" class="btn active"><span role="img" aria-label="Recipes"
-                            class="svg-icon icon-recipes"></span>
-                    </a>
-                    <a href="profile.html" title="Profile" class="btn"><span role="img" aria-label="Profile"
-                            class="svg-icon icon-profile"></span>
-                    </a>
-                </nav>
-            </div>
-        </footer>
-    </div>
+				<h3>Steps</h3>
+				<ol id="recipe-steps"></ol>
+			</section>
+			<section id="create-recipe" hidden>
+				<h2>Create recipe</h2>
+
+				<label for="new-name">Recipe name</label>
+				<input id="new-name" type="text" required />
+
+				<label for="new-time">Total time in minutes</label>
+				<input id="new-time" type="number" min="1" required />
+
+				<h3>Ingredients</h3>
+
+				<label for="ingredient-name">Ingredient name</label>
+				<input id="ingredient-name" type="text" />
+
+				<label for="ingredient-category">Food group</label>
+				<input id="ingredient-category" type="text" />
+
+				<label for="ingredient-quantity">Quantity</label>
+				<input id="ingredient-quantity" type="number" min="0.01" step="any" />
+
+				<label for="ingredient-unit">Unit</label>
+				<input id="ingredient-unit" type="text" placeholder="cup, can, each" />
+
+				<button type="button" id="add-ingredient">+ Add ingredient</button>
+				<ul id="added-ingredients"></ul>
+
+				<h3>Steps</h3>
+				<label for="new-steps">Enter one instruction per line</label>
+				<textarea id="new-steps" rows="4"></textarea>
+
+
+				<button id="save-recipe">Save recipe</button>
+				<button id="cancel-create">Cancel</button>
+			</section>
+			<!-- END OF MAIN CONTENT -->
+		</main>
+		<footer>
+			<div id="footer-bar" class="btn-group-wrapper">
+				<nav id="group-default" class="btn-group">
+					<a href="index.html" title="Home" class="btn"><span role="img" aria-label="Home"
+							class="svg-icon icon-home"></span>
+					</a>
+					<a href="shopping.html" title="Shopping List" class="btn"><span role="img" aria-label="Shopping List"
+							class="svg-icon icon-shopping"></span>
+					</a>
+					<a href="#content" title="Recipes" class="btn active"><span role="img" aria-label="Recipes"
+							class="svg-icon icon-recipes"></span>
+					</a>
+					<a href="profile.html" title="Profile" class="btn"><span role="img" aria-label="Profile"
+							class="svg-icon icon-profile"></span>
+					</a>
+				</nav>
+			</div>
+		</footer>
+	</div>
 </body>
 
 </html>
