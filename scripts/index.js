@@ -25,7 +25,8 @@ const draftItemBlank = {
 };
 // VARIABLES to hold the current state of the inventory list
 let draftItem = draftItemBlank;
-let draftEdit = null;
+/** @type {Map<string, number>} */
+let draftEdit = new Map();
 let beforeEdit = null;
 
 // ELEMENTS for Add Item Form Elements
@@ -76,22 +77,36 @@ itemForm.addEventListener("submit", event => {
 });
 
 // Quick Edit Button Logic ============================================================
+function discardDraftEdits() {
+    draftEdit.clear();
+    console.log("[Edit] Discard draft edits");
+}
+
+function saveDraftEdits() {
+    json.data.forEach(item => {
+        if (draftEdit.has(item.name)) {
+            item.stock = draftEdit.get(item.name);
+        }
+    });
+}
+
 editButton.addEventListener("click", () => {
-    // temporarily save add and minus data
-    /** @type {[string, number][]} */
-    draftEdit = [];
+    draftEdit = new Map();
     container.setAttribute("data-mode", "edit");
     console.log("[Edit] Edit mode enabled");
 });
 
 discardEditButton.addEventListener("click", () => {
-    draftEdit = [];
+    discardDraftEdits();
     container.setAttribute("data-mode", "normal");
     console.log("[Edit] Discard edits");
 });
 
 saveEditButton.addEventListener("click", () => {
+    saveDraftEdits();
     container.setAttribute("data-mode", "normal");
+    renderInventoryList();
+    json.saveData();
     console.log("[Edit] Save edits");
 });
 
@@ -231,21 +246,36 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
             const controlsDiv = document.createElement("div");
             controlsDiv.className = "item-controls";
 
+            const activeStock = draftEdit.has(item.name) ? draftEdit.get(item.name) : item.stock;
+            const unit = item.ingredient?.unit || "";
+
             const minusBtn = document.createElement("button");
+            minusBtn.type = "button";
             minusBtn.textContent = "-";
             minusBtn.className = "btn-minus";
-            minusBtn.onclick = () => console.log(`Decrease stock for ${item.name}`);
+            minusBtn.addEventListener("click", () => {
+                const currentStock = draftEdit.has(item.name) ? draftEdit.get(item.name) : item.stock;
+                const newStock = Math.max(0, currentStock - 1);
+                stockDisplay.textContent = `${newStock} ${unit}`.trim();
+                draftEdit.set(item.name, newStock);
+            });
             controlsDiv.appendChild(minusBtn);
 
             const stockDisplay = document.createElement("span");
             stockDisplay.className = "item-stock";
-            stockDisplay.textContent = `${item.stock} ${item.ingredient?.unit || ""}`.trim();
+            stockDisplay.textContent = `${activeStock} ${unit}`.trim();
             controlsDiv.appendChild(stockDisplay);
 
             const plusBtn = document.createElement("button");
+            plusBtn.type = "button";
             plusBtn.textContent = "+";
             plusBtn.className = "btn-plus";
-            plusBtn.onclick = () => console.log(`Increase stock for ${item.name}`);
+            plusBtn.addEventListener("click", () => {
+                const currentStock = draftEdit.has(item.name) ? draftEdit.get(item.name) : item.stock;
+                const newStock = currentStock + 1;
+                stockDisplay.textContent = `${newStock} ${unit}`.trim();
+                draftEdit.set(item.name, newStock);
+            });
             controlsDiv.appendChild(plusBtn);
 
             rowLi.appendChild(controlsDiv);
