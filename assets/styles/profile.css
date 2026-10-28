@@ -1,3 +1,78 @@
 @import "_global.css";
 
 /* Local styles for the "/profile.html" page */
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 72px;
+
+	h1 {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}
+
+/* Styling for the people list */
+#people-list {
+	list-style: none;
+	margin: 0;
+	padding: 0.125rem 0;
+
+	li {
+		padding: 0.25rem 0.5rem;
+	}
+}
+
+/* Styling for the add person form */
+#add-person-form {
+	position: fixed;
+	top: var(--safe-top);
+	left: var(--safe-left);
+	right: var(--safe-right);
+	bottom: var(--safe-bottom);
+	background-color: var(--color-background);
+	overflow-y: auto;
+	transform: translateX(calc(100% + 1rem));
+	padding: var(--spacing-top) var(--spacing-side);
+	transition: transform 0.35s ease;
+
+	input[type="text"] {
+		height: 2rem;
+		padding: 0.25rem 0.5rem;
+		border: 0.0625rem solid var(--color-border);
+		border-radius: 0.5rem;
+	}
+
+	.help-text {
+		color: var(--color-text-muted);
+	}
+
+	/* Restriction options reuse .btn-group like the inventory sort buttons */
+	#tag-options {
+		height: auto;
+		flex-wrap: wrap;
+		gap: 0.25rem 0;
+
+		label {
+			--control-outline: var(--color-outline);
+		}
+
+		input:checked+label {
+			--control-background: var(--color-glass-bg-active);
+			--control-outline: var(--color-glass-bg-active);
+			--control-color: var(--color-primary);
+		}
+	}
+}
+
+.container[data-mode="add"] {
+	#add-person-form {
+		transform: translateX(0);
+	}
+
+	footer {
+		transform: translateY(calc(100% + 1rem));
+	}
+}

@@ -25,8 +25,65 @@
     <div class="container">
         <main id="content">
             <!-- START OF MAIN CONTENT -->
-            <a href="styles.html">Go to Style Sheet</a>
+            <header>
+                <button id="add-person-button" aria-label="Add person" aria-expanded="false" class="btn-solo"><span
+                        role="img" aria-label="Add person" class="svg-icon icon-add"></span></button>
+                <h1 class="text-lg">Profiles</h1>
+            </header>
+            <ul id="people-list">
+                <!-- Profiles will be added here dynamically -->
+            </ul>
             <!-- END OF MAIN CONTENT -->
+
+            <form id="add-person-form" class="flex-col gap-1 no-scrollbar" novalidate>
+                <header>
+                    <button type="button" id="close-add-person-form" aria-label="Cancel" class="btn-solo"><span role="img"
+                            aria-label="Cancel" class="svg-icon icon-back"></span>
+                    </button>
+                    <h1 class="text-lg">Add person</h1>
+                    <button type="submit" id="save-person-button" aria-label="Save person" class="btn-solo active"><span
+                            role="img" aria-label="Save person" class="svg-icon icon-check"></span>
+                    </button>
+                </header>
+
+                <label for="person-name" class="text-sm">Name</label>
+                <input type="text" id="person-name" name="person-name" class="text-sm" required>
+                <p class="help-text text-xs">Who is this profile for?</p>
+
+                <p class="text-sm">Dietary restrictions</p>
+                <div id="tag-options" aria-label="Dietary restrictions" class="btn-group">
+                    <input type="checkbox" id="tag-gluten-free" name="restricted_tags" value="gluten-free">
+                    <label for="tag-gluten-free" class="btn">gluten-free</label>
+                    <input type="checkbox" id="tag-dairy-free" name="restricted_tags" value="dairy-free">
+                    <label for="tag-dairy-free" class="btn">dairy-free</label>
+                    <input type="checkbox" id="tag-nut-free" name="restricted_tags" value="nut-free">
+                    <label for="tag-nut-free" class="btn">nut-free</label>
+                    <input type="checkbox" id="tag-vegan" name="restricted_tags" value="vegan">
+                    <label for="tag-vegan" class="btn">vegan</label>
+                    <input type="checkbox" id="tag-vegetarian" name="restricted_tags" value="vegetarian">
+                    <label for="tag-vegetarian" class="btn">vegetarian</label>
+                    <input type="checkbox" id="tag-pescatarian" name="restricted_tags" value="pescatarian">
+                    <label for="tag-pescatarian" class="btn">pescatarian</label>
+                    <input type="checkbox" id="tag-kosher" name="restricted_tags" value="kosher">
+                    <label for="tag-kosher" class="btn">kosher</label>
+                    <input type="checkbox" id="tag-halal" name="restricted_tags" value="halal">
+                    <label for="tag-halal" class="btn">halal</label>
+                    <input type="checkbox" id="tag-low-carb" name="restricted_tags" value="low-carb">
+                    <label for="tag-low-carb" class="btn">low-carb</label>
+                    <input type="checkbox" id="tag-low-fat" name="restricted_tags" value="low-fat">
+                    <label for="tag-low-fat" class="btn">low-fat</label>
+                    <input type="checkbox" id="tag-low-sodium" name="restricted_tags" value="low-sodium">
+                    <label for="tag-low-sodium" class="btn">low-sodium</label>
+                    <input type="checkbox" id="tag-high-protein" name="restricted_tags" value="high-protein">
+                    <label for="tag-high-protein" class="btn">high-protein</label>
+                    <input type="checkbox" id="tag-high-fiber" name="restricted_tags" value="high-fiber">
+                    <label for="tag-high-fiber" class="btn">high-fiber</label>
+                    <input type="checkbox" id="tag-sugar-free" name="restricted_tags" value="sugar-free">
+                    <label for="tag-sugar-free" class="btn">sugar-free</label>
+                    <input type="checkbox" id="tag-organic" name="restricted_tags" value="organic">
+                    <label for="tag-organic" class="btn">organic</label>
+                </div>
+            </form>
         </main>
         <footer>
             <div id="footer-bar" class="btn-group-wrapper">
