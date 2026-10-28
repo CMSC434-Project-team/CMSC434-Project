@@ -13,15 +13,16 @@ console.log("_global.js loaded");
  * @property {string} unit
  * 
  * @typedef {Object} InventoryItem
- * @property {string} name
- * @property {Ingredient | null} ingredient
- * @property {number} stock
- * @property {number} low_stock_threshold
- * @property {string} location
- * @property {string} notes
- * @property {string} expiration_date
- * @property {string} last_updated
- * @property {Tag[]} tags
+ * @property {string} name                  // required for all
+ * @property {Ingredient | null} ingredient // required for all
+ * @property {boolean} shopping_list        // optional (prefilled if adding from shopping list), used for shopping list filtering
+ * @property {number} stock                 // required for adding to inventory, optional for adding to shopping list
+ * @property {number} low_stock_threshold   // optional, used for low stock alerts
+ * @property {string} location              // optional, used for inventory organization (TODO: not searchable yet)
+ * @property {string} notes                 // optional, used for inventory notes
+ * @property {string} expiration_date       // optional, used for inventory expiration tracking
+ * @property {string} last_updated          // optional, used for inventory last updated tracking
+ * @property {Tag[]} tags                   // optional, used for inventory filtering
  * 
  * @typedef {Object} RecipeIngredient
  * @property {Ingredient} ingredient
@@ -122,7 +123,8 @@ appWindow.KitchenData = {
     inventory: [
         {
             name: "Tomato",
-            ingredient: { name: "Tomato", category: "Produce", unit: "each" },
+            ingredient: { name: "Tomato", category: "Produce", unit: "unit" },
+            shopping_list: false,
             stock: 4,
             low_stock_threshold: 2,
             tags: ["vegan", "vegetarian", "organic"],
@@ -134,6 +136,7 @@ appWindow.KitchenData = {
         {
             name: "Brown rice",
             ingredient: { name: "Brown rice", category: "Grains", unit: "cup" },
+            shopping_list: false,
             stock: 6,
             low_stock_threshold: 2,
             tags: ["gluten-free", "vegan", "vegetarian", "high-fiber"],
@@ -145,6 +148,7 @@ appWindow.KitchenData = {
         {
             name: "Black beans",
             ingredient: { name: "Black beans", category: "Canned goods", unit: "can" },
+            shopping_list: true,
             stock: 1,
             low_stock_threshold: 2,
             tags: ["gluten-free", "vegan", "vegetarian", "high-protein"],
