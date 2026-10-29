@@ -2,138 +2,140 @@
 
 /* Local styles for the "/index.html" page */
 header {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	height: 72px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
 
-	h1 {
-		position:absolute;
-		left: 50%;
-		transform: translateX(-50%);
-	}
+    h1 {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }
 
 #add-item-button {
-	position: relative;
+    position: relative;
 
-	&.has-draft::after {
-		position: absolute;
-		top: 0.125rem;
-		right: 0.125rem;
-		width: 0.375rem;
-		height: 0.375rem;
-		border-radius: 50%;
-		content: "";
-		background-color: var(--color-error);
-	}
+    &.has-draft::after {
+        position: absolute;
+        top: 0.125rem;
+        right: 0.125rem;
+        width: 0.375rem;
+        height: 0.375rem;
+        border-radius: 50%;
+        content: "";
+        background-color: var(--color-error);
+    }
 }
 
 #search {
-	display: flex;
-	position: relative;
-	justify-content: center;
-	align-items: center;
-	margin: 0.25rem 0;
-	border: 0.125rem solid var(--color-border);
-	border-radius: 1.5rem;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    margin: 0.25rem 0;
+    border: 0.125rem solid var(--color-border);
+    border-radius: 1.5rem;
 
-	span {
-		position: absolute;
-		top: 0.25rem;
-		left: 0.25rem;
-	}
+    span {
+        position: absolute;
+        top: 0.25rem;
+        left: 0.25rem;
+    }
 
-	input {
-		width: 100%;
-		padding: 0.125rem 0 0.125rem 1.75rem;
+    input {
+        width: 100%;
+        padding: 0.125rem 0 0.125rem 1.75rem;
 
-		&::-webkit-search-cancel-button {
-			--svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 12h6m0 0h6m-6 0v6m0-6V6'/%3E%3C/svg%3E");
-			-webkit-appearance: none;
-			-webkit-mask-image: var(--svg);
-			-webkit-mask-position: center;
-			-webkit-mask-repeat: no-repeat;
-			-webkit-mask-size: contain;
-			appearance: none;
-			mask-image: var(--svg);
-			mask-position: center;
-			mask-repeat: no-repeat;
-			mask-size: contain;
-			width: 1.25rem;
-			height: 1.25rem;
-			margin-right: 0.25rem;
-			cursor: pointer;
-			background-color: var(--color-error);
-			transform: rotate(45deg);
-		}
-	}
+        &::-webkit-search-cancel-button {
+            --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 12h6m0 0h6m-6 0v6m0-6V6'/%3E%3C/svg%3E");
+            -webkit-appearance: none;
+            -webkit-mask-image: var(--svg);
+            -webkit-mask-position: center;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-size: contain;
+            appearance: none;
+            mask-image: var(--svg);
+            mask-position: center;
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.25rem;
+            cursor: pointer;
+            background-color: var(--color-error);
+            transform: rotate(45deg);
+        }
+    }
 
-	&:has(input:focus) {
-		border-color: var(--color-outline);
-	}
+    &:has(input:focus) {
+        border-color: var(--color-outline);
+    }
 }
 
 /* Styling for filters */
 .inventory-filters {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	height: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 2rem;
 
-	/* Styling for the filter buttons */
-	#inventory-sort-type {
-		isolation: isolate;
-		position: relative;
-		overflow: hidden;
+    /* Styling for the filter buttons */
+    #inventory-sort-type {
+        isolation: isolate;
+        position: relative;
+        overflow: hidden;
 
-		&::before {
-			z-index: 0;
-			position: absolute;
-			border-radius: var(--radius);
-			pointer-events: none;
-			content: "";
-			background: var(--color-glass-bg-active);
-			transition: inset 0.2s ease;
-		}
+        &::before {
+            z-index: 0;
+            position: absolute;
+            border-radius: var(--radius);
+            pointer-events: none;
+            content: "";
+            background: var(--color-glass-bg-active);
+            transition: inset 0.2s ease;
+        }
 
-		label {
-			z-index: 1;
-			position: relative;
-			font-weight: 500;
-		}
+        label {
+            z-index: 1;
+            position: relative;
+            font-weight: 500;
+        }
 
-		input[type="radio"]:checked+label {
-			anchor-name: --active-sort-option;
-			color: var(--color-primary);
-		}
+        input[type="radio"]:checked+label {
+            anchor-name: --active-sort-option;
+            color: var(--color-primary);
+        }
 
-		@supports (anchor-name: --active-sort-option) {
-			&::before {
-				inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
-				position-anchor: --active-sort-option;
-			}
-		}
-	}
+        @supports (anchor-name: --active-sort-option) {
+            &::before {
+                inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
+                position-anchor: --active-sort-option;
+            }
+        }
+    }
 
-	/* Styling for the sort direction */
-	.checkbox-switch-wrapper label {
-		justify-content: center;
-		align-items: center;
-		line-height: 0;
-	}
+    /* Styling for the sort direction */
+    .checkbox-switch-wrapper label {
+        justify-content: center;
+        align-items: center;
+        line-height: 0;
+    }
 }
 
 /* Styling for the inventory list */
 #inventory-list {
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Stack items vertically */
-	margin: 0;
-	padding: 0.125rem 0;
-	list-style: none;
+    display: flex;
+    /* Use flexbox for layout */
+    flex-direction: column;
+    /* Stack items vertically */
+    margin: 0;
+    padding: 0.125rem 0;
+    list-style: none;
 
     ul {
         display: flex;
@@ -145,107 +147,163 @@ header {
 
     &:not(:has(>div.inventory-category))[data-sort-direction="descending"],
     &:has(>ul)[data-sort-direction="descending"] ul {
-        flex-direction: column-reverse;
+        flex-direction: column-reverse !important;
     }
 
-	li {
-		border-bottom: 0.0625rem solid var(--color-border);
-		font-size: var(--text-sm);
+    li {
+        display: grid;
+        grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+        grid-template-rows: repeat(2, 1fr);
+        border-bottom: 0.0625rem solid var(--color-border);
+        font-size: var(--text-sm);
+        padding: 0.25rem 0;
+        margin: 0;
 
+        .inventory-icon {
+            grid-area: 1 / 1 / 3 / 2;
+            width: 2rem;
+            height: 2rem;
+            margin: 0.125rem 0.25rem 0.125rem 0;
+            font-size: var(--text-md);
+            font-weight: bold;
+            background-color: var(--color-primary-bg);
+            border: 2px solid var(--color-primary);
+        }
 
-		.item-details {
-			scrollbar-width: none;
-			width: 100%;
-			overflow-x: scroll;
+        .item-name {
+            grid-area: 1 / 2 / 2 / 3;
+            font-size: var(--text-md);
+        }
 
-			span {
-				margin-right: 0.25rem;
-				overflow: hidden;
-				color: var(--color-text);
-				font-size: var(--text-sm);
-				white-space: nowrap;
-			}
-		}
+        .item-details {
+            grid-area: 2 / 2 / 3 / 3;
+            scrollbar-width: none;
+            overflow-x: scroll;
+            font-size: var(--text-xs);
+            padding-right: 0.25rem;
+            line-height: 1rem;
+            white-space: nowrap;
+        }
 
-		.item-controls {
-			display: flex;
-			flex-direction: row;
+        .item-controls {
+            grid-area: 1 / 3 / 3 / 4;
+            display: flex;
+            position: relative;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-left: 0.1rem;
 
-			button {
-				display: none;
-			}
-		}
-	}
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -0.5rem;
+                width: 20px;
+                height: 100%;
+                /* Fixed alpha values: 0% becomes 0, 100% becomes 1 */
+                background: linear-gradient(to right,
+                        color-mix(in srgb, var(--color-background) 25%, transparent) 25%,
+                        color-mix(in srgb, var(--color-background) 80%, transparent) 50%,
+                        color-mix(in srgb, var(--color-background) 90%, transparent) 75%,
+                        var(--color-background) 80%);
+            }
+
+            button {
+                display: none;
+                height: 1rem;
+                width: auto;
+                align-items: center;
+                justify-content: center;
+                flex: 1 1 0;
+            }
+
+            .item-stock {
+                grid-area: 1 / 3 / 3 / 4;
+                align-self: center;
+            }
+
+            div.stock-buttons {
+                display: flex;
+                flex-direction: row;
+                width: 2.75rem;
+            }
+        }
+    }
 }
 
 .container[data-mode="edit"] {
 
-	#add-item-button,
-	#edit-button {
-		display: none;
-	}
+    #add-item-button,
+    #edit-button {
+        display: none;
+    }
 
-	#discard-edit-button,
-	#save-edit-button,
-	#inventory-list li .item-controls button {
-		display: block;
-	}
+    #discard-edit-button,
+    #save-edit-button,
+    #inventory-list li .item-controls button {
+        display: flex;
+    }
+
+    #inventory-list li .item-controls .btn-minus {
+        color: var(--color-error);
+    }
 }
 
 /* Styling for the add item form */
 #add-item-form {
-	position: fixed;
-	top: var(--safe-top);
-	right: var(--safe-right);
-	bottom: var(--safe-bottom);
-	left: var(--safe-left);
-	margin: 0 !important;
-	padding: var(--spacing-top) var(--spacing-side);
-	overflow-y: auto;
-	background-color: var(--color-background);
-	transition: transform 0.35s ease;
-	/* Override any inherited margin */
+    position: fixed;
+    top: var(--safe-top);
+    right: var(--safe-right);
+    bottom: var(--safe-bottom);
+    left: var(--safe-left);
+    margin: 0 !important;
+    padding: var(--spacing-top) var(--spacing-side);
+    overflow-y: auto;
+    background-color: var(--color-background);
+    transition: transform 0.35s ease;
+    /* Override any inherited margin */
 
-	transform: translateX(calc(100% + 1rem));
+    transform: translateX(calc(100% + 1rem));
 
-	label {
-		align-self: center;
-		width: 100%;
-		font-size: var(--text-sm);
-	}
+    label {
+        align-self: center;
+        width: 100%;
+        font-size: var(--text-sm);
+    }
 
-	input,
-	select,
-	textarea {
-		box-sizing: border-box;
-		width: 100%;
-		height: 2rem;
-		padding: 0.25rem 0.5rem;
-		border: 0.0625rem solid var(--color-border);
-		border-radius: 0.5rem;
-		color: var(--color-text);
-		font-size: var(--text-sm);
-		background-color: var(--color-background);
-	}
+    input,
+    select,
+    textarea {
+        box-sizing: border-box;
+        width: 100%;
+        height: 2rem;
+        padding: 0.25rem 0.5rem;
+        border: 0.0625rem solid var(--color-border);
+        border-radius: 0.5rem;
+        color: var(--color-text);
+        font-size: var(--text-sm);
+        background-color: var(--color-background);
+    }
 
-	textarea {
-		min-height: 4rem;
-		resize: vertical;
-	}
+    textarea {
+        min-height: 4rem;
+        resize: vertical;
+    }
 
-	.help-text {
-		grid-column: 2;
-		color: var(--color-text-muted);
-		font-size: var(--text-xs);
-	}
+    .help-text {
+        grid-column: 2;
+        color: var(--color-text-muted);
+        font-size: var(--text-xs);
+    }
 }
 
 .container[data-mode="add"] {
-	#add-item-form {
-		transform: translateY(0);
-	}
+    #add-item-form {
+        transform: translateY(0);
+    }
 
-	footer {
-		transform: translateY(calc(100% + 1rem));
-	}
+    footer {
+        transform: translateY(calc(100% + 1rem));
+    }
 }

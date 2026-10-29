@@ -130,8 +130,8 @@ appWindow.KitchenData = {
             tags: ["vegan", "vegetarian", "organic"],
             location: "Fridge",
             notes: "Organic tomatoes",
-            expiration_date: "2023-10-15",
-            last_updated: "2023-10-01"
+            expiration_date: "2026-10-15",
+            last_updated: "2026-10-01"
         },
         {
             name: "Brown rice",
@@ -142,8 +142,8 @@ appWindow.KitchenData = {
             tags: ["gluten-free", "vegan", "vegetarian", "high-fiber"],
             location: "Pantry",
             notes: "",
-            expiration_date: "2024-06-30",
-            last_updated: "2023-10-01"
+            expiration_date: "2026-11-30",
+            last_updated: "2026-10-01"
         },
         {
             name: "Black beans",
@@ -154,8 +154,8 @@ appWindow.KitchenData = {
             tags: ["gluten-free", "vegan", "vegetarian", "high-protein"],
             location: "Pantry",
             notes: "Rinse before use",
-            expiration_date: "2024-01-15",
-            last_updated: "2023-10-01"
+            expiration_date: "2027-01-15",
+            last_updated: "2026-10-01"
         }
     ],
     recipes: [

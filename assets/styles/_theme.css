@@ -47,7 +47,7 @@
 	/* Actual color palette */
 	--text-bright: var(--color-stone-950);
 	--text: var(--color-stone-800);
-	--text-muted: var(--color-stone-700);
+	--text-muted: var(--color-stone-600);
 
 	--bg: var(--color-stone-100);
 	--border: var(--color-stone-200);

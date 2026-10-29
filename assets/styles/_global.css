@@ -235,6 +235,19 @@ textarea:disabled {
 	/* Ensures padding doesn't affect width */
 }
 
+.inventory-icon {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 0.0625rem solid var(--color-border);
+	border-radius: 50%;
+	color: var(--color-text);
+	font-size: var(--text-xs);
+	line-height: 1;
+}
+
 /***************************************************************
 Footer =========================================================
 ***************************************************************/
