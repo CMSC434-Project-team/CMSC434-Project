@@ -87,7 +87,7 @@ body {
 		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 		position: relative;
 		padding: var(--spacing-top) var(--spacing-side);
-
+        outline: 0.5rem solid var(--color-text);
 
 		main {
 			scroll-margin: var(--spacing-top);
