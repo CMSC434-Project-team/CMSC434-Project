@@ -11,7 +11,7 @@ const json = new JsonData("inventory");
 
 const draftItemBlank = {
     name: "",
-    ingredient: { name: "", category: "", unit: "" },
+    ingredient: { name: "", category: "", unit: "pcs" },
     shopping_list: false,
     stock: 0,
     low_stock_threshold: 0,
@@ -24,6 +24,8 @@ const draftItemBlank = {
 // VARIABLES to hold the current state of the inventory list
 let draftItem = null;
 let editItemKey = null;
+let lastEditItemKey = null;
+let lastEditedDraft = null;
 
 /** @type {Map<string, number>} */
 let draftEdit = new Map();
@@ -76,6 +78,10 @@ function populateItemForm(item, mode) {
     setFormValue(itemNotesInput, draftItem.notes);
 }
 
+function updateDraftIndicator() {
+    addItemButton.classList.toggle("has-draft", draftItem !== null);
+}
+
 function closeItemForm() {
     container.setAttribute("data-mode", "normal");
     addItemButton.setAttribute("aria-expanded", "false");
@@ -117,15 +123,35 @@ function compareInventoryItems(item1, item2) {
 }
 
 addItemButton.addEventListener("click", () => {
-    const itemToPopulate = draftItem || cloneInventoryItem(draftItemBlank);
-    editItemKey = null;
-    populateItemForm(itemToPopulate, "add");
+    const itemToPopulate = lastEditedDraft || cloneInventoryItem(draftItemBlank);
+    draftItem = cloneInventoryItem(itemToPopulate);
+    editItemKey = lastEditedDraft ? lastEditItemKey : null;
+    populateItemForm(itemToPopulate, editItemKey === null ? "add" : "edit");
     console.log("[Add] Add item form opened");
     container.setAttribute("data-mode", "add");
 });
 
 closeItemFormButton.addEventListener("click", () => {
     updateDraftFromForm();
+    const baseline = editItemKey === null
+        ? draftItemBlank
+        : json.getData()[editItemKey];
+
+    if (compareInventoryItems(draftItem, baseline)) {
+        if (lastEditedDraft) {
+            draftItem = cloneInventoryItem(lastEditedDraft);
+            editItemKey = null;
+        } else {
+            draftItem = null;
+            editItemKey = null;
+            lastEditItemKey = null;
+        }
+    } else {
+        lastEditItemKey = editItemKey;
+        lastEditedDraft = cloneInventoryItem(draftItem);
+        editItemKey = null;
+    }
+    updateDraftIndicator();
     console.log("[Add] Add item form closed");
     closeItemForm();
 });
@@ -133,6 +159,9 @@ closeItemFormButton.addEventListener("click", () => {
 discardItemButton.addEventListener("click", () => {
     draftItem = null;
     editItemKey = null;
+    lastEditItemKey = null;
+    lastEditedDraft = null;
+    updateDraftIndicator();
     console.log("[Add] Discard item form");
     closeItemForm();
 });
@@ -160,6 +189,9 @@ itemForm.addEventListener("submit", event => {
             console.log(`[Add] No changes made to ${draftItem.name}`);
             draftItem = null;
             editItemKey = null;
+            lastEditItemKey = null;
+            lastEditedDraft = null;
+            updateDraftIndicator();
             closeItemForm();
             return;
         } else {
@@ -173,6 +205,9 @@ itemForm.addEventListener("submit", event => {
     json.saveData();
     draftItem = null;
     editItemKey = null;
+    lastEditItemKey = null;
+    lastEditedDraft = null;
+    updateDraftIndicator();
     closeItemForm();
     refreshInventoryList();
 });
@@ -481,7 +516,12 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
             rowLi.addEventListener("click", () => {
                 if (container.getAttribute("data-mode") !== "normal") return;
                 editItemKey = index;
-                populateItemForm(item, "edit");
+                const shouldRestoreDraft = lastEditedDraft && editItemKey === lastEditItemKey;
+                if (shouldRestoreDraft) {
+                    draftItem = cloneInventoryItem(lastEditedDraft);
+                }
+                const itemToPopulate = shouldRestoreDraft ? draftItem : item;
+                populateItemForm(itemToPopulate, "edit");
                 container.setAttribute("data-mode", "add");
                 console.log(`[Normal] Editing ${item.name}`);
             });
