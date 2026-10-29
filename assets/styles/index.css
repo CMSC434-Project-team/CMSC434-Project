@@ -140,14 +140,34 @@ header {
     ul {
         display: flex;
         flex-direction: column;
-        margin: 0.125rem 0;
+        margin: 0;
         padding: 0;
         list-style: none;
     }
 
-    &:not(:has(>div.inventory-category))[data-sort-direction="descending"],
-    &:has(>ul)[data-sort-direction="descending"] ul {
+    &:not(:has(>details.inventory-category))[data-sort-direction="descending"],
+    &:has(>ul)[data-sort-direction="descending"],
+    &[data-sort-direction="descending"]>details.inventory-category>ul {
         flex-direction: column-reverse !important;
+    }
+
+    &[data-sort-direction="descending"][data-sort-type="expiration"]:has(> details.inventory-category),
+    &[data-sort-direction="descending"][data-sort-type="stock"]:has(> details.inventory-category) {
+        flex-direction: column-reverse;
+    }
+
+    details.inventory-category {
+        margin: 0.125rem 0;
+
+        summary {
+            margin-top: 0.25rem;
+            margin-bottom: 0;
+            color: var(--color-text);
+            font-size: var(--text-sm);
+            font-weight: bold;
+            border-bottom: 0.0625rem solid var(--color-border);
+            cursor: pointer;
+        }
     }
 
     li {

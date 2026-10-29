@@ -283,10 +283,41 @@ sortTypeSelect.addEventListener("change", () => {
 });
 
 // Render Inventory List ==============================================================
+function getInventoryGroup(item, sortType) {
+    if (sortType === "name") {
+        return item.ingredient?.category || "Uncategorized";
+    }
+
+    if (sortType === "expiration") {
+        if (!item.expiration_date) return "Never";
+
+        const expirationTime = new Date(item.expiration_date).getTime();
+        if (Number.isNaN(expirationTime)) return "Never";
+        const now = today.getTime();
+        const day = 24 * 60 * 60 * 1000;
+        if (expirationTime < now) return "Expired";
+        if (expirationTime <= now + (2 * day)) return "Within 2 days";
+        if (expirationTime <= now + (7 * day)) return "Within a week";
+        if (expirationTime <= now + (30 * day)) return "Within a month";
+        return "More than a month";
+    }
+
+    const stock = Number(item.stock) || 0;
+    const threshold = Number(item.low_stock_threshold) || 0;
+    if (stock <= 0) return "Out of stock";
+    if (threshold <= 0) return "No limit / not set";
+    if (stock < threshold) return "Low on stock";
+    if (stock < threshold * 2) return "Maybe low on stock";
+    return "Above low-stock range";
+}
+
 function renderInventoryList(search = "", groupByCategory = false, sortType = "name") {
     if (!inventoryList) return; // Safety check
 
     inventoryList.textContent = "";
+    inventoryList.setAttribute("data-sort-type", sortType);
+    const noStockList = document.getElementById("no-stock-list");
+    if (noStockList) noStockList.textContent = "";
 
     // Filter for search
     const normalizedSearch = search.trim().toLowerCase();
@@ -294,7 +325,10 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
     const rawData = json.getData();
     const sortedItems = rawData
         .map((item, index) => ({ item, index }))
-        .filter(({ item }) => item.name.toLowerCase().includes(normalizedSearch))
+        .filter(({ item }) => {
+            if (!item.name.toLowerCase().includes(normalizedSearch)) return false;
+            return sortType === "stock" || Number(item.stock) > 0;
+        })
         .sort((a, b) => {
             if (sortType === "name") return a.item.name.localeCompare(b.item.name);
             if (sortType === "expiration") {
@@ -306,13 +340,13 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
             return 0;
         });
 
-    // Group items by category if true, otherwise put all items under "All"
+    // Group by category, expiration window, or stock level based on the sort type.
     const categoryGroups = {};
     if (groupByCategory) {
         sortedItems.forEach(({ item, index }) => {
-            const category = item.ingredient?.category || "Uncategorized";
-            if (!categoryGroups[category]) categoryGroups[category] = [];
-            categoryGroups[category].push({ item, index });
+            const group = getInventoryGroup(item, sortType);
+            if (!categoryGroups[group]) categoryGroups[group] = [];
+            categoryGroups[group].push({ item, index });
         });
     } else if (sortedItems.length > 0) {
         categoryGroups["All"] = sortedItems;
@@ -323,9 +357,10 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
     Object.entries(categoryGroups).forEach(([category, items]) => {
         let listContainer = fragment;
         if (groupByCategory) {
-            const categoryWrapper = document.createElement("div");
+            const categoryWrapper = document.createElement("details");
             categoryWrapper.className = "inventory-category";
-            const categoryHeader = document.createElement("h2");
+            categoryWrapper.open = true;
+            const categoryHeader = document.createElement("summary");
             categoryHeader.textContent = category;
             categoryWrapper.appendChild(categoryHeader);
             const nestedUl = document.createElement("ul");
@@ -367,17 +402,25 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
             const itemDetails = document.createElement("div");
             itemDetails.className = "item-details";
             if (sortType === "stock") {
-                itemDetails.textContent = item.location ? `Location: ${item.location}` : "";
+                if (item.location) {
+                    itemDetails.textContent = `Location: ${item.location}`;
+                } else {
+                    itemDetails.textContent = "No location";
+                    itemDetails.style.color = "var(--color-text-muted)";
+                    itemDetails.style.fontStyle = "italic";
+                }
             } else if (sortType === "expiration") {
                 if (item.expiration_date) {
                     const expirationDate = new Date(item.expiration_date);
                     itemDetails.textContent = `Expires: ${expirationDate.toLocaleDateString()}`;
                     if (expirationDate < today) {
                         itemDetails.style.color = "var(--color-error)";
+                        itemDetails.style.fontWeight = "bold";
                     }
                 } else {
                     itemDetails.textContent = "No expiration date";
                     itemDetails.style.color = "var(--color-text-muted)";
+                    itemDetails.style.fontStyle = "italic";
                 }
             } else if (item.tags && Array.isArray(item.tags)) {
                 if (item.notes && item.notes.length > 0) {
