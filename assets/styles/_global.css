@@ -31,6 +31,7 @@ Global Color Palette ===========================================
     --color-glass-bg-active: rgba(from var(--color-primary) r g b / 0.25);
     --color-glass-bg-disabled: rgba(from var(--color-outline) r g b / 0.5);
     --color-glass-bg-error: rgba(from var(--color-error) r g b / 0.25);
+    --color-glass-bg-warning: rgba(from var(--color-warning) r g b / 0.2);
 
     /* Set colors (unified colors with modules) */
     --shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
@@ -418,6 +419,12 @@ Other Utility Classes ==========================================
 
 /* Checkbox wrapper */
 .checkbox-switch-wrapper {
+    label {
+        justify-content: center;
+        align-items: center;
+        line-height: 0;
+    }
+
     .checked {
         display: none;
     }

@@ -13,7 +13,7 @@ const draftItemBlank = {
     name: "",
     ingredient: { name: "", category: "", unit: "pcs" },
     shopping_list: false,
-    stock: 0,
+    stock: null,
     low_stock_threshold: 0, // -1 means no low stock threshold set so no alert
     tags: [],
     location: "",
@@ -36,6 +36,7 @@ const itemForm = document.getElementById('add-item-form'); // No save-item-butto
 const discardItemButton = document.getElementById('discard-item-button');
 const closeItemFormButton = document.getElementById('close-add-item-form');
 const itemFormTitle = document.getElementById('item-form-title');
+const saveItemButton = document.getElementById('save-item-button');
 const itemNameInput = document.getElementById('item-name');
 const itemQuantityInput = document.getElementById('item-quantity');
 const itemUnitInput = document.getElementById('item-unit');
@@ -77,10 +78,29 @@ function populateItemForm(item, mode) {
     setFormValue(itemLocationInput, draftItem.location);
     setFormValue(itemTagsInput, Array.isArray(draftItem.tags) ? draftItem.tags.join(", ") : "");
     setFormValue(itemNotesInput, draftItem.notes);
+    updateFormControls();
 }
 
 function updateDraftIndicator() {
-    addItemButton.classList.toggle("has-draft", draftItem !== null);
+    const hasDraft = draftItem !== null;
+    const draftType = !hasDraft
+        ? null
+        : editItemKey !== null || lastEditItemKey !== null
+            ? "item"
+            : "blank";
+
+    addItemButton.classList.toggle("has-draft", hasDraft);
+    addItemButton.classList.toggle("has-item-draft", draftType === "item");
+    addItemButton.classList.toggle("has-blank-draft", draftType === "blank");
+    if (draftType) {
+        addItemButton.dataset.draftType = draftType;
+        addItemButton.setAttribute("aria-label", draftType === "item"
+            ? "Add item (edited item draft)"
+            : "Add item (new item draft)");
+    } else {
+        delete addItemButton.dataset.draftType;
+        addItemButton.setAttribute("aria-label", "Add item");
+    }
 }
 
 function closeItemForm(resetForm = true) {
@@ -89,7 +109,6 @@ function closeItemForm(resetForm = true) {
     }
     container.setAttribute("data-mode", "normal");
     addItemButton.setAttribute("aria-expanded", "false");
-    addItemButton.setAttribute("aria-label", "Add item");
 }
 
 function updateDraftFromForm() {
@@ -101,7 +120,7 @@ function updateDraftFromForm() {
         name: draftItem.name,
         unit: itemUnitInput.value
     };
-    draftItem.stock = Number(itemQuantityInput.value || 0);
+    draftItem.stock = itemQuantityInput.value === "" ? null : Number(itemQuantityInput.value);
     draftItem.expiration_date = itemExpirationInput.value;
     draftItem.low_stock_threshold = Number(itemLowStockInput.value || 0);
     draftItem.location = itemLocationInput.value.trim();
@@ -114,7 +133,6 @@ function compareInventoryItems(item1, item2) {
     const comparableItem = item => ({
         name: item.name,
         ingredient: item.ingredient,
-        shopping_list: item.shopping_list,
         stock: item.stock,
         low_stock_threshold: item.low_stock_threshold,
         tags: item.tags,
@@ -135,13 +153,20 @@ function validateItemName() {
     itemNameInput.style.borderColor = duplicate ? "var(--color-error)" : "";
 }
 
+function updateFormControls() {
+    validateItemName();
+    const notValid = !itemForm.checkValidity();
+    saveItemButton.disabled = notValid;
+}
+
 function askToAddToShoppingList(item) {
-    if (item.stock < item.low_stock_threshold && item.shopping_list !== true && window.confirm(`"${item.name}" is low on stock. Add it to the shopping list?`)) {
+    if (item.stock <= item.low_stock_threshold && item.shopping_list !== true && window.confirm(`"${item.name}" is low on stock. Add it to the shopping list?`)) {
         item.shopping_list = true;
     }
 }
 
-itemNameInput.addEventListener("input", validateItemName);
+itemForm.addEventListener("input", updateFormControls);
+itemForm.addEventListener("change", updateFormControls);
 
 addItemButton.addEventListener("click", () => {
     const itemToPopulate = lastEditedDraft || cloneInventoryItem(draftItemBlank);
@@ -153,11 +178,10 @@ addItemButton.addEventListener("click", () => {
 });
 
 closeItemFormButton.addEventListener("click", () => {
+    if (container.getAttribute("data-mode") !== "add") return;
     updateDraftFromForm();
     validateItemName();
-    const baseline = editItemKey === null
-        ? draftItemBlank
-        : json.getData()[editItemKey];
+    const baseline = editItemKey === null ? draftItemBlank : json.getData()[editItemKey];
 
     if (compareInventoryItems(draftItem, baseline)) {
         if (lastEditedDraft) {
@@ -179,6 +203,7 @@ closeItemFormButton.addEventListener("click", () => {
 });
 
 discardItemButton.addEventListener("click", () => {
+    if (container.getAttribute("data-mode") !== "add") return;
     draftItem = null;
     editItemKey = null;
     lastEditItemKey = null;
@@ -188,12 +213,8 @@ discardItemButton.addEventListener("click", () => {
     closeItemForm();
 });
 
-itemNameInput.addEventListener("input", () => {
-    validateItemName();
-    itemForm.reportValidity();
-});
-
 itemForm.addEventListener("submit", event => {
+    if (container.getAttribute("data-mode") !== "add") return;
     event.preventDefault(); // Prevent page refresh on form submission
 
     updateDraftFromForm();
@@ -452,14 +473,37 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
 
             const inventoryIcon = document.createElement("span");
             inventoryIcon.className = "inventory-icon";
+            inventoryIcon.setAttribute("role", "button");
+            inventoryIcon.setAttribute("tabindex", "0");
             inventoryIcon.dataset.originalStock = item.stock;
-            const updateInventoryIcon = stock => {
+            function updateInventoryIcon(stock) {
                 const stockChange = stock - item.stock;
                 const isNegative = stockChange < 0;
                 inventoryIcon.style.color = isNegative ? "var(--color-error)" : "var(--color-success)";
                 inventoryIcon.textContent = stockChange === 0 ? "0" : isNegative ? stockChange : `+${stockChange}`;
                 inventoryIcon.setAttribute("aria-label", `${stockChange} ${unit} change`.trim());
             };
+            function updateShoppingListState() {
+                const isInShoppingList = item.shopping_list === true;
+                inventoryIcon.setAttribute("data-in-shopping-list", String(isInShoppingList));
+                inventoryIcon.setAttribute("aria-pressed", String(isInShoppingList));
+                inventoryIcon.title = isInShoppingList
+                    ? "Remove from shopping list"
+                    : "Add to shopping list";
+            };
+            function toggleShoppingList(event) {
+                event.stopPropagation();
+                item.shopping_list = item.shopping_list !== true;
+                updateShoppingListState();
+                json.saveData();
+            };
+            inventoryIcon.addEventListener("click", toggleShoppingList);
+            inventoryIcon.addEventListener("keydown", event => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                toggleShoppingList(event);
+            });
+            updateShoppingListState();
             if (container.getAttribute("data-mode") === "edit") {
                 updateInventoryIcon(activeStock);
             }

@@ -74,9 +74,9 @@ class JsonData {
             if (!Array.isArray(parsedData)) throw new Error("Stored data is not an array.");
             this.data = parsedData;
             this.ready = Promise.resolve(this.data);
-            console.log(`Loaded data from localStorage key "${this.storageKey}"`);
+            console.log(`Loaded data from "${this.storageKey}"`);
         } catch (error) {
-            console.error(`Could not load data from localStorage key "${this.storageKey}":`, error);
+            console.error(`Could not load data from "${this.storageKey}":`, error);
         }
         return this.data;
     }

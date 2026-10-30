@@ -28,6 +28,14 @@ header {
         content: "";
         background-color: var(--color-error);
     }
+
+    &.has-item-draft::after {
+        background-color: var(--color-primary);
+    }
+}
+
+.required-marker {
+    color: var(--color-error);
 }
 
 #search {
@@ -117,13 +125,6 @@ header {
             }
         }
     }
-
-    /* Styling for the sort direction */
-    .checkbox-switch-wrapper label {
-        justify-content: center;
-        align-items: center;
-        line-height: 0;
-    }
 }
 
 /* Styling for the inventory list */
@@ -187,6 +188,11 @@ header {
             font-weight: bold;
             background-color: var(--color-primary-bg);
             border: 2px solid var(--color-primary);
+
+            &[data-in-shopping-list="true"] {
+                background-color: var(--color-glass-bg-warning);
+                border-color: var(--color-warning);
+            }
         }
 
         .item-name {
@@ -314,6 +320,25 @@ header {
         grid-column: 2;
         color: var(--color-text-muted);
         font-size: var(--text-xs);
+    }
+
+    #toggle-shopping-list {
+        --control-background: var(--color-glass-bg-active);
+        --control-outline: var(--color-glass-bg-active);
+        --control-color: var(--color-primary);
+
+        &.active {
+            --control-background: var(--color-glass-bg-warning);
+            --control-outline: var(--color-glass-bg-warning);
+            --control-color: var(--color-warning);
+        }
+
+        &:disabled {
+            --control-background: var(--color-border);
+            --control-outline: var(--color-border);
+            --control-color: var(--color-text-muted);
+            cursor: not-allowed;
+        }
     }
 }
 
