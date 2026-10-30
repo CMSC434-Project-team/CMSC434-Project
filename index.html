@@ -77,8 +77,10 @@
                 <ul id="inventory-list">
                     <!-- Inventory items will be added here dynamically -->
                 </ul>
-                <ul id="no-stock-list" class="text-muted">
-                </ul>
+                <!-- set inventory-sort-type to value of "stock" -->
+                <button id="out-of-stock-notice" aria-label="Out of Stock Notice">
+                    Check hidden out-of-stock items
+                </button>
             </div>
             <!-- END OF MAIN CONTENT -->
 
@@ -103,7 +105,7 @@
                 <input type="text" id="item-name" name="item-name" required>
 
                 <label for="item-quantity">Quantity:</label>
-                <input type="number" id="item-quantity" name="item-quantity" min="1" required>
+                <input type="number" id="item-quantity" name="item-quantity" min="0" required>
 
                 <label for="item-unit">Unit:</label>
                 <select id="item-unit" name="item-unit">
@@ -123,23 +125,23 @@
                 <!-- Alerts -->
                 <label for="item-expiration">Expiration Date:</label>
                 <input type="date" id="item-expiration" name="item-expiration">
-                <p class="help-text">If the item has an expiration date, it will be highlighted when it's close
-                    to
+                <p class="help-text">If the item has an expiration date, it will be highlighted when it's close to
                     expiring.</p>
 
                 <label for="item-low-stock">Low Stock Threshold:</label>
-                <input type="number" id="item-low-stock" name="item-low-stock" min="0">
-                <p class="help-text">When stock falls below this value, an alert will be shown.</p>
+                <input type="number" id="item-low-stock" name="item-low-stock" min="-1" value="0">
+                <p class="help-text">When stock falls below this value, an alert will be shown. Set to -1 to disable the
+                    alert.</p>
 
                 <!-- Optional fields -->
                 <label for="item-location">Location:</label>
                 <input type="text" id="item-location" name="item-location">
 
                 <label for="item-tags">Tags (comma-separated):</label>
-                <input type="text" id="item-tags" name="item-tags">
+                <input type="text" id="item-tags" name="item-tags" placeholder="e.g., dairy, frozen, organic">
 
                 <label for="item-notes">Notes:</label>
-                <textarea id="item-notes" name="item-notes"></textarea>
+                <textarea id="item-notes" name="item-notes" placeholder="Prioritize notes for displaying"></textarea>
             </form>
         </main>
         <footer>

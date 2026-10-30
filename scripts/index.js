@@ -14,7 +14,7 @@ const draftItemBlank = {
     ingredient: { name: "", category: "", unit: "pcs" },
     shopping_list: false,
     stock: 0,
-    low_stock_threshold: 0,
+    low_stock_threshold: 0, // -1 means no low stock threshold set so no alert
     tags: [],
     location: "",
     notes: "",
@@ -55,6 +55,7 @@ const searchInput = document.getElementById('inventory-search');
 const categoriesButton = document.getElementById('inventory-grouped-categories');
 const sortDirectionButton = document.getElementById('inventory-sort-direction');
 const sortTypeSelect = document.getElementById('inventory-sort-type');
+const outOfStockNotice = document.getElementById('out-of-stock-notice');
 
 // Add Item Form Logic ================================================================
 function cloneInventoryItem(item) {
@@ -82,7 +83,10 @@ function updateDraftIndicator() {
     addItemButton.classList.toggle("has-draft", draftItem !== null);
 }
 
-function closeItemForm() {
+function closeItemForm(resetForm = true) {
+    if (resetForm) {
+        itemForm.reset();
+    }
     container.setAttribute("data-mode", "normal");
     addItemButton.setAttribute("aria-expanded", "false");
     addItemButton.setAttribute("aria-label", "Add item");
@@ -122,6 +126,23 @@ function compareInventoryItems(item1, item2) {
     return JSON.stringify(comparableItem(item1)) === JSON.stringify(comparableItem(item2));
 }
 
+function validateItemName() {
+    const itemName = itemNameInput.value.trim().toLowerCase();
+    const duplicate = json.getData().some((item, index) =>
+        index !== editItemKey && item.name.trim().toLowerCase() === itemName
+    );
+    itemNameInput.setCustomValidity(duplicate ? "An item with this name already exists." : "");
+    itemNameInput.style.borderColor = duplicate ? "var(--color-error)" : "";
+}
+
+function askToAddToShoppingList(item) {
+    if (item.stock < item.low_stock_threshold && item.shopping_list !== true && window.confirm(`"${item.name}" is low on stock. Add it to the shopping list?`)) {
+        item.shopping_list = true;
+    }
+}
+
+itemNameInput.addEventListener("input", validateItemName);
+
 addItemButton.addEventListener("click", () => {
     const itemToPopulate = lastEditedDraft || cloneInventoryItem(draftItemBlank);
     draftItem = cloneInventoryItem(itemToPopulate);
@@ -133,6 +154,7 @@ addItemButton.addEventListener("click", () => {
 
 closeItemFormButton.addEventListener("click", () => {
     updateDraftFromForm();
+    validateItemName();
     const baseline = editItemKey === null
         ? draftItemBlank
         : json.getData()[editItemKey];
@@ -153,7 +175,7 @@ closeItemFormButton.addEventListener("click", () => {
     }
     updateDraftIndicator();
     console.log("[Add] Add item form closed");
-    closeItemForm();
+    closeItemForm(false);
 });
 
 discardItemButton.addEventListener("click", () => {
@@ -166,18 +188,19 @@ discardItemButton.addEventListener("click", () => {
     closeItemForm();
 });
 
+itemNameInput.addEventListener("input", () => {
+    validateItemName();
+    itemForm.reportValidity();
+});
+
 itemForm.addEventListener("submit", event => {
     event.preventDefault(); // Prevent page refresh on form submission
 
     updateDraftFromForm();
+    validateItemName();
     if (!itemForm.reportValidity()) return;
 
-    // Check if the item name has changed and is unique
-    const existingItemIndex = json.getData().findIndex(item => item.name === draftItem.name);
-    if (existingItemIndex !== -1 && existingItemIndex !== editItemKey) {
-        alert(`[Add] Item name "${draftItem.name}" is already in use`);
-        return;
-    }
+    askToAddToShoppingList(draftItem);
 
     if (editItemKey === null) {
         json.getData().push(draftItem);
@@ -222,6 +245,7 @@ function saveDraftEdits() {
     json.data.forEach(item => {
         if (draftEdit.has(item.name)) {
             item.stock = draftEdit.get(item.name);
+            askToAddToShoppingList(item);
         }
     });
 }
@@ -279,6 +303,13 @@ function refreshInventoryList() {
     const selectedSortRadio = sortTypeSelect ? sortTypeSelect.querySelector('input[type="radio"]:checked') : null;
     const sortType = selectedSortRadio ? selectedSortRadio.value : "name";
 
+    const hasOutOfStockItem = json.getData().some(item => {
+        if (item && typeof item.stock === "number") {
+            return Number(item.stock) <= 0;
+        }
+        return false;
+    }) && sortType !== "stock";
+    outOfStockNotice.style.display = hasOutOfStockItem ? "block" : "none";
     renderInventoryList(searchVal, groupByCategory, sortType);
 }
 
@@ -314,6 +345,13 @@ sortTypeSelect.addEventListener("change", () => {
     if (!(selectedSort instanceof HTMLInputElement)) return;
 
     console.log(`[Filter] Type: ${selectedSort.value}`);
+    refreshInventoryList();
+});
+
+outOfStockNotice.addEventListener("click", () => {
+    sortTypeSelect.querySelector('input[type="radio"][value="stock"]').checked = true;
+    sortDirectionButton.checked = false;
+    sortTypeSelect.dispatchEvent(new Event("change"));
     refreshInventoryList();
 });
 
@@ -462,6 +500,7 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
                     itemDetails.textContent = `Notes: ${item.notes}`;
                 } else if (item.tags && item.tags.length > 0) {
                     itemDetails.textContent = `Tags: ${item.tags.join(", ")}`;
+                    itemDetails.style.color = "var(--color-text-muted)";
                 } else {
                     itemDetails.textContent = "No tags or notes";
                     itemDetails.style.color = "var(--color-text-muted)";
@@ -534,4 +573,4 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
 }
 
 // Initial render of the inventory list
-renderInventoryList();
+refreshInventoryList();

@@ -252,6 +252,7 @@ header {
 }
 
 .container[data-mode="edit"] {
+
     #add-item-button,
     #edit-button {
         display: none;
@@ -324,4 +325,15 @@ header {
     footer {
         transform: translateY(calc(100% + 1rem));
     }
+}
+
+#out-of-stock-notice {
+    display: none;
+    width: 100%;
+    text-align: center;
+    padding: 0.25rem 0;
+    border: 0.0625rem solid var(--color-outline);
+    background-color: var(--color-border);
+    color: var(--color-text);
+    font-size: var(--text-xs);
 }
