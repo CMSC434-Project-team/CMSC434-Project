@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <div class="container" data-mode="normal">
+    <div class="container" data-mode="add">
         <main id="content">
             <!-- START OF MAIN CONTENT -->
             <header>
@@ -97,54 +97,72 @@
                     </div>
                     <h1 id="item-form-title" class="text-lg">Add item</h1>
                     <div>
-                        <button type="submit" id="save-item-button" aria-label="Save changes"
-                            class="btn-solo active" disabled><span role="img" aria-label="Save changes"
-                                class="svg-icon icon-check"></span>
+                        <button type="submit" id="save-item-button" aria-label="Save changes" class="btn-solo active"
+                            disabled><span role="img" aria-label="Save changes" class="svg-icon icon-check"></span>
                         </button>
                     </div>
                 </header>
                 <!-- Required fields -->
-                <label for="item-name">Item Name:<span class="required-marker" aria-hidden="true">*</span></label>
-                <input type="text" id="item-name" name="item-name" required>
+                <div class="grid-fixed-left">
+                    <label for="item-name">Name:<span class="required-marker" aria-hidden="true">*</span></label>
+                    <input type="text" id="item-name" name="item-name" required>
+                </div>
 
-                <label for="item-quantity">Quantity:<span class="required-marker" aria-hidden="true">*</span></label>
-                <input type="number" id="item-quantity" name="item-quantity" min="0" required>
-
-                <label for="item-unit">Unit:</label>
-                <select id="item-unit" name="item-unit">
-                    <option value="pcs">pcs</option>
-                    <option value="kg">kg</option>
-                    <option value="g">g</option>
-                    <option value="l">l</option>
-                    <option value="ml">ml</option>
-                    <option value="cup">cup</option>
-                    <option value="tbsp">tbsp</option>
-                    <option value="tsp">tsp</option>
-                    <option value="can">can</option>
-                    <option value="portion">portion</option>
-                    <option value="unit">unit</option>
-                </select>
+                <div class="grid-fixed-left">
+                    <label for="item-quantity">Stock:<span class="required-marker" aria-hidden="true">*</span></label>
+                    <div class="grid-same">
+                        <input type="number" id="item-quantity" name="item-quantity" min="0" required>
+                        <div class="select-wrapper">
+                            <select id="item-unit" name="item-unit">
+                                <option value="unit">unit</option>
+                                <option value="pcs">pcs</option>
+                                <option value="kg">kg</option>
+                                <option value="g">g</option>
+                                <option value="l">l</option>
+                                <option value="ml">ml</option>
+                                <option value="cup">cup</option>
+                                <option value="tbsp">tbsp</option>
+                                <option value="tsp">tsp</option>
+                                <option value="can">can</option>
+                                <option value="portion">portion</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Alerts -->
-                <label for="item-expiration">Expiration Date:</label>
-                <input type="date" id="item-expiration" name="item-expiration">
+                <div class="grid-same">
+                    <label for="item-expiration">Expiration Date:</label>
+                    <input type="date" id="item-expiration" name="item-expiration">
+                </div>
                 <p class="help-text">If the item has an expiration date, it will be highlighted when it's close to
                     expiring.</p>
-
-                <label for="item-low-stock">Low Stock Threshold:</label>
-                <input type="number" id="item-low-stock" name="item-low-stock" min="-1" value="0">
+                <div class="grid-same withseperator">
+                    <label for="item-low-stock">Low Stock Level:</label>
+                    <input type="number" id="item-low-stock" name="item-low-stock" min="-1" value="0">
+                </div>
                 <p class="help-text">When stock falls below this value, an alert will be shown. Set to -1 to disable the
                     alert.</p>
 
                 <!-- Optional fields -->
-                <label for="item-location">Location:</label>
-                <input type="text" id="item-location" name="item-location">
+                <div class="grid-fixed-left" style="--fixed-width: 4.5rem;">
+                    <label for="item-location">Location:</label>
+                    <select id="item-location" name="item-location">
+                        <option value="">Select a location</option>
+                        <option value="pantry">Pantry</option>
+                        <option value="fridge">Fridge</option>
+                        <option value="freezer">Freezer</option>
+                    </select>
+                </div>
 
-                <label for="item-tags">Tags (comma-separated):</label>
-                <input type="text" id="item-tags" name="item-tags" placeholder="e.g., dairy, frozen, organic">
+                <div class="grid-fixed-left" style="--fixed-width: 2.75rem;">
+                    <label for="item-tags">Tags:</label>
+                    <input type="text" id="item-tags" name="item-tags"
+                        placeholder="e.g., dairy, frozen (comma-separated)">
+                </div>
 
-                <label for="item-notes">Notes:</label>
-                <textarea id="item-notes" name="item-notes" placeholder="Prioritize notes for displaying"></textarea>
+                <label for="item-notes" class="section-divider">Notes</label>
+                <textarea id="item-notes" name="item-notes" placeholder="Prioritize notes for displaying (first line only)"></textarea>
             </form>
         </main>
         <footer>

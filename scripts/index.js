@@ -11,7 +11,7 @@ const json = new JsonData("inventory");
 
 const draftItemBlank = {
     name: "",
-    ingredient: { name: "", category: "", unit: "pcs" },
+    ingredient: { name: "", category: "", unit: "unit" },
     shopping_list: false,
     stock: null,
     low_stock_threshold: 0, // -1 means no low stock threshold set so no alert
@@ -72,7 +72,7 @@ function populateItemForm(item, mode) {
     itemFormTitle.textContent = mode === "edit" ? "Edit item" : "Add item";
     setFormValue(itemNameInput, draftItem.name);
     setFormValue(itemQuantityInput, draftItem.stock);
-    setFormValue(itemUnitInput, draftItem.ingredient?.unit || "pcs");
+    setFormValue(itemUnitInput, draftItem.ingredient?.unit || "unit");
     setFormValue(itemExpirationInput, draftItem.expiration_date);
     setFormValue(itemLowStockInput, draftItem.low_stock_threshold);
     setFormValue(itemLocationInput, draftItem.location);
@@ -541,7 +541,8 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
                 }
             } else if (item.tags && Array.isArray(item.tags)) {
                 if (item.notes && item.notes.length > 0) {
-                    itemDetails.textContent = `Notes: ${item.notes}`;
+                    // only display first line
+                    itemDetails.textContent = `Notes: ${item.notes.split("\n")[0]}`;
                 } else if (item.tags && item.tags.length > 0) {
                     itemDetails.textContent = `Tags: ${item.tags.join(", ")}`;
                     itemDetails.style.color = "var(--color-text-muted)";

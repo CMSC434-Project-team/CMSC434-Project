@@ -7,6 +7,7 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 72px;
+    min-height: 72px;
 
     h1 {
         position: absolute;
@@ -278,6 +279,9 @@ header {
 /* Styling for the add item form */
 #add-item-form {
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     top: var(--safe-top);
     right: var(--safe-right);
     bottom: var(--safe-bottom);
@@ -291,54 +295,111 @@ header {
 
     transform: translateX(calc(100% + 1rem));
 
-    label {
-        align-self: center;
-        width: 100%;
-        font-size: var(--text-sm);
-    }
-
     input,
-    select,
-    textarea {
+    select {
         box-sizing: border-box;
         width: 100%;
         height: 2rem;
-        padding: 0.25rem 0.5rem;
-        border: 0.0625rem solid var(--color-border);
+        padding: 0.3rem 0.5rem;
+        border: 0.0625rem solid var(--color-outline);
         border-radius: 0.5rem;
         color: var(--color-text);
         font-size: var(--text-sm);
         background-color: var(--color-background);
     }
 
+    /* Custom styling for the select element */
+    .select-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+
+        >select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding-right: 1.25rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 0.25rem;
+            width: 1rem;
+            height: 1rem;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M11.625 14.913q-.175-.063-.325-.213l-4.6-4.6q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l3.9 3.9l3.9-3.9q.275-.275.7-.275t.7.275t.275.7t-.275.7l-4.6 4.6q-.15.15-.325.213t-.375.062t-.375-.062'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transform: translateY(-50%);
+        }
+    }
+
+    .grid-fixed-left {
+        --fixed-width: 3.5rem;
+        display: grid;
+        grid-template-columns: var(--fixed-width) 1fr;
+        align-items: center;
+        gap: 0.125rem;
+    }
+
+    .grid-fixed-right {
+        --fixed-width: 3.5rem;
+        display: grid;
+        grid-template-columns: 1fr var(--fixed-width);
+        align-items: center;
+        gap: 0.125rem;
+    }
+
+    .grid-same {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+        gap: 0.125rem;
+    }
+
     textarea {
         min-height: 4rem;
-        resize: vertical;
+        height: 6rem;
+        display: block;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        overflow-y: auto;
+        padding: 0.25rem 0.5rem;
+        border: 0.0625rem solid var(--color-outline);
+        border-radius: 0.5rem;
+        color: var(--color-text);
+        font-size: var(--text-sm);
+        background-color: rgba(from var(--color-border) r g b / 0.5);
+        scrollbar-width: thin;
     }
 
     .help-text {
-        grid-column: 2;
-        color: var(--color-text-muted);
+        display: none;
+        margin: 0;
         font-size: var(--text-xs);
+        color: var(--color-text-muted);
     }
 
-    #toggle-shopping-list {
-        --control-background: var(--color-glass-bg-active);
-        --control-outline: var(--color-glass-bg-active);
-        --control-color: var(--color-primary);
+    .grid-same:focus-within+.help-text {
+        display: block;
+    }
 
-        &.active {
-            --control-background: var(--color-glass-bg-warning);
-            --control-outline: var(--color-glass-bg-warning);
-            --control-color: var(--color-warning);
-        }
+    .section-divider {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
 
-        &:disabled {
-            --control-background: var(--color-border);
-            --control-outline: var(--color-border);
-            --control-color: var(--color-text-muted);
-            cursor: not-allowed;
-        }
+    }
+
+    .section-divider::after {
+        content: "";
+        height: 6px;
+        flex: 1;
+        background-color: var(--color-outline);
     }
 }
 

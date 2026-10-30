@@ -51,8 +51,8 @@ Global Color Palette ===========================================
 }
 
 ::selection {
-    background-color: var(--color-border);
-    color: var(--color-primary);
+    background-color: darkGreen;
+    color: white;
 }
 
 /***************************************************************
