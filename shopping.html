@@ -22,9 +22,15 @@
 
 <body>
     <div class="container">
-        <main id="content" class="test">
+        <main id="content">
             <!-- START OF MAIN CONTENT -->
-
+            <header>
+                <h1 class="text">Shopping List</h1>
+                <button id="clear-checked" class="clear-button">Clear All Check</button>
+            </header>
+            <ul id="shopping-list">
+                <!-- shopping.js goes in here -->
+            </ul>
             <!-- END OF MAIN CONTENT -->
         </main>
         <footer>
@@ -48,9 +54,12 @@
                     </a>
                 </nav>
                 <div id="group-other" class="btn-group">
-                    <button id="back-button" title="Back" class="btn"><span role="img" aria-label="Back"
-                            class="svg-icon"></span></button>
-                    <button id="done-button" title="Done" class="btn">asda</button>
+                    <button id="undo" title="Undo" class="btn">
+                        <span role="img" aria-label="Undo" class="svg-icon icon-undo"></span>
+                    </button>
+                    <button id="redo" title="Redo" class="btn">
+                        <span role="img" aria-label="Redo" class="svg-icon icon-redo"></span>
+                    </button>
                 </div>
             </div>
         </footer>

@@ -1,3 +1,118 @@
 @import "_global.css";
 
 /* Local styles for the "/shopping.html" page */
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    height: 72px;
+}
+
+#shopping-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 0.08rem solid var(--color-border);
+    border-radius: 0.75rem;
+    background-color: #fff;
+    overflow: hidden;
+
+    li {
+        position: relative;
+        margin-bottom: 0;
+        border-bottom: 0.04rem solid var(--color-border);
+        transition: opacity 0.2s;
+    }
+
+    li:last-child {
+        border-bottom: none;
+    }
+
+    .item-row {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        min-height: 1.25rem;
+        padding: 0.15rem 0.5rem;
+        font-size: var(--text-sm);
+        line-height: 1.2;
+        cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+        all: revert;
+        width: 0.55rem;
+        height: 0.55rem;
+        margin: 0;
+        accent-color: var(--color-primary);
+        cursor: pointer;
+    }
+
+    .item-name {
+        flex: 1;
+    }
+
+    .quantity {
+        opacity: 0.6;
+    }
+
+    li:hover {
+        background-color: rgb(0 0 0 / 0.03);
+    }
+
+    li::after {
+        content: "";
+        position: absolute;
+        left: 0.4rem;
+        right: 0.4rem;
+        top: 50%;
+        height: 0.05rem;
+        background-color: var(--color-error);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.2s ease;
+        pointer-events: none;
+    }
+
+    li.checked {
+        opacity: 0.6;
+    }
+
+    li.checked::after {
+        transform: scaleX(1);
+    }
+
+    .empty-message {
+        padding: 0.4rem 0.5rem;
+        text-align: center;
+        font-size: var(--text-sm);
+        opacity: 0.6;
+    }
+
+    .empty-message::after {
+        display: none;
+    }
+
+}
+
+.clear-button {
+    font-size: 0.8rem;
+    line-height: 1;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.5rem;
+    color: var(--color-error);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--color-glass-bg-error);
+    }
+
+    &:disabled {
+        color: var(--color-text-muted);
+        background-color: transparent;
+    }
+}
