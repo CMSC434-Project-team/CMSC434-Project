@@ -25,9 +25,20 @@
         <main id="content">
             <!-- START OF MAIN CONTENT -->
             <header>
-                <h1 class="text">Shopping List</h1>
-                <button id="clear-checked" class="clear-button">Clear All Check</button>
+                <h1 class="text-lg">Shopping List</h1>
+                <div class="header-actions">
+                    <button id="add-button" class="btn-solo" aria-label="Add item" aria-expanded="false">
+                        <span class="svg-icon icon-add" aria-hidden="true"></span>
+                    </button>
+                    <button id="clear-all" class="clear-button">Clear all</button>
+                </div>
             </header>
+
+            <form id="add-form" class="add-form" hidden>
+                <input id="new-name" type="text" placeholder="Item" aria-label="Item name" required />
+                <input id="new-qty" type="text" placeholder="Qty" aria-label="Quantity" />
+                <button type="submit" class="add-submit">Add</button>
+            </form>
             <ul id="shopping-list">
                 <!-- shopping.js goes in here -->
             </ul>
