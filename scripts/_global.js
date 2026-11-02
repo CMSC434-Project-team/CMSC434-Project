@@ -38,12 +38,19 @@ console.log("_global.js loaded");
  * @property {string} name
  * @property {Tag[]} restricted_tags
  * 
- * @typedef {InventoryItem[] | RecipeItem[] | PeopleItem[]} DataSet
+ * @typedef {InventoryItem[] | RecipeItem[] | PeopleItem[] | ShoppingItem[]} DataSet
  * 
  * @typedef {Object} KitchenDataStore
  * @property {InventoryItem[]} inventory
  * @property {RecipeItem[]} recipes
  * @property {PeopleItem[]} people
+ * @property {ShoppingItem[]} shopping
+ * 
+ *
+ * @typedef {Object} ShoppingItem
+ * @property {Ingredient} ingredient
+ * @property {number} quantity
+ * @property {boolean} checked
  */
 
 class JsonData {
@@ -199,5 +206,90 @@ appWindow.KitchenData = {
             name: "Sam",
             restricted_tags: ["gluten-free"]
         }
+    ],
+    shopping: [
+        {
+            ingredient: { name: "Black beans", category: "Canned goods", unit: "can" },
+            quantity: 1,
+            checked: false
+        },
+        {
+            ingredient: { name: "Egg", category: "Dairy", unit: "each" },
+            quantity: 12,
+            checked: false
+        },
+        {
+            ingredient: { name: "Milk", category: "Dairy", unit: "gallon" },
+            quantity: 1,
+            checked: false
+        }
     ]
 };
+
+/***************************************************************
+Recipe → Shopping list helpers
+***************************************************************/
+
+/**
+ * Find an inventory item by ingredient name (ignores case and extra spaces).
+ * @param {InventoryItem[]} inventory
+ * @param {string} ingredientName
+ * @returns {InventoryItem | undefined}
+ */
+function findInventoryItem(inventory, ingredientName) {
+    const key = ingredientName.trim().toLowerCase();
+    return inventory.find(
+        (item) => (item.ingredient?.name ?? item.name).trim().toLowerCase() === key
+    );
+}
+
+/**
+ * List what a recipe needs that the inventory doesn't have enough of.
+ * @param {RecipeItem} recipe
+ * @param {InventoryItem[]} inventory
+ */
+function getMissingIngredients(recipe, inventory) {
+    return recipe.ingredients
+        .map(({ ingredient, quantity }) => {
+            const invItem = findInventoryItem(inventory, ingredient.name);
+            const have = invItem ? invItem.stock : 0;
+            return { ingredient, need: quantity, have, missing: Math.max(0, quantity - have) };
+        })
+        .filter((row) => row.missing > 0);
+}
+
+/**
+ * Add a recipe's missing ingredients to the shopping list and save.
+ * @param {RecipeItem} recipe
+ */
+function addMissingToShoppingList(recipe) {
+    const inventory = /** @type {InventoryItem[]} */ (new JsonData("inventory").getData());
+    const shoppingStore = new JsonData("shopping");
+    let shopping = /** @type {ShoppingItem[]} */ (shoppingStore.getData());
+
+    const missing = getMissingIngredients(recipe, inventory);
+
+    for (const row of missing) {
+        const key = row.ingredient.name.trim().toLowerCase();
+        const existing = shopping.find(
+            (item) => item.ingredient.name.trim().toLowerCase() === key
+        );
+
+        if (existing) {
+            // Already on the list: make sure the amount covers what's missing
+            shopping = shopping.map((item) =>
+                item === existing
+                    ? { ...item, quantity: Math.max(item.quantity, row.missing), checked: false }
+                    : item
+            );
+        } else {
+            shopping = [
+                ...shopping,
+                { ingredient: { ...row.ingredient }, quantity: row.missing, checked: false },
+            ];
+        }
+    }
+
+    shoppingStore.setData(shopping);
+    return missing;
+}

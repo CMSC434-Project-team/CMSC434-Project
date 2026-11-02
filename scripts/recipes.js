@@ -4,6 +4,7 @@ console.log("recipes.js loaded");
 
 const list = document.getElementById("recipe-list");
 const recipesJson = new JsonData("recipes");
+let currentRecipe = null;
 
 function showView(view) {
     const elements = {
@@ -56,7 +57,40 @@ function showRecipe(recipe) {
     }
 
     showView("details");
+
+
+    const inventory = new JsonData("inventory").getData();
+    const missing = getMissingIngredients(recipe, inventory);
+
+    const alertBox = document.getElementById("missing-alert");
+    const alertText = document.getElementById("missing-text");
+    const addMissingBtn = document.getElementById("add-missing");
+
+    if (missing.length > 0) {
+        const items = missing
+            .map((m) => `${m.missing} ${m.ingredient.unit} ${m.ingredient.name}`)
+            .join(", ");
+        alertText.textContent = `You don't have enough for this recipe. Missing: ${items}`;
+        addMissingBtn.hidden = false;
+        alertBox.hidden = false;
+    } else {
+        alertBox.hidden = true;
+    }
+
+    currentRecipe = recipe;
+
+    showView("details");
 }
+
+
+document.getElementById("add-missing").addEventListener("click", () => {
+    if (!currentRecipe) return;
+    addMissingToShoppingList(currentRecipe);
+    document.getElementById("missing-text").textContent =
+        "Missing items added to your shopping list.";
+    document.getElementById("add-missing").hidden = true;
+});
+
 
 document.getElementById("create-button").addEventListener("click", () => {
     showView("create");

@@ -33,6 +33,15 @@
                 <h2 id="recipe-name"></h2>
                 <p id="recipe-time"></p>
 
+                <div id="missing-alert" class="missing-alert" role="status" hidden>
+                    <!-- notify the user if there a missing an ingredient -->
+                    <p id="missing-text"></p>
+                    <button id="add-missing" type="button" class="add-missing-button">
+                        <!-- will prompt a missing button to add to list -->
+                        Add to shopping List
+                    </button>
+                </div>
+
                 <h3>Ingredients</h3>
                 <ul id="recipe-ingredients"></ul>
 
