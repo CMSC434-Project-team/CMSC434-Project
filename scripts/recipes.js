@@ -158,7 +158,6 @@
             input.id = `inventory-${recipeIngredientKey(row.ingredient)}`;
             input.type = "number";
             input.min = "0";
-            input.max = row.have;
             input.step = "any";
             input.value = String(inventoryDraft.get(recipeIngredientKey(row.ingredient)) ?? row.have);
             input.addEventListener("input", () => {
