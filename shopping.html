@@ -21,26 +21,57 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" data-mode="normal">
         <main id="content">
             <!-- START OF MAIN CONTENT -->
             <header>
+                <div>
+                    <button id="add-button" aria-label="Add item" aria-expanded="false" class="btn-solo"><span
+                            role="img" aria-label="Add item" class="svg-icon icon-add"></span></button>
+                    <div id="edit-history" class="btn-group hidden">
+                        <button id="undo" title="Undo" aria-label="Undo" class="btn">
+                            <span role="img" aria-label="Undo" class="svg-icon icon-undo"></span>
+                        </button>
+                        <button id="redo" title="Redo" aria-label="Redo" class="btn">
+                            <span role="img" aria-label="Redo" class="svg-icon icon-redo"></span>
+                        </button>
+                    </div>
+                </div>
                 <h1 class="text-lg">Shopping List</h1>
-                <button id="clear-all" class="clear-button">Clear all</button>
+                <div>
+                    <button id="edit-button" aria-label="Edit items" aria-pressed="false" class="btn-solo"><span
+                            role="img" aria-label="Edit item" class="svg-icon icon-discard"></span></button>
+                    <button id="save-edit-button" aria-label="Save Edit" aria-pressed="false"
+                        class="btn-solo active hidden"><span role="img" aria-label="Save edit"
+                            class="svg-icon icon-check"></span></button>
+                </div>
             </header>
 
-            <form id="add-form" class="add-form" hidden>
+            <form id="add-form" class="add-form">
                 <input id="new-name" type="text" placeholder="Item" aria-label="Item name" required />
-                <input id="new-qty" type="text" placeholder="Qty" aria-label="Quantity" />
+                <input id="new-qty" type="number" min="0.01" step="any" placeholder="Qty"
+                    aria-label="Quantity" required />
+                <div class="select-wrapper">
+                    <select id="new-unit" aria-label="Unit">
+                        <option value="unit">unit</option>
+                        <option value="pcs">pcs</option>
+                        <option value="kg">kg</option>
+                        <option value="g">g</option>
+                        <option value="l">l</option>
+                        <option value="ml">ml</option>
+                        <option value="cup">cup</option>
+                        <option value="tbsp">tbsp</option>
+                        <option value="tsp">tsp</option>
+                        <option value="can">can</option>
+                        <option value="portion">portion</option>
+                    </select>
+                </div>
                 <button type="submit" class="add-submit">Add</button>
             </form>
             <ul id="shopping-list">
                 <!-- shopping.js goes in here -->
             </ul>
 
-            <button id="add-button" class="btn-solo add-fab" aria-label="Add item" aria-expanded="false">
-                <span class="svg-icon icon-add" aria-hidden="true"></span>
-            </button>
             <!-- END OF MAIN CONTENT -->
         </main>
         <footer>
@@ -63,14 +94,6 @@
                         <p>Profile</p>
                     </a>
                 </nav>
-                <div id="group-other" class="btn-group">
-                    <button id="undo" title="Undo" class="btn">
-                        <span role="img" aria-label="Undo" class="svg-icon icon-undo"></span>
-                    </button>
-                    <button id="redo" title="Redo" class="btn">
-                        <span role="img" aria-label="Redo" class="svg-icon icon-redo"></span>
-                    </button>
-                </div>
             </div>
         </footer>
     </div>

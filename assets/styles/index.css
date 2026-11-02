@@ -1,21 +1,6 @@
 @import "_global.css";
 
 /* Local styles for the "/index.html" page */
-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: 72px;
-    min-height: 72px;
-
-    h1 {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-
 #add-item-button {
     position: relative;
 
@@ -199,6 +184,7 @@ header {
         .item-name {
             grid-area: 1 / 2 / 2 / 3;
             font-size: var(--text-md);
+            color: var(--color-primary);
         }
 
         .item-details {
@@ -306,35 +292,6 @@ header {
         color: var(--color-text);
         font-size: var(--text-sm);
         background-color: var(--color-background);
-    }
-
-    /* Custom styling for the select element */
-    .select-wrapper {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-
-        >select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            padding-right: 1.25rem;
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            right: 0.25rem;
-            width: 1rem;
-            height: 1rem;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M11.625 14.913q-.175-.063-.325-.213l-4.6-4.6q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l3.9 3.9l3.9-3.9q.275-.275.7-.275t.7.275t.275.7t-.275.7l-4.6 4.6q-.15.15-.325.213t-.375.062t-.375-.062'/%3E%3C/svg%3E");
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            transform: translateY(-50%);
-        }
     }
 
     .grid-fixed-left {
