@@ -5,17 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=640, initial-scale=1.0" />
     <title>Recipes | Kitchen Kompanion</title>
-    <meta name="description"
-        content="A web application for managing your kitchen inventory, shopping lists, and recipes." />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/favicons/favicon.svg" />
-    <link rel="mask-icon" href="assets/favicons/favicon.svg" />
+    <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles/recipes.css?v=5" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="assets/styles/recipes.css?v=2" />
-
-    <!-- Scripts -->
     <script src="scripts/_global.js" defer></script>
     <script src="scripts/recipes.js" defer></script>
 </head>
@@ -23,42 +16,63 @@
 <body>
     <div class="container">
         <main id="content">
-            <!-- START OF MAIN CONTENT -->
-            <h1 class="text-lg">Recipes</h1>
-            <button id="create-button">+ Create recipe</button>
-            <div id="recipe-list"></div>
-            <section id="recipe-details" hidden>
-                <button id="back-button">← Back</button>
+            <section id="recipe-home">
+                <header class="recipe-header">
+                    <h1 class="text-lg">Recipes</h1>
+                    <button id="create-button" type="button">+ Create</button>
+                </header>
 
-                <h2 id="recipe-name"></h2>
-                <p id="recipe-time"></p>
+                <div class="recipe-filters">
+                    <input id="recipe-search" type="search" placeholder="Search recipes or ingredients"
+                        aria-label="Search recipes or ingredients" />
 
-                <div id="missing-alert" class="missing-alert" role="status" hidden>
-                    <!-- notify the user if there a missing an ingredient -->
-                    <p id="missing-text"></p>
-                    <button id="add-missing" type="button" class="add-missing-button">
-                        <!-- will prompt a missing button to add to list -->
-                        Add to shopping List
-                    </button>
+                    <select id="recipe-group" aria-label="Ingredient food group">
+                        <option value="">All food groups</option>
+                    </select>
+
+                    <select id="recipe-filter" aria-label="Recipe availability">
+                        <option value="all">All recipes</option>
+                        <option value="ready">Can make now</option>
+                        <option value="soon">Expiring soon</option>
+                        <option value="missing">Needs ingredients</option>
+                    </select>
                 </div>
 
-                <h3>Ingredients</h3>
+                <div id="recipe-list"></div>
+            </section>
+
+            <p id="recipe-status" role="status" aria-live="polite"></p>
+
+            <section id="recipe-details" hidden>
+                <button id="back-button" type="button">← Recipes</button>
+
+                <h1 id="recipe-name" class="text-lg"></h1>
+                <p id="recipe-time"></p>
+                <p id="recipe-stock-status"></p>
+
+                <h2>Ingredients</h2>
                 <ul id="recipe-ingredients"></ul>
 
+                <button id="add-missing" type="button">
+                    Add missing items to Shopping
+                </button>
 
-                <h3>Steps</h3>
+                <a href="shopping.html">View Shopping</a>
+
+                <h2>Steps</h2>
                 <ol id="recipe-steps"></ol>
             </section>
+
             <section id="create-recipe" hidden>
-                <h2>Create recipe</h2>
+                <h1 class="text-lg">Create recipe</h1>
 
                 <label for="new-name">Recipe name</label>
-                <input id="new-name" type="text" required />
+                <input id="new-name" type="text" />
 
-                <label for="new-time">Total time in minutes</label>
-                <input id="new-time" type="number" min="1" required />
+                <label for="new-time">Total time (minutes)</label>
+                <input id="new-time" type="number" min="1" />
 
-                <h3>Ingredients</h3>
+                <h2>Ingredients</h2>
 
                 <label for="ingredient-name">Ingredient name</label>
                 <input id="ingredient-name" type="text" />
@@ -66,43 +80,68 @@
                 <label for="ingredient-category">Food group</label>
                 <input id="ingredient-category" type="text" />
 
-                <label for="ingredient-quantity">Quantity</label>
-                <input id="ingredient-quantity" type="number" min="0.01" step="any" />
+                <div class="recipe-columns">
+                    <div>
+                        <label for="ingredient-quantity">Quantity</label>
+                        <input id="ingredient-quantity" type="number" min="0.01" step="any" />
+                    </div>
+                    <div>
+                        <label for="ingredient-unit">Unit</label>
+                        <input id="ingredient-unit" type="text" placeholder="cup, can, each" />
+                    </div>
+                </div>
 
-                <label for="ingredient-unit">Unit</label>
-                <input id="ingredient-unit" type="text" placeholder="cup, can, each" />
+                <button id="add-ingredient" type="button">
+                    + Add ingredient
+                </button>
 
-                <button type="button" id="add-ingredient">+ Add ingredient</button>
                 <ul id="added-ingredients"></ul>
 
-                <h3>Steps</h3>
-                <label for="new-steps">Enter one instruction per line</label>
-                <textarea id="new-steps" rows="4"></textarea>
+                <label for="new-steps">
+                    Instructions (one step per line)
+                </label>
+                <textarea id="new-steps" rows="3"></textarea>
 
-
-                <button id="save-recipe">Save recipe</button>
-                <button id="cancel-create">Cancel</button>
+                <button id="review-recipe" type="button">
+                    Review recipe
+                </button>
+                <button id="cancel-create" type="button">Cancel</button>
             </section>
-            <!-- END OF MAIN CONTENT -->
+
+            <section id="recipe-review" hidden>
+                <h1 class="text-lg">Review recipe</h1>
+                <h2 id="review-name"></h2>
+
+                <h2>Ingredients</h2>
+                <ul id="review-ingredients"></ul>
+
+                <h2>Steps</h2>
+                <ol id="review-steps"></ol>
+
+                <button id="edit-recipe" type="button">
+                    Back to editing
+                </button>
+                <button id="save-recipe" type="button">Save recipe</button>
+            </section>
         </main>
+
         <footer>
             <div id="footer-bar" class="btn-group-wrapper">
                 <nav id="group-default" class="btn-group">
-                    <a href="index.html" title="Home" class="btn"><span role="img" aria-label="Home"
-                            class="svg-icon icon-home"></span>
+                    <a href="index.html" title="Home" class="btn">
+                        <span role="img" aria-label="Home" class="svg-icon icon-home"></span>
                         <p>Home</p>
                     </a>
-                    <a href="shopping.html" title="Shopping List" class="btn"><span role="img"
-                            aria-label="Shopping List" class="svg-icon icon-shopping"></span>
+                    <a href="shopping.html" title="Shopping List" class="btn">
+                        <span role="img" aria-label="Shopping List" class="svg-icon icon-shopping"></span>
                         <p>Shopping</p>
                     </a>
-                    <a href="#content" title="Recipes" class="btn active"><span role="img" aria-label="Recipes"
-                            class="svg-icon icon-recipes"></span>
+                    <a href="#content" title="Recipes" class="btn active">
+                        <span role="img" aria-label="Recipes" class="svg-icon icon-recipes"></span>
                         <p>Recipes</p>
                     </a>
-                    </a>
-                    <a href="profile.html" title="Profile" class="btn"><span role="img" aria-label="Profile"
-                            class="svg-icon icon-profile"></span>
+                    <a href="profile.html" title="Profile" class="btn">
+                        <span role="img" aria-label="Profile" class="svg-icon icon-profile"></span>
                         <p>Profile</p>
                     </a>
                 </nav>

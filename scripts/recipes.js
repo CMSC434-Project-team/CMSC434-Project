@@ -1,220 +1,265 @@
-// Run check: node --check scripts/recipes.js
+(() => {
+    const $ = id => document.getElementById(id);
+    const recipeStore = new JsonData("recipes");
+    const inventoryStore = new JsonData("inventory");
+    const normalize = value => String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
+    const unit = value => ({
+        units: "each", unit: "each", pcs: "each",
+        pieces: "each", piece: "each", cups: "cup", cans: "can"
+    }[normalize(value)] || normalize(value));
+    const matches = (a, b) => a && b &&
+        normalize(a.name) === normalize(b.name) &&
+        unit(a.unit) === unit(b.unit);
+    const round = value => Math.round(value * 1000000) / 1000000;
+    let selectedRecipe = null;
+    let ingredients = [];
+    let draft = null;
+    let currentView = "recipe-home";
 
-console.log("recipes.js loaded");
-
-const list = document.getElementById("recipe-list");
-const recipesJson = new JsonData("recipes");
-let currentRecipe = null;
-
-function showView(view) {
-    const elements = {
-        "recipe-list": view === "list",
-        "create-button": view === "list",
-        "recipe-details": view === "details",
-        "create-recipe": view === "create"
-    };
-
-    for (const id in elements) {
-        const element = document.getElementById(id);
-        const visible = elements[id];
-
-        element.hidden = !visible;
-        element.style.setProperty(
-            "display",
-            visible ? "block" : "none",
-            "important"
-        );
+    function message(text) {
+        $("recipe-status").textContent = text;
     }
-
-    document.querySelector(".container").scrollTop = 0;
-}
-
-function showRecipe(recipe) {
-    document.getElementById("recipe-name").textContent = recipe.name;
-
-    document.getElementById("recipe-time").textContent =
-        `${recipe.time} minutes`;
-
-    const ingredients = document.getElementById("recipe-ingredients");
-    ingredients.textContent = "";
-
-    for (const item of recipe.ingredients) {
-        const li = document.createElement("li");
-
-        li.textContent =
-            `${item.quantity} ${item.ingredient.unit} ${item.ingredient.name}`;
-
-        ingredients.appendChild(li);
+    function show(view) {
+        currentView = view;
+        for (const id of ["recipe-home", "recipe-details", "create-recipe", "recipe-review"]) {
+            $(id).hidden = id !== view;
+        }
+        message("");
+        document.querySelector(".container").scrollTop = 0;
     }
-
-    const steps = document.getElementById("recipe-steps");
-    steps.textContent = "";
-
-    for (const step of recipe.steps) {
-        const li = document.createElement("li");
-        li.textContent = step;
-        steps.appendChild(li);
+    function daysLeft(date) {
+        if (!date) return Infinity;
+        const expiry = new Date(`${date}T00:00:00`);
+        if (Number.isNaN(expiry.getTime())) return Infinity;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return Math.round((expiry - today) / 86400000);
     }
-
-    showView("details");
-
-
-    const inventory = new JsonData("inventory").getData();
-    const missing = getMissingIngredients(recipe, inventory);
-
-    const alertBox = document.getElementById("missing-alert");
-    const alertText = document.getElementById("missing-text");
-    const addMissingBtn = document.getElementById("add-missing");
-
-    if (missing.length > 0) {
-        const items = missing
-            .map((m) => `${m.missing} ${m.ingredient.unit} ${m.ingredient.name}`)
-            .join(", ");
-        alertText.textContent = `You don't have enough for this recipe. Missing: ${items}`;
-        addMissingBtn.hidden = false;
-        alertBox.hidden = false;
-    } else {
-        alertBox.hidden = true;
+    function availability(recipe, inventory) {
+        const rows = [];
+        for (const item of recipe.ingredients) {
+            const existing = rows.find(row => matches(row.ingredient, item.ingredient));
+            if (existing) existing.need = round(existing.need + item.quantity);
+            else rows.push({ ingredient: item.ingredient, need: item.quantity });
+        }
+        for (const row of rows) {
+            const stock = inventory.filter(item =>
+                matches(item.ingredient, row.ingredient) && item.stock > 0);
+            const usable = stock.filter(item => daysLeft(item.expiration_date) >= 0);
+            row.have = round(usable.reduce((sum, item) => sum + item.stock, 0));
+            row.missing = round(Math.max(0, row.need - row.have));
+            row.expired = stock.some(item => daysLeft(item.expiration_date) < 0);
+            row.soonest = Math.min(...usable.map(item => daysLeft(item.expiration_date)));
+            row.unitMismatch = inventory.some(item =>
+                normalize(item.ingredient?.name || item.name) === normalize(row.ingredient.name) &&
+                !matches(item.ingredient, row.ingredient));
+        }
+        return {
+            rows,
+            missing: rows.filter(row => row.missing > 0),
+            soonest: Math.min(...rows.map(row => row.soonest))
+        };
     }
-
-    currentRecipe = recipe;
-
-    showView("details");
-}
-
-
-document.getElementById("add-missing").addEventListener("click", () => {
-    if (!currentRecipe) return;
-    addMissingToShoppingList(currentRecipe);
-    document.getElementById("missing-text").textContent =
-        "Missing items added to your shopping list.";
-    document.getElementById("add-missing").hidden = true;
-});
-
-
-document.getElementById("create-button").addEventListener("click", () => {
-    showView("create");
-});
-
-document.getElementById("cancel-create").addEventListener("click", () => {
-    showView("list");
-});
-
-document.getElementById("back-button").addEventListener("click", () => {
-    showView("list");
-});
-
-showView("list");
-list.textContent = "Loading recipes...";
-
-recipesJson.ready
-    .then(recipes => {
-        list.textContent = "";
-
-        for (const recipe of recipes) {
+    function fillList(id, texts) {
+        $(id).replaceChildren(...texts.map(text => {
+            const li = document.createElement("li");
+            li.textContent = text;
+            return li;
+        }));
+    }
+    function save(store, data) {
+        const previous = store.getData();
+        try { store.setData(data); }
+        catch (error) { store.data = previous; throw error; }
+    }
+    function renderRecipes() {
+        recipeStore.loadData();
+        inventoryStore.loadData();
+        const recipes = recipeStore.getData();
+        const inventory = inventoryStore.getData();
+        const previous = $("recipe-group").value;
+        const groups = [...new Set(recipes.flatMap(recipe =>
+            recipe.ingredients.map(item => item.ingredient.category)))].filter(Boolean).sort();
+        $("recipe-group").replaceChildren(new Option("All food groups", ""));
+        groups.forEach(group => $("recipe-group").add(new Option(group, group)));
+        $("recipe-group").value = groups.includes(previous) ? previous : "";
+        const query = normalize($("recipe-search").value);
+        const group = $("recipe-group").value;
+        const filter = $("recipe-filter").value;
+        const results = recipes.map(recipe => ({
+            recipe, status: availability(recipe, inventory)
+        })).filter(({ recipe, status }) => {
+            const text = [recipe.name, ...recipe.ingredients.map(item => item.ingredient.name)].join(" ");
+            const searchMatches = normalize(text).includes(query);
+            const groupMatches = !group ||
+                recipe.ingredients.some(item => item.ingredient.category === group);
+            const filterMatches = filter === "all" ||
+                filter === "ready" && !status.missing.length ||
+                filter === "missing" && status.missing.length ||
+                filter === "soon" && status.soonest <= 3;
+            return searchMatches && groupMatches && filterMatches;
+        }).sort((a, b) =>
+            Number(!!a.status.missing.length) - Number(!!b.status.missing.length) ||
+            a.status.soonest - b.status.soonest ||
+            a.recipe.name.localeCompare(b.recipe.name));
+        $("recipe-list").replaceChildren();
+        for (const { recipe, status } of results) {
             const button = document.createElement("button");
-
             button.type = "button";
-            button.textContent = `${recipe.name} · ${recipe.time} min`;
-            button.className = "btn";
-
-            button.addEventListener("click", () => showRecipe(recipe));
-
-            list.appendChild(button);
+            button.className = "recipe-card";
+            const title = document.createElement("strong");
+            title.textContent = recipe.name;
+            const info = document.createElement("span");
+            info.textContent = `${recipe.time} min · ${status.missing.length ? `Need ${status.missing.length} ingredients` : "Can make now"
+                }`;
+            if (status.soonest <= 3) {
+                info.textContent += status.soonest === 0 ?
+                    " · expires today" : ` · expires in ${status.soonest}d`;
+            }
+            button.append(title, info);
+            button.addEventListener("click", () => openRecipe(recipe));
+            $("recipe-list").append(button);
         }
-    })
-    .catch(error => {
-        document.getElementById("recipe-list").textContent = error.message;
+        if (!results.length) $("recipe-list").textContent = "No matches. Try All recipes or change the search.";
+    }
+    function openRecipe(recipe) {
+        selectedRecipe = recipe;
+        inventoryStore.loadData();
+        const status = availability(recipe, inventoryStore.getData());
+        $("recipe-name").textContent = recipe.name;
+        $("recipe-time").textContent = `${recipe.time} minutes`;
+        $("recipe-stock-status").textContent = status.missing.length ?
+            `Missing ${status.missing.length} ingredient(s)` : "You have enough usable ingredients.";
+        fillList("recipe-ingredients", status.rows.map(row =>
+            `${row.ingredient.name}: ${row.need} ${row.ingredient.unit} needed · ${row.have} available` +
+            (row.missing ? ` · buy ${row.missing}` : "") +
+            (row.expired ? " · expired stock excluded" : "") +
+            (row.unitMismatch ? " · check other units in Inventory" : "")));
+        fillList("recipe-steps", recipe.steps);
+        $("add-missing").hidden = !status.missing.length;
+        show("recipe-details");
+    }
+    $("add-missing").addEventListener("click", () => {
+        try {
+            inventoryStore.loadData();
+            const inventory = inventoryStore.getData();
+            const missing = availability(selectedRecipe, inventory).missing;
+            const store = new JsonData("shopping");
+            const shopping = JSON.parse(JSON.stringify(store.getData()));
+            for (const row of missing) {
+                const item = shopping.find(item =>
+                    !item.checked && matches(item.ingredient, row.ingredient));
+                if (item) item.quantity = Math.max(item.quantity, row.missing);
+                else shopping.push({ ingredient: { ...row.ingredient }, quantity: row.missing, checked: false });
+            }
+            save(store, shopping);
+            if (missing.length) {
+                try {
+                    save(inventoryStore, inventory.map(item =>
+                        missing.some(row => matches(item.ingredient, row.ingredient)) ?
+                            { ...item, shopping_list: true } : item));
+                } catch (error) { console.error("Shopping saved; inventory indicator update failed:", error); }
+            }
+            openRecipe(selectedRecipe);
+            message(missing.length ? "Added missing ingredients to Shopping List." : "You already have enough ingredients.");
+        } catch (error) { message(`Could not update Shopping: ${error.message}`); }
     });
+    $("recipe-search").addEventListener("input", renderRecipes);
+    $("recipe-filter").addEventListener("change", renderRecipes);
+    $("recipe-group").addEventListener("change", renderRecipes);
+    $("back-button").addEventListener("click", () => { renderRecipes(); show("recipe-home"); });
+    $("create-button").addEventListener("click", () => show("create-recipe"));
 
-let newIngredients = [];
-
-document.getElementById("add-ingredient").addEventListener("click", () => {
-    const name = document.getElementById("ingredient-name").value.trim();
-    const category = document.getElementById("ingredient-category").value.trim();
-    const unit = document.getElementById("ingredient-unit").value.trim();
-    const quantity = document.getElementById("ingredient-quantity").valueAsNumber;
-
-    if (!name || !category || !unit ||
-        !Number.isFinite(quantity) || quantity < 0.01) {
-        alert("Enter an ingredient name, food group, unit, and positive quantity.");
-        return;
+    function renderIngredients() {
+        $("added-ingredients").replaceChildren();
+        ingredients.forEach((item, index) => {
+            const li = document.createElement("li");
+            li.textContent = `${item.quantity} ${item.ingredient.unit} ${item.ingredient.name} `;
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = "Remove";
+            button.addEventListener("click", () => {
+                ingredients.splice(index, 1); renderIngredients();
+            });
+            li.append(button);
+            $("added-ingredients").append(li);
+        });
     }
-
-    const item = {
-        ingredient: {
-            name: name,
-            category: category,
-            unit: unit
-        },
-        quantity: quantity
-    };
-
-    newIngredients.push(item);
-
-    const li = document.createElement("li");
-    li.textContent = `${quantity} ${unit} ${name}`;
-
-    document.getElementById("added-ingredients").appendChild(li);
-
-    document.getElementById("ingredient-name").value = "";
-    document.getElementById("ingredient-category").value = "";
-    document.getElementById("ingredient-unit").value = "";
-    document.getElementById("ingredient-quantity").value = "";
-
-    document.getElementById("ingredient-name").focus();
-});
-
-document.getElementById("save-recipe").addEventListener("click", () => {
-    const name = document.getElementById("new-name").value.trim();
-    const time = document.getElementById("new-time").valueAsNumber;
-
-    const steps = document.getElementById("new-steps").value
-        .split("\n")
-        .map(step => step.trim())
-        .filter(step => step !== "");
-
-    if (!name || !Number.isInteger(time) || time < 1 ||
-        newIngredients.length === 0 || steps.length === 0) {
-        alert("Enter a recipe name, a positive whole number of minutes, at least one ingredient, and instructions.");
-        return;
-    }
-
-    const recipe = {
-        name: name,
-        time: time,
-        ingredients: newIngredients,
-        steps: steps
-    };
-
-    try {
-        const recipes = recipesJson.getData();
-        if (!Array.isArray(recipes)) {
-            throw new Error("Recipe data is not available.");
+    $("ingredient-name").addEventListener("change", () => {
+        inventoryStore.loadData();
+        const item = findInventoryItem(inventoryStore.getData(), $("ingredient-name").value);
+        if (item?.ingredient) {
+            $("ingredient-category").value = item.ingredient.category || "";
+            $("ingredient-unit").value = item.ingredient.unit || "";
         }
-
-        recipes.push(recipe);
-        recipesJson.saveData();
-    } catch (error) {
-        alert("Could not save the recipe in this browser.");
-        console.error(error);
-        return;
+    });
+    $("add-ingredient").addEventListener("click", () => {
+        const ingredient = {
+            name: $("ingredient-name").value.trim(),
+            category: $("ingredient-category").value.trim(),
+            unit: $("ingredient-unit").value.trim()
+        };
+        const quantity = $("ingredient-quantity").valueAsNumber;
+        if (!ingredient.name || !ingredient.category || !ingredient.unit ||
+            !Number.isFinite(quantity) || quantity <= 0) {
+            message("Complete the ingredient fields with a positive quantity."); return;
+        }
+        ingredients.push({ ingredient, quantity });
+        renderIngredients();
+        for (const id of ["ingredient-name", "ingredient-category", "ingredient-unit", "ingredient-quantity"]) $(id).value = "";
+        message("");
+        $("ingredient-name").focus();
+    });
+    $("review-recipe").addEventListener("click", () => {
+        const name = $("new-name").value.trim();
+        const time = $("new-time").valueAsNumber;
+        const steps = $("new-steps").value.split("\n").map(step => step.trim()).filter(Boolean);
+        if (!name || !Number.isInteger(time) || time < 1 || !steps.length || !ingredients.length) {
+            message("Enter a name, whole minutes, ingredients and instructions."); return;
+        }
+        if (["ingredient-name", "ingredient-category", "ingredient-unit", "ingredient-quantity"].some(id => $(id).value.trim())) {
+            message("Add or clear the ingredient still in the fields."); return;
+        }
+        draft = { name, time, ingredients: JSON.parse(JSON.stringify(ingredients)), steps };
+        $("review-name").textContent = `${name} · ${time} min`;
+        fillList("review-ingredients", ingredients.map(item =>
+            `${item.quantity} ${item.ingredient.unit} ${item.ingredient.name}`));
+        fillList("review-steps", steps);
+        show("recipe-review");
+    });
+    $("edit-recipe").addEventListener("click", () => show("create-recipe"));
+    function resetForm() {
+        ingredients = [];
+        draft = null;
+        for (const id of ["new-name", "new-time", "new-steps", "ingredient-name",
+            "ingredient-category", "ingredient-unit", "ingredient-quantity"]) $(id).value = "";
+        renderIngredients();
     }
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = `${recipe.name} · ${recipe.time} min`;
-    button.className = "btn";
-
-    button.addEventListener("click", () => showRecipe(recipe));
-
-    document.getElementById("recipe-list").appendChild(button);
-
-    newIngredients = [];
-    document.getElementById("added-ingredients").textContent = "";
-    document.getElementById("new-name").value = "";
-    document.getElementById("new-time").value = "";
-    document.getElementById("new-steps").value = "";
-
-    showRecipe(recipe);
-});
+    $("cancel-create").addEventListener("click", () => {
+        const changed = ingredients.length ||
+            ["new-name", "new-time", "new-steps", "ingredient-name",
+                "ingredient-category", "ingredient-unit", "ingredient-quantity"]
+                .some(id => $(id).value.trim());
+        if (changed && !confirm("Discard this unsaved recipe?")) return;
+        resetForm(); renderRecipes(); show("recipe-home");
+    });
+    $("save-recipe").addEventListener("click", () => {
+        if (!draft || currentView !== "recipe-review") return;
+        try {
+            recipeStore.loadData();
+            const recipe = draft;
+            save(recipeStore, [...recipeStore.getData(), recipe]);
+            resetForm(); renderRecipes(); openRecipe(recipe); message("Recipe saved.");
+        } catch (error) { message(`Could not save: ${error.message}`); }
+    });
+    function refresh() {
+        try {
+            renderRecipes();
+            if (currentView === "recipe-details" && selectedRecipe) openRecipe(selectedRecipe);
+        } catch (error) { message(error.message); }
+    }
+    window.addEventListener("pageshow", refresh);
+    window.addEventListener("storage", refresh);
+    show("recipe-home");
+    refresh();
+})();
