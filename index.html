@@ -147,12 +147,14 @@
                 <!-- Optional fields -->
                 <div class="grid-fixed-left" style="--fixed-width: 4.5rem;">
                     <label for="item-location">Location:</label>
-                    <select id="item-location" name="item-location">
-                        <option value="">Select a location</option>
-                        <option value="pantry">Pantry</option>
-                        <option value="fridge">Fridge</option>
-                        <option value="freezer">Freezer</option>
-                    </select>
+                    <div class="select-wrapper">
+                        <select id="item-location" name="item-location">
+                            <option value="">Select a location</option>
+                            <option value="pantry">Pantry</option>
+                            <option value="fridge">Fridge</option>
+                            <option value="freezer">Freezer</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="grid-fixed-left" style="--fixed-width: 2.75rem;">
@@ -162,7 +164,8 @@
                 </div>
 
                 <label for="item-notes" class="section-divider">Notes</label>
-                <textarea id="item-notes" name="item-notes" placeholder="Prioritize notes for displaying (first line only)"></textarea>
+                <textarea id="item-notes" name="item-notes"
+                    placeholder="Prioritize notes for displaying (first line only)"></textarea>
             </form>
         </main>
         <footer>

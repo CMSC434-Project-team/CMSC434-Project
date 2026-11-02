@@ -15,6 +15,9 @@
     let ingredients = [];
     let draft = null;
     let currentView = "recipe-home";
+    let editingInventory = false;
+    let inventoryDraft = new Map();
+    let inventoryOriginal = new Map();
 
     function message(text) {
         $("recipe-status").textContent = text;
@@ -68,36 +71,24 @@
         }));
     }
     function save(store, data) {
-        const previous = store.getData();
-        try { store.setData(data); }
-        catch (error) { store.data = previous; throw error; }
+        store.data = data;
+        store.saveData();
     }
     function renderRecipes() {
-        recipeStore.loadData();
-        inventoryStore.loadData();
         const recipes = recipeStore.getData();
         const inventory = inventoryStore.getData();
-        const previous = $("recipe-group").value;
-        const groups = [...new Set(recipes.flatMap(recipe =>
-            recipe.ingredients.map(item => item.ingredient.category)))].filter(Boolean).sort();
-        $("recipe-group").replaceChildren(new Option("All food groups", ""));
-        groups.forEach(group => $("recipe-group").add(new Option(group, group)));
-        $("recipe-group").value = groups.includes(previous) ? previous : "";
         const query = normalize($("recipe-search").value);
-        const group = $("recipe-group").value;
         const filter = $("recipe-filter").value;
         const results = recipes.map(recipe => ({
             recipe, status: availability(recipe, inventory)
         })).filter(({ recipe, status }) => {
             const text = [recipe.name, ...recipe.ingredients.map(item => item.ingredient.name)].join(" ");
             const searchMatches = normalize(text).includes(query);
-            const groupMatches = !group ||
-                recipe.ingredients.some(item => item.ingredient.category === group);
             const filterMatches = filter === "all" ||
                 filter === "ready" && !status.missing.length ||
                 filter === "missing" && status.missing.length ||
                 filter === "soon" && status.soonest <= 3;
-            return searchMatches && groupMatches && filterMatches;
+            return searchMatches && filterMatches;
         }).sort((a, b) =>
             Number(!!a.status.missing.length) - Number(!!b.status.missing.length) ||
             a.status.soonest - b.status.soonest ||
@@ -124,49 +115,153 @@
     }
     function openRecipe(recipe) {
         selectedRecipe = recipe;
-        inventoryStore.loadData();
+        editingInventory = false;
+        inventoryDraft.clear();
+        inventoryOriginal.clear();
+        $("view-shopping").hidden = false;
+        $("edit-ingredients").hidden = false;
+        $("discard-ingredient-edits").hidden = true;
+        $("save-ingredient-edits").hidden = true;
         const status = availability(recipe, inventoryStore.getData());
         $("recipe-name").textContent = recipe.name;
         $("recipe-time").textContent = `${recipe.time} minutes`;
         $("recipe-stock-status").textContent = status.missing.length ?
             `Missing ${status.missing.length} ingredient(s)` : "You have enough usable ingredients.";
-        fillList("recipe-ingredients", status.rows.map(row =>
-            `${row.ingredient.name}: ${row.need} ${row.ingredient.unit} needed · ${row.have} available` +
-            (row.missing ? ` · buy ${row.missing}` : "") +
-            (row.expired ? " · expired stock excluded" : "") +
-            (row.unitMismatch ? " · check other units in Inventory" : "")));
+        renderRecipeIngredients(status);
         fillList("recipe-steps", recipe.steps);
         $("add-missing").hidden = !status.missing.length;
         show("recipe-details");
     }
+    function recipeIngredientKey(ingredient) {
+        return `${normalize(ingredient.name)}|${unit(ingredient.unit)}`;
+    }
+    function renderRecipeIngredients(status) {
+        $("recipe-ingredients").replaceChildren(...status.rows.map(row => {
+            const li = document.createElement("li");
+            const text = `${row.ingredient.name}: ${row.need} ${row.ingredient.unit} needed`;
+            if (!editingInventory) {
+                li.textContent = text +
+                    (row.have ? ` (${row.have})` : "") +
+                    (row.missing ? ` · buy ${row.missing}` : "") +
+                    (row.expired ? " · expired stock excluded" : "") +
+                    (row.unitMismatch ? " · check other units in Inventory" : "");
+                return li;
+            }
+            const label = document.createElement("label");
+            label.textContent = `${text}`;
+            label.setAttribute("for", `inventory-${recipeIngredientKey(row.ingredient)}`);
+
+            const div = document.createElement("div");
+            div.classList.add("inventory-edit");
+
+            const input = document.createElement("input");
+            input.id = `inventory-${recipeIngredientKey(row.ingredient)}`;
+            input.type = "number";
+            input.min = "0";
+            input.max = row.have;
+            input.step = "any";
+            input.value = String(inventoryDraft.get(recipeIngredientKey(row.ingredient)) ?? row.have);
+            input.addEventListener("input", () => {
+                inventoryDraft.set(recipeIngredientKey(row.ingredient), Number(input.value));
+            });
+            div.append(document.createTextNode(`(`), input, document.createTextNode(` ${row.ingredient.unit})`));
+            li.append(label, div);
+            return li;
+        }));
+    }
+    $("edit-ingredients").addEventListener("click", () => {
+        const status = availability(selectedRecipe, inventoryStore.getData());
+        inventoryDraft = new Map(status.rows.map(row => [
+            recipeIngredientKey(row.ingredient), row.have
+        ]));
+        inventoryOriginal = new Map(inventoryDraft);
+        editingInventory = true;
+        $("view-shopping").hidden = true;
+        $("edit-ingredients").hidden = true;
+        $("discard-ingredient-edits").hidden = false;
+        $("save-ingredient-edits").hidden = false;
+        renderRecipeIngredients(status);
+    });
+    $("discard-ingredient-edits").addEventListener("click", () => {
+        editingInventory = false;
+        inventoryDraft = new Map(inventoryOriginal);
+        $("view-shopping").hidden = false;
+        $("edit-ingredients").hidden = false;
+        $("discard-ingredient-edits").hidden = true;
+        $("save-ingredient-edits").hidden = true;
+        renderRecipeIngredients(availability(selectedRecipe, inventoryStore.getData()));
+    });
+    $("save-ingredient-edits").addEventListener("click", () => {
+        try {
+            const inventory = inventoryStore.getData();
+            for (const row of availability(selectedRecipe, inventory).rows) {
+                const key = recipeIngredientKey(row.ingredient);
+                const amount = inventoryDraft.get(key);
+                if (!Number.isFinite(amount) || amount < 0) {
+                    message("Inventory amounts must be zero or greater.");
+                    return;
+                }
+                const matchesInInventory = inventory.filter(item =>
+                    matches(item.ingredient, row.ingredient));
+                if (matchesInInventory.length) {
+                    matchesInInventory[0].stock = amount;
+                    matchesInInventory[0].last_updated = new Date().toISOString();
+                    matchesInInventory.slice(1).forEach(item => {
+                        item.stock = 0;
+                        item.last_updated = new Date().toISOString();
+                    });
+                } else {
+                    inventory.push({
+                        name: row.ingredient.name,
+                        ingredient: { ...row.ingredient },
+                        stock: amount,
+                        low_stock_threshold: 0,
+                        tags: [],
+                        location: "",
+                        notes: "",
+                        expiration_date: "",
+                        last_updated: new Date().toISOString()
+                    });
+                }
+            }
+            inventoryStore.data = inventory;
+            inventoryStore.saveData();
+            editingInventory = false;
+            $("view-shopping").hidden = false;
+            $("edit-ingredients").hidden = false;
+            $("discard-ingredient-edits").hidden = true;
+            $("save-ingredient-edits").hidden = true;
+            openRecipe(selectedRecipe);
+        } catch (error) {
+            message(`Could not update Inventory: ${error.message}`);
+        }
+    });
     $("add-missing").addEventListener("click", () => {
         try {
-            inventoryStore.loadData();
             const inventory = inventoryStore.getData();
             const missing = availability(selectedRecipe, inventory).missing;
             const store = new JsonData("shopping");
             const shopping = JSON.parse(JSON.stringify(store.getData()));
             for (const row of missing) {
                 const item = shopping.find(item =>
-                    !item.checked && matches(item.ingredient, row.ingredient));
-                if (item) item.quantity = Math.max(item.quantity, row.missing);
+                    matches(item.ingredient, row.ingredient));
+                if (item) {
+                    if (confirm(`"${row.ingredient.name}" already has ${item.quantity} ${item.ingredient.unit} in Shopping. Add ${row.missing} more?`)) {
+                        item.quantity = (Number(item.quantity) || 0) + row.missing;
+                        item.checked = false;
+                    } else {
+                        // Cancel adding this item, but continue with the rest of the missing items
+                        continue;
+                    }
+                }
                 else shopping.push({ ingredient: { ...row.ingredient }, quantity: row.missing, checked: false });
             }
             save(store, shopping);
-            if (missing.length) {
-                try {
-                    save(inventoryStore, inventory.map(item =>
-                        missing.some(row => matches(item.ingredient, row.ingredient)) ?
-                            { ...item, shopping_list: true } : item));
-                } catch (error) { console.error("Shopping saved; inventory indicator update failed:", error); }
-            }
             openRecipe(selectedRecipe);
-            message(missing.length ? "Added missing ingredients to Shopping List." : "You already have enough ingredients.");
         } catch (error) { message(`Could not update Shopping: ${error.message}`); }
     });
     $("recipe-search").addEventListener("input", renderRecipes);
     $("recipe-filter").addEventListener("change", renderRecipes);
-    $("recipe-group").addEventListener("change", renderRecipes);
     $("back-button").addEventListener("click", () => { renderRecipes(); show("recipe-home"); });
     $("create-button").addEventListener("click", () => show("create-recipe"));
 
@@ -186,27 +281,24 @@
         });
     }
     $("ingredient-name").addEventListener("change", () => {
-        inventoryStore.loadData();
         const item = findInventoryItem(inventoryStore.getData(), $("ingredient-name").value);
         if (item?.ingredient) {
-            $("ingredient-category").value = item.ingredient.category || "";
             $("ingredient-unit").value = item.ingredient.unit || "";
         }
     });
     $("add-ingredient").addEventListener("click", () => {
         const ingredient = {
             name: $("ingredient-name").value.trim(),
-            category: $("ingredient-category").value.trim(),
             unit: $("ingredient-unit").value.trim()
         };
         const quantity = $("ingredient-quantity").valueAsNumber;
-        if (!ingredient.name || !ingredient.category || !ingredient.unit ||
+        if (!ingredient.name || !ingredient.unit ||
             !Number.isFinite(quantity) || quantity <= 0) {
             message("Complete the ingredient fields with a positive quantity."); return;
         }
         ingredients.push({ ingredient, quantity });
         renderIngredients();
-        for (const id of ["ingredient-name", "ingredient-category", "ingredient-unit", "ingredient-quantity"]) $(id).value = "";
+        for (const id of ["ingredient-name", "ingredient-unit", "ingredient-quantity"]) $(id).value = "";
         message("");
         $("ingredient-name").focus();
     });
@@ -217,7 +309,7 @@
         if (!name || !Number.isInteger(time) || time < 1 || !steps.length || !ingredients.length) {
             message("Enter a name, whole minutes, ingredients and instructions."); return;
         }
-        if (["ingredient-name", "ingredient-category", "ingredient-unit", "ingredient-quantity"].some(id => $(id).value.trim())) {
+        if (["ingredient-name", "ingredient-unit", "ingredient-quantity"].some(id => $(id).value.trim())) {
             message("Add or clear the ingredient still in the fields."); return;
         }
         draft = { name, time, ingredients: JSON.parse(JSON.stringify(ingredients)), steps };
@@ -232,13 +324,13 @@
         ingredients = [];
         draft = null;
         for (const id of ["new-name", "new-time", "new-steps", "ingredient-name",
-            "ingredient-category", "ingredient-unit", "ingredient-quantity"]) $(id).value = "";
+            "ingredient-unit", "ingredient-quantity"]) $(id).value = "";
         renderIngredients();
     }
     $("cancel-create").addEventListener("click", () => {
         const changed = ingredients.length ||
             ["new-name", "new-time", "new-steps", "ingredient-name",
-                "ingredient-category", "ingredient-unit", "ingredient-quantity"]
+                "ingredient-unit", "ingredient-quantity"]
                 .some(id => $(id).value.trim());
         if (changed && !confirm("Discard this unsaved recipe?")) return;
         resetForm(); renderRecipes(); show("recipe-home");
@@ -246,7 +338,6 @@
     $("save-recipe").addEventListener("click", () => {
         if (!draft || currentView !== "recipe-review") return;
         try {
-            recipeStore.loadData();
             const recipe = draft;
             save(recipeStore, [...recipeStore.getData(), recipe]);
             resetForm(); renderRecipes(); openRecipe(recipe); message("Recipe saved.");

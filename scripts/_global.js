@@ -9,13 +9,11 @@ console.log("_global.js loaded");
  * 
  * @typedef {Object} Ingredient
  * @property {string} name
- * @property {string} category
  * @property {string} unit
  * 
  * @typedef {Object} InventoryItem
  * @property {string} name                  // required for all
  * @property {Ingredient | null} ingredient // required for all
- * @property {boolean} shopping_list        // optional (prefilled if adding from shopping list), used for shopping list filtering
  * @property {number} stock                 // required for adding to inventory, optional for adding to shopping list
  * @property {number} low_stock_threshold   // optional, used for low stock alerts
  * @property {string} location              // optional, used for inventory organization (TODO: not searchable yet)
@@ -130,8 +128,7 @@ appWindow.KitchenData = {
     inventory: [
         {
             name: "Tomato",
-            ingredient: { name: "Tomato", category: "Produce", unit: "unit" },
-            shopping_list: false,
+            ingredient: { name: "Tomato", unit: "piece" },
             stock: 4,
             low_stock_threshold: 2,
             tags: ["vegan", "vegetarian", "organic"],
@@ -142,8 +139,7 @@ appWindow.KitchenData = {
         },
         {
             name: "Brown rice",
-            ingredient: { name: "Brown rice", category: "Grains", unit: "cup" },
-            shopping_list: false,
+            ingredient: { name: "Brown rice", unit: "cup" },
             stock: 6,
             low_stock_threshold: 2,
             tags: ["gluten-free", "vegan", "vegetarian", "high-fiber"],
@@ -154,8 +150,7 @@ appWindow.KitchenData = {
         },
         {
             name: "Black beans",
-            ingredient: { name: "Black beans", category: "Canned goods", unit: "can" },
-            shopping_list: true,
+            ingredient: { name: "Black beans", unit: "can" },
             stock: 1,
             low_stock_threshold: 2,
             tags: ["gluten-free", "vegan", "vegetarian", "high-protein"],
@@ -170,8 +165,8 @@ appWindow.KitchenData = {
             name: "Black Bean Rice Bowl",
             time: 25,
             ingredients: [
-                { ingredient: { name: "Brown rice", category: "Grains", unit: "cup" }, quantity: 1 },
-                { ingredient: { name: "Black beans", category: "Canned goods", unit: "can" }, quantity: 1 }
+                { ingredient: { name: "Brown rice", unit: "cup" }, quantity: 1 },
+                { ingredient: { name: "Black beans", unit: "can" }, quantity: 1 }
             ],
             steps: ["Cook the brown rice.", "Warm the black beans.", "Serve the beans over the rice."]
         },
@@ -179,8 +174,8 @@ appWindow.KitchenData = {
             name: "Tomato Rice",
             time: 20,
             ingredients: [
-                { ingredient: { name: "Tomato", category: "Produce", unit: "each" }, quantity: 2 },
-                { ingredient: { name: "Brown rice", category: "Grains", unit: "cup" }, quantity: 1 }
+                { ingredient: { name: "Tomato", unit: "piece" }, quantity: 2 },
+                { ingredient: { name: "Brown rice", unit: "cup" }, quantity: 1 }
             ],
             steps: ["Cook the brown rice.", "Dice and sauté the tomatoes.", "Stir the tomatoes into the rice."]
         },
@@ -188,7 +183,7 @@ appWindow.KitchenData = {
             name: "Three Ingredient Salad",
             time: 10,
             ingredients: [
-                { ingredient: { name: "Tomato", category: "Produce", unit: "each" }, quantity: 2 }
+                { ingredient: { name: "Tomato", unit: "piece" }, quantity: 2 }
             ],
             steps: ["Dice tomatoes.", "Toss together in a bowl."]
         }
@@ -209,17 +204,17 @@ appWindow.KitchenData = {
     ],
     shopping: [
         {
-            ingredient: { name: "Black beans", category: "Canned goods", unit: "can" },
+            ingredient: { name: "Black beans", unit: "can" },
             quantity: 1,
             checked: false
         },
         {
-            ingredient: { name: "Egg", category: "Dairy", unit: "each" },
+            ingredient: { name: "Egg", unit: "piece" },
             quantity: 12,
             checked: false
         },
         {
-            ingredient: { name: "Milk", category: "Dairy", unit: "gallon" },
+            ingredient: { name: "Milk", unit: "gallon" },
             quantity: 1,
             checked: false
         }

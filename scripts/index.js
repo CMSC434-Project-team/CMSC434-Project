@@ -11,8 +11,7 @@ const json = new JsonData("inventory");
 
 const draftItemBlank = {
     name: "",
-    ingredient: { name: "", category: "", unit: "unit" },
-    shopping_list: false,
+    ingredient: { name: "", unit: "unit" },
     stock: null,
     low_stock_threshold: 0, // -1 means no low stock threshold set so no alert
     tags: [],
@@ -159,10 +158,43 @@ function updateFormControls() {
     saveItemButton.disabled = notValid;
 }
 
+function normalizeUnit(value) {
+    return ({
+        unit: "each", each: "each", piece: "each", pieces: "each", pcs: "each",
+        units: "each", cups: "cup", cans: "can"
+    }[String(value || "").trim().toLowerCase()] || String(value || "").trim().toLowerCase());
+}
+
+function getShoppingMatch(shopping, item) {
+    const name = (item.ingredient?.name || item.name).trim().toLowerCase();
+    const unit = normalizeUnit(item.ingredient?.unit || "unit");
+    return shopping.find(shoppingItem =>
+        shoppingItem.ingredient?.name?.trim().toLowerCase() === name &&
+        normalizeUnit(shoppingItem.ingredient?.unit) === unit);
+}
+
+function askForShoppingQuantity(item) {
+    const value = window.prompt(`How many ${item.ingredient?.unit || "units"} of "${item.name}" should be added?`);
+    const quantity = Number(value);
+    return Number.isFinite(quantity) && quantity > 0 ? quantity : null;
+}
+
 function askToAddToShoppingList(item) {
-    if (item.stock <= item.low_stock_threshold && item.shopping_list !== true && window.confirm(`"${item.name}" is low on stock. Add it to the shopping list?`)) {
-        item.shopping_list = true;
-    }
+    if (item.stock > item.low_stock_threshold ||
+        !window.confirm(`"${item.name}" is low on stock. Add it to the shopping list?`)) return;
+
+    const shoppingStore = new JsonData("shopping");
+    const shopping = shoppingStore.getData();
+    const name = item.ingredient?.name || item.name;
+    const unit = item.ingredient?.unit || "unit";
+    const existing = getShoppingMatch(shopping, item);
+    if (existing) return;
+    const quantity = askForShoppingQuantity(item);
+    if (quantity === null) return;
+
+    shopping.push({ ingredient: { name, unit }, quantity, checked: false });
+    shoppingStore.data = shopping;
+    shoppingStore.saveData();
 }
 
 itemForm.addEventListener("input", updateFormControls);
@@ -379,7 +411,7 @@ outOfStockNotice.addEventListener("click", () => {
 // Render Inventory List ==============================================================
 function getInventoryGroup(item, sortType) {
     if (sortType === "name") {
-        return item.ingredient?.category || "Uncategorized";
+        return item.location || "No location";
     }
 
     if (sortType === "expiration") {
@@ -437,6 +469,10 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
     // Group by category, expiration window, or stock level based on the sort type.
     const categoryGroups = {};
     if (groupByCategory) {
+        if (sortType === "name") {
+            // Prioptize "No location" group first
+            categoryGroups["No location"] = [];
+        }
         sortedItems.forEach(({ item, index }) => {
             const group = getInventoryGroup(item, sortType);
             if (!categoryGroups[group]) categoryGroups[group] = [];
@@ -484,19 +520,34 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
                 inventoryIcon.setAttribute("aria-label", `${stockChange} ${unit} change`.trim());
             };
             function updateShoppingListState() {
-                const isInShoppingList = item.shopping_list === true;
+                const shopping = new JsonData("shopping").getData();
+                const isInShoppingList = Boolean(getShoppingMatch(shopping, item));
                 inventoryIcon.setAttribute("data-in-shopping-list", String(isInShoppingList));
                 inventoryIcon.setAttribute("aria-pressed", String(isInShoppingList));
                 inventoryIcon.title = isInShoppingList
                     ? "Remove from shopping list"
                     : "Add to shopping list";
-            };
+            }
             function toggleShoppingList(event) {
                 event.stopPropagation();
-                item.shopping_list = item.shopping_list !== true;
+                const shoppingStore = new JsonData("shopping");
+                const shopping = shoppingStore.getData();
+                const existing = getShoppingMatch(shopping, item);
+                if (existing) {
+                    shopping.splice(shopping.indexOf(existing), 1);
+                } else {
+                    const quantity = askForShoppingQuantity(item);
+                    if (quantity === null) return;
+                    shopping.push({
+                        ingredient: { name: item.ingredient?.name || item.name, unit },
+                        quantity,
+                        checked: false
+                    });
+                }
+                shoppingStore.data = shopping;
+                shoppingStore.saveData();
                 updateShoppingListState();
-                json.saveData();
-            };
+            }
             inventoryIcon.addEventListener("click", toggleShoppingList);
             inventoryIcon.addEventListener("keydown", event => {
                 if (event.key !== "Enter" && event.key !== " ") return;
