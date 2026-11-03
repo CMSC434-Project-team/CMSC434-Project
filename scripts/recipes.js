@@ -19,6 +19,28 @@
     let inventoryDraft = new Map();
     let inventoryOriginal = new Map();
 
+    const dietaryLabels = {
+        vegetarian: "Vegetarian", vegan: "Vegan", pescatarian: "Pescatarian",
+        "gluten-free": "Gluten-free", "dairy-free": "Dairy-free", "nut-free": "Nut-free"
+    };
+    function dietaryTags(recipe) {
+        if (recipe.dietary_tags) return recipe.dietary_tags;
+        const originals = ["Black Bean Rice Bowl", "Tomato Rice", "Three Ingredient Salad"];
+        return originals.includes(recipe.name) ? Object.keys(dietaryLabels) : [];
+    }
+    const checkedTags = id => [...$(id).querySelectorAll("input:checked")].map(input => input.value);
+    const dietaryText = recipe => dietaryTags(recipe).map(tag => dietaryLabels[tag]).join(" · ") || "No dietary labels";
+    for (const id of ["dietary-filters", "new-dietary"]) {
+        for (const [tag, text] of Object.entries(dietaryLabels)) {
+            const label = document.createElement("label");
+            const input = document.createElement("input");
+            input.type = "checkbox";
+            input.value = tag;
+            label.append(input, document.createTextNode(text));
+            $(id).append(label);
+        }
+    }
+
     function message(text) {
         $("recipe-status").textContent = text;
     }
@@ -74,11 +96,50 @@
         store.data = data;
         store.saveData();
     }
+    const recipeExamples = [
+        {
+            name: "Cheese Pasta", time: 15, dietary_tags: ["vegetarian", "pescatarian", "nut-free"],
+            ingredients: [
+                { ingredient: { name: "Wheat pasta", unit: "cup" }, quantity: 2 },
+                { ingredient: { name: "Cheddar cheese", unit: "cup" }, quantity: 0.5 }
+            ],
+            steps: ["Boil the pasta and drain, reserving a little cooking water.", "Stir in the cheese and reserved water until melted."]
+        },
+        {
+            name: "Salmon Rice", time: 25, dietary_tags: ["pescatarian", "gluten-free", "dairy-free", "nut-free"],
+            ingredients: [
+                { ingredient: { name: "Salmon", unit: "piece" }, quantity: 1 },
+                { ingredient: { name: "Brown rice", unit: "cup" }, quantity: 1 }
+            ],
+            steps: ["Cook the rice.", "Bake the salmon until cooked through and serve over rice."]
+        },
+        {
+            name: "Peanut Noodles", time: 15, dietary_tags: ["vegan", "vegetarian", "pescatarian", "dairy-free"],
+            ingredients: [
+                { ingredient: { name: "Wheat noodles (egg-free)", unit: "cup" }, quantity: 2 },
+                { ingredient: { name: "Peanut butter", unit: "tbsp" }, quantity: 2 }
+            ],
+            steps: ["Cook the noodles, reserving a little cooking water.", "Mix peanut butter with the reserved water and toss with noodles."]
+        },
+        {
+            name: "Chicken Rice", time: 30, dietary_tags: ["gluten-free", "dairy-free", "nut-free"],
+            ingredients: [
+                { ingredient: { name: "Chicken breast", unit: "piece" }, quantity: 1 },
+                { ingredient: { name: "Brown rice", unit: "cup" }, quantity: 1 }
+            ],
+            steps: ["Cook the rice.", "Bake the chicken until cooked through, then slice and serve over rice."]
+        }
+    ];
+
     function renderRecipes() {
-        const recipes = recipeStore.getData();
+        const recipes = [...recipeStore.getData(), ...recipeExamples];
         const inventory = inventoryStore.getData();
         const query = normalize($("recipe-search").value);
         const filter = $("recipe-filter").value;
+        const requiredTags = checkedTags("dietary-filters");
+        $("dietary-summary").textContent = requiredTags.length ?
+            `Dietary filters (${requiredTags.length}): ${requiredTags.map(tag => dietaryLabels[tag]).join(", ")}` :
+            "Dietary filters";
         const results = recipes.map(recipe => ({
             recipe, status: availability(recipe, inventory)
         })).filter(({ recipe, status }) => {
@@ -88,7 +149,8 @@
                 filter === "ready" && !status.missing.length ||
                 filter === "missing" && status.missing.length ||
                 filter === "soon" && status.soonest <= 3;
-            return searchMatches && filterMatches;
+            return searchMatches && filterMatches &&
+                requiredTags.every(tag => dietaryTags(recipe).includes(tag));
         }).sort((a, b) =>
             Number(!!a.status.missing.length) - Number(!!b.status.missing.length) ||
             a.status.soonest - b.status.soonest ||
@@ -107,11 +169,16 @@
                 info.textContent += status.soonest === 0 ?
                     " · expires today" : ` · expires in ${status.soonest}d`;
             }
-            button.append(title, info);
+            const labels = document.createElement("span");
+            const tags = dietaryTags(recipe);
+            labels.textContent = tags.length ? tags.slice(0, 2).map(tag => dietaryLabels[tag]).join(" · ") +
+                (tags.length > 2 ? ` · +${tags.length - 2}` : "") : "No dietary labels";
+            button.append(title, info, labels);
             button.addEventListener("click", () => openRecipe(recipe));
             $("recipe-list").append(button);
         }
-        if (!results.length) $("recipe-list").textContent = "No matches. Try All recipes or change the search.";
+        $("recipe-count").textContent = `${results.length} of ${recipes.length} recipes`;
+        if (!results.length) $("recipe-list").textContent = "No matches. Change the search, availability, or dietary filters.";
     }
     function openRecipe(recipe) {
         selectedRecipe = recipe;
@@ -125,6 +192,7 @@
         const status = availability(recipe, inventoryStore.getData());
         $("recipe-name").textContent = recipe.name;
         $("recipe-time").textContent = `${recipe.time} minutes`;
+        $("recipe-dietary").textContent = dietaryText(recipe);
         $("recipe-stock-status").textContent = status.missing.length ?
             `Missing ${status.missing.length} ingredient(s)` : "You have enough usable ingredients.";
         renderRecipeIngredients(status);
@@ -276,6 +344,11 @@
     });
     $("recipe-search").addEventListener("input", renderRecipes);
     $("recipe-filter").addEventListener("change", renderRecipes);
+    $("dietary-filters").addEventListener("change", renderRecipes);
+    $("clear-dietary").addEventListener("click", () => {
+        $("dietary-filters").querySelectorAll("input").forEach(input => input.checked = false);
+        renderRecipes();
+    });
     $("back-button").addEventListener("click", () => { renderRecipes(); show("recipe-home"); });
     $("create-button").addEventListener("click", () => show("create-recipe"));
 
@@ -326,7 +399,11 @@
         if (["ingredient-name", "ingredient-unit", "ingredient-quantity"].some(id => $(id).value.trim())) {
             message("Add or clear the ingredient still in the fields."); return;
         }
-        draft = { name, time, ingredients: JSON.parse(JSON.stringify(ingredients)), steps };
+        draft = {
+            name, time, ingredients: JSON.parse(JSON.stringify(ingredients)), steps,
+            dietary_tags: checkedTags("new-dietary")
+        };
+        $("review-dietary").textContent = dietaryText(draft);
         $("review-name").textContent = `${name} · ${time} min`;
         fillList("review-ingredients", ingredients.map(item =>
             `${item.quantity} ${item.ingredient.unit} ${item.ingredient.name}`));
@@ -337,12 +414,13 @@
     function resetForm() {
         ingredients = [];
         draft = null;
+        $("new-dietary").querySelectorAll("input").forEach(input => input.checked = false);
         for (const id of ["new-name", "new-time", "new-steps", "ingredient-name",
             "ingredient-unit", "ingredient-quantity"]) $(id).value = "";
         renderIngredients();
     }
     $("cancel-create").addEventListener("click", () => {
-        const changed = ingredients.length ||
+        const changed = ingredients.length || checkedTags("new-dietary").length ||
             ["new-name", "new-time", "new-steps", "ingredient-name",
                 "ingredient-unit", "ingredient-quantity"]
                 .some(id => $(id).value.trim());

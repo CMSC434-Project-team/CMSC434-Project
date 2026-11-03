@@ -7,7 +7,7 @@
     <title>Recipes | Kitchen Kompanion</title>
 
     <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="assets/styles/recipes.css?v=5" />
+    <link rel="stylesheet" href="assets/styles/recipes.css?v=6" />
 
     <script src="scripts/_global.js" defer></script>
     <script src="scripts/recipes.js" defer></script>
@@ -19,8 +19,9 @@
             <section id="recipe-home">
                 <header class="recipe-header">
                     <h1 class="text-lg">Recipes</h1>
-                    <button id="create-button" aria-label="Add item" aria-expanded="false" class="btn-solo"><span
-                            role="img" aria-label="Add item" class="svg-icon icon-add"></span></button>
+                    <button id="create-button" aria-label="Add item" aria-expanded="false" class="btn-solo">
+                        <span role="img" aria-label="Add item" class="svg-icon icon-add"></span>
+                    </button>
                 </header>
 
                 <div class="recipe-filters">
@@ -37,6 +38,16 @@
                     </div>
                 </div>
 
+                <details class="dietary-panel">
+                    <summary id="dietary-summary">Dietary filters</summary>
+                    <p class="dietary-help">Select any combination. Recipes must match every selection.</p>
+                    <fieldset id="dietary-filters" class="dietary-options">
+                        <legend class="sr-only">Dietary requirements</legend>
+                    </fieldset>
+                    <button id="clear-dietary" type="button" class="recipe-btn">Clear dietary filters</button>
+                </details>
+
+                <p id="recipe-count" role="status" aria-live="polite"></p>
                 <div id="recipe-list"></div>
             </section>
 
@@ -47,21 +58,27 @@
 
                 <h1 id="recipe-name" class="text-lg"></h1>
                 <p id="recipe-time"></p>
+                <p id="recipe-dietary" class="dietary-help"></p>
                 <p id="recipe-stock-status"></p>
 
                 <div class="ingredient-heading">
                     <h2>Ingredients</h2>
                     <div id="recipe-inventory-controls">
-                        <a id="view-shopping" href="shopping.html" class="btn-solo"><span role="img"
-                                aria-label="View Shopping" class="svg-icon icon-shopping"></span></a>
-                        <button id="edit-ingredients" type="button" class="btn-solo active"><span role="img"
-                                aria-label="Edit inventory" class="svg-icon icon-edit"></span></button>
-                        <button id="discard-ingredient-edits" type="button" hidden class="btn-solo error"><span
-                                role="img" aria-label="Discard edit" class="svg-icon icon-discard"></span></button>
-                        <button id="save-ingredient-edits" type="button" hidden class="btn-solo active"><span role="img"
-                                aria-label="Save changes" class="svg-icon icon-check"></span></button>
+                        <a id="view-shopping" href="shopping.html" class="btn-solo">
+                            <span role="img" aria-label="View Shopping" class="svg-icon icon-shopping"></span>
+                        </a>
+                        <button id="edit-ingredients" type="button" class="btn-solo active">
+                            <span role="img" aria-label="Edit inventory" class="svg-icon icon-edit"></span>
+                        </button>
+                        <button id="discard-ingredient-edits" type="button" hidden class="btn-solo error">
+                            <span role="img" aria-label="Discard edit" class="svg-icon icon-discard"></span>
+                        </button>
+                        <button id="save-ingredient-edits" type="button" hidden class="btn-solo active">
+                            <span role="img" aria-label="Save changes" class="svg-icon icon-check"></span>
+                        </button>
                     </div>
                 </div>
+
                 <ul id="recipe-ingredients"></ul>
 
                 <button id="add-missing" type="button" class="recipe-btn">
@@ -80,6 +97,13 @@
 
                 <label for="new-time">Total time (minutes)</label>
                 <input id="new-time" type="number" min="1" />
+
+                <fieldset id="new-dietary" class="dietary-options">
+                    <legend>Dietary labels (optional)</legend>
+                </fieldset>
+                <p class="dietary-help">
+                    Choose labels that fit every ingredient. Check product labels for allergens.
+                </p>
 
                 <h2>Ingredients</h2>
 
@@ -112,22 +136,23 @@
 
                 <ul id="added-ingredients"></ul>
 
-                <label for="new-steps">
-                    Instructions (one step per line)
-                </label>
+                <label for="new-steps">Instructions (one step per line)</label>
                 <textarea id="new-steps" rows="3"></textarea>
 
                 <div class="recipe-columns" style="margin-top: 0.5rem;">
-                <button id="review-recipe" type="button" class="recipe-btn">
-                    Review recipe
-                </button>
-                <button id="cancel-create" type="button" class="recipe-btn error">Cancel</button>
+                    <button id="review-recipe" type="button" class="recipe-btn">
+                        Review recipe
+                    </button>
+                    <button id="cancel-create" type="button" class="recipe-btn error">
+                        Cancel
+                    </button>
                 </div>
             </section>
 
             <section id="recipe-review" hidden>
                 <h1 class="text-lg">Review recipe</h1>
                 <h2 id="review-name"></h2>
+                <p id="review-dietary" class="dietary-help"></p>
 
                 <h2>Ingredients</h2>
                 <ul id="review-ingredients"></ul>

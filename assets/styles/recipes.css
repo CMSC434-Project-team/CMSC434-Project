@@ -178,3 +178,73 @@
         gap: 0.5rem;
     }
 }
+
+.dietary-panel {
+    margin-bottom: .4rem;
+    padding: .25rem .35rem;
+    border: 2px solid var(--color-border);
+    border-radius: .25rem;
+}
+
+.dietary-panel summary {
+    cursor: pointer;
+    font-size: var(--text-base);
+    font-weight: bold;
+}
+
+.dietary-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .15rem .3rem;
+    padding: .2rem 0;
+    margin: 0;
+    border: 0;
+}
+
+#content .dietary-options label {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+    margin: 0;
+    padding: .2rem 0;
+    font-size: var(--text-sm);
+    cursor: pointer;
+}
+
+#content .dietary-options input {
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: var(--color-primary);
+}
+
+.dietary-help,
+#recipe-count {
+    margin: .2rem 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+#content .dietary-options input[type="checkbox"] {
+    all: revert;
+    appearance: auto;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
