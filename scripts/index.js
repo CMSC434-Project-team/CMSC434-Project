@@ -69,6 +69,9 @@ function setFormValue(input, value) {
 function populateItemForm(item, mode) {
     draftItem = cloneInventoryItem(item);
     itemFormTitle.textContent = mode === "edit" ? "Edit item" : "Add item";
+    const discardLabel = mode === "edit" ? "Delete item" : "Discard new item";
+    discardItemButton.setAttribute("aria-label", discardLabel);
+    discardItemButton.querySelector(".svg-icon").setAttribute("aria-label", discardLabel);
     setFormValue(itemNameInput, draftItem.name);
     setFormValue(itemQuantityInput, draftItem.stock);
     setFormValue(itemUnitInput, draftItem.ingredient?.unit || "unit");
@@ -236,13 +239,25 @@ closeItemFormButton.addEventListener("click", () => {
 
 discardItemButton.addEventListener("click", () => {
     if (container.getAttribute("data-mode") !== "add") return;
+
+    if (editItemKey !== null) {
+        const item = json.getData()[editItemKey];
+        if (!confirm(`Delete "${item.name}" from your inventory?`)) return;
+        json.getData().splice(editItemKey, 1);
+        json.saveData();
+        console.log(`[Add] Deleted ${item.name}`);
+    } else {
+        console.log("[Add] Discard item form");
+    }
+
+    // Clear all drafts since saved item indexes may have shifted
     draftItem = null;
     editItemKey = null;
     lastEditItemKey = null;
     lastEditedDraft = null;
     updateDraftIndicator();
-    console.log("[Add] Discard item form");
     closeItemForm();
+    refreshInventoryList();
 });
 
 itemForm.addEventListener("submit", event => {

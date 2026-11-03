@@ -21,25 +21,28 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" data-mode="normal">
         <main id="content">
-            <!-- START OF MAIN CONTENT -->
             <header>
                 <button id="add-person-button" aria-label="Add person" aria-expanded="false" class="btn-solo"><span
                         role="img" aria-label="Add person" class="svg-icon icon-add"></span></button>
                 <h1 class="text-lg">Profiles</h1>
             </header>
             <ul id="people-list">
-                <!-- Profiles will be added here dynamically -->
             </ul>
-            <!-- END OF MAIN CONTENT -->
 
             <form id="add-person-form" class="flex-col gap-1 no-scrollbar" novalidate>
                 <header>
-                    <button type="button" id="close-add-person-form" aria-label="Cancel" class="btn-solo"><span role="img"
-                            aria-label="Cancel" class="svg-icon icon-back"></span>
-                    </button>
-                    <h1 class="text-lg">Add person</h1>
+                    <div class="btn-group">
+                        <button type="button" id="close-add-person-form" aria-label="Cancel" class="btn"><span
+                                role="img" aria-label="Cancel" class="svg-icon icon-back"></span>
+                        </button>
+                        <button type="button" id="delete-person-button" aria-label="Delete person"
+                            class="btn error hidden"><span role="img" aria-label="Delete person"
+                                class="svg-icon icon-discard"></span>
+                        </button>
+                    </div>
+                    <h1 id="person-form-title" class="text-lg">Add person</h1>
                     <button type="submit" id="save-person-button" aria-label="Save person" class="btn-solo active"><span
                             role="img" aria-label="Save person" class="svg-icon icon-check"></span>
                     </button>

@@ -241,6 +241,7 @@
             const missing = availability(selectedRecipe, inventory).missing;
             const store = new JsonData("shopping");
             const shopping = JSON.parse(JSON.stringify(store.getData()));
+            let added = 0;
             for (const row of missing) {
                 const item = shopping.find(item =>
                     matches(item.ingredient, row.ingredient));
@@ -248,15 +249,29 @@
                     if (confirm(`"${row.ingredient.name}" already has ${item.quantity} ${item.ingredient.unit} in Shopping. Add ${row.missing} more?`)) {
                         item.quantity = (Number(item.quantity) || 0) + row.missing;
                         item.checked = false;
+                        added++;
                     } else {
                         // Cancel adding this item, but continue with the rest of the missing items
                         continue;
                     }
                 }
-                else shopping.push({ ingredient: { ...row.ingredient }, quantity: row.missing, checked: false });
+                else {
+                    shopping.push({ ingredient: { ...row.ingredient }, quantity: row.missing, checked: false });
+                    added++;
+                }
             }
             save(store, shopping);
             openRecipe(selectedRecipe);
+            if (added) {
+                const button = $("add-missing");
+                const label = button.textContent;
+                button.textContent = `Added ${added} item${added === 1 ? "" : "s"}`;
+                button.disabled = true;
+                setTimeout(() => {
+                    button.textContent = label;
+                    button.disabled = false;
+                }, 1500);
+            }
         } catch (error) { message(`Could not update Shopping: ${error.message}`); }
     });
     $("recipe-search").addEventListener("input", renderRecipes);
