@@ -645,3 +645,7 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
 
 // Initial render of the inventory list
 refreshInventoryList();
+
+// Uncomment for initial mode to be edit mode
+// draftEdit = new Map();
+// updateInventoryEditMode(true);

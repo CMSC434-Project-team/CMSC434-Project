@@ -334,11 +334,9 @@
                 const button = $("add-missing");
                 const label = button.textContent;
                 button.textContent = `Added ${added} item${added === 1 ? "" : "s"}`;
-                button.disabled = true;
                 setTimeout(() => {
                     button.textContent = label;
-                    button.disabled = false;
-                }, 1500);
+                }, 5000);
             }
         } catch (error) { message(`Could not update Shopping: ${error.message}`); }
     });
