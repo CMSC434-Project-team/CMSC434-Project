@@ -23,8 +23,7 @@ const draftItemBlank = {
 // VARIABLES to hold the current state of the inventory list
 let draftItem = null;
 let editItemKey = null;
-let lastEditItemKey = null;
-let lastEditedDraft = null;
+let newItemDraft = null;
 
 /** @type {Map<string, number>} */
 let draftEdit = new Map();
@@ -84,25 +83,8 @@ function populateItemForm(item, mode) {
 }
 
 function updateDraftIndicator() {
-    const hasDraft = draftItem !== null;
-    const draftType = !hasDraft
-        ? null
-        : editItemKey !== null || lastEditItemKey !== null
-            ? "item"
-            : "blank";
-
+    const hasDraft = newItemDraft !== null;
     addItemButton.classList.toggle("has-draft", hasDraft);
-    addItemButton.classList.toggle("has-item-draft", draftType === "item");
-    addItemButton.classList.toggle("has-blank-draft", draftType === "blank");
-    if (draftType) {
-        addItemButton.dataset.draftType = draftType;
-        addItemButton.setAttribute("aria-label", draftType === "item"
-            ? "Add item (edited item draft)"
-            : "Add item (new item draft)");
-    } else {
-        delete addItemButton.dataset.draftType;
-        addItemButton.setAttribute("aria-label", "Add item");
-    }
 }
 
 function closeItemForm(resetForm = true) {
@@ -204,37 +186,25 @@ itemForm.addEventListener("input", updateFormControls);
 itemForm.addEventListener("change", updateFormControls);
 
 addItemButton.addEventListener("click", () => {
-    const itemToPopulate = lastEditedDraft || cloneInventoryItem(draftItemBlank);
-    draftItem = cloneInventoryItem(itemToPopulate);
-    editItemKey = lastEditedDraft ? lastEditItemKey : null;
-    populateItemForm(itemToPopulate, editItemKey === null ? "add" : "edit");
+    const itemToPopulate = newItemDraft
+        ? cloneInventoryItem(newItemDraft)
+        : cloneInventoryItem(draftItemBlank);
+    populateItemForm(itemToPopulate, "add");
     console.log("[Add] Add item form opened");
     container.setAttribute("data-mode", "add");
 });
 
 closeItemFormButton.addEventListener("click", () => {
     if (container.getAttribute("data-mode") !== "add") return;
-    updateDraftFromForm();
-    validateItemName();
-    const baseline = editItemKey === null ? draftItemBlank : json.getData()[editItemKey];
-
-    if (compareInventoryItems(draftItem, baseline)) {
-        if (lastEditedDraft) {
-            draftItem = cloneInventoryItem(lastEditedDraft);
-            editItemKey = null;
-        } else {
-            draftItem = null;
-            editItemKey = null;
-            lastEditItemKey = null;
-        }
-    } else {
-        lastEditItemKey = editItemKey;
-        lastEditedDraft = cloneInventoryItem(draftItem);
-        editItemKey = null;
+    if (editItemKey === null) {
+        updateDraftFromForm();
+        newItemDraft = cloneInventoryItem(draftItem);
     }
     updateDraftIndicator();
+    draftItem = null;
+    editItemKey = null;
     console.log("[Add] Add item form closed");
-    closeItemForm(false);
+    closeItemForm();
 });
 
 discardItemButton.addEventListener("click", () => {
@@ -248,14 +218,13 @@ discardItemButton.addEventListener("click", () => {
         console.log(`[Add] Deleted ${item.name}`);
     } else {
         console.log("[Add] Discard item form");
+        newItemDraft = null;
     }
+    updateDraftIndicator();
 
-    // Clear all drafts since saved item indexes may have shifted
+    // Clear form state since saved item indexes may have shifted
     draftItem = null;
     editItemKey = null;
-    lastEditItemKey = null;
-    lastEditedDraft = null;
-    updateDraftIndicator();
     closeItemForm();
     refreshInventoryList();
 });
@@ -272,6 +241,8 @@ itemForm.addEventListener("submit", event => {
 
     if (editItemKey === null) {
         json.getData().push(draftItem);
+        newItemDraft = null;
+        updateDraftIndicator();
         console.log(`[Add] Added ${draftItem.name}`);
     } else {
         // Check if actual changes were made
@@ -280,9 +251,6 @@ itemForm.addEventListener("submit", event => {
             console.log(`[Add] No changes made to ${draftItem.name}`);
             draftItem = null;
             editItemKey = null;
-            lastEditItemKey = null;
-            lastEditedDraft = null;
-            updateDraftIndicator();
             closeItemForm();
             return;
         } else {
@@ -296,9 +264,6 @@ itemForm.addEventListener("submit", event => {
     json.saveData();
     draftItem = null;
     editItemKey = null;
-    lastEditItemKey = null;
-    lastEditedDraft = null;
-    updateDraftIndicator();
     closeItemForm();
     refreshInventoryList();
 });
@@ -666,12 +631,7 @@ function renderInventoryList(search = "", groupByCategory = false, sortType = "n
             rowLi.addEventListener("click", () => {
                 if (container.getAttribute("data-mode") !== "normal") return;
                 editItemKey = index;
-                const shouldRestoreDraft = lastEditedDraft && editItemKey === lastEditItemKey;
-                if (shouldRestoreDraft) {
-                    draftItem = cloneInventoryItem(lastEditedDraft);
-                }
-                const itemToPopulate = shouldRestoreDraft ? draftItem : item;
-                populateItemForm(itemToPopulate, "edit");
+                populateItemForm(item, "edit");
                 container.setAttribute("data-mode", "add");
                 console.log(`[Normal] Editing ${item.name}`);
             });

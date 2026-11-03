@@ -14,10 +14,6 @@
         content: "";
         background-color: var(--color-error);
     }
-
-    &.has-item-draft::after {
-        background-color: var(--color-primary);
-    }
 }
 
 .required-marker {
