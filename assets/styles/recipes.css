@@ -128,17 +128,6 @@
     font-style: italic;
 }
 
-#recipe-status:empty {
-    display: none;
-}
-
-#recipe-status:not(:empty) {
-    font-size: var(--text-base);
-    padding: .2rem;
-    margin: .25rem 0;
-    border-left: 4px solid var(--color-primary);
-}
-
 .inventory-edit {
     display: grid;
     grid-template-columns: auto 1fr auto;

@@ -41,15 +41,11 @@
         }
     }
 
-    function message(text) {
-        $("recipe-status").textContent = text;
-    }
     function show(view) {
         currentView = view;
         for (const id of ["recipe-home", "recipe-details", "create-recipe", "recipe-review"]) {
             $(id).hidden = id !== view;
         }
-        message("");
         document.querySelector(".container").scrollTop = 0;
     }
     function daysLeft(date) {
@@ -265,7 +261,7 @@
                 const key = recipeIngredientKey(row.ingredient);
                 const amount = inventoryDraft.get(key);
                 if (!Number.isFinite(amount) || amount < 0) {
-                    message("Inventory amounts must be zero or greater.");
+                    alert("Inventory amounts must be zero or greater.");
                     return;
                 }
                 const matchesInInventory = inventory.filter(item =>
@@ -300,7 +296,7 @@
             $("save-ingredient-edits").hidden = true;
             openRecipe(selectedRecipe);
         } catch (error) {
-            message(`Could not update Inventory: ${error.message}`);
+            alert(`Could not update Inventory: ${error.message}`);
         }
     });
     $("add-missing").addEventListener("click", () => {
@@ -338,7 +334,7 @@
                     button.textContent = label;
                 }, 5000);
             }
-        } catch (error) { message(`Could not update Shopping: ${error.message}`); }
+        } catch (error) { alert(`Could not update Shopping: ${error.message}`); }
     });
     $("recipe-search").addEventListener("input", renderRecipes);
     $("recipe-filter").addEventListener("change", renderRecipes);
@@ -379,12 +375,11 @@
         const quantity = $("ingredient-quantity").valueAsNumber;
         if (!ingredient.name || !ingredient.unit ||
             !Number.isFinite(quantity) || quantity <= 0) {
-            message("Complete the ingredient fields with a positive quantity."); return;
+            alert("Complete the ingredient fields with a positive quantity."); return;
         }
         ingredients.push({ ingredient, quantity });
         renderIngredients();
         for (const id of ["ingredient-name", "ingredient-unit", "ingredient-quantity"]) $(id).value = "";
-        message("");
         $("ingredient-name").focus();
     });
     $("review-recipe").addEventListener("click", () => {
@@ -392,10 +387,10 @@
         const time = $("new-time").valueAsNumber;
         const steps = $("new-steps").value.split("\n").map(step => step.trim()).filter(Boolean);
         if (!name || !Number.isInteger(time) || time < 1 || !steps.length || !ingredients.length) {
-            message("Enter a name, whole minutes, ingredients and instructions."); return;
+            alert("Enter a name, whole minutes, ingredients and instructions."); return;
         }
-        if (["ingredient-name", "ingredient-unit", "ingredient-quantity"].some(id => $(id).value.trim())) {
-            message("Add or clear the ingredient still in the fields."); return;
+        if (["ingredient-name"].some(id => $(id).value.trim())) {
+            alert("Add or clear the ingredient still in the fields."); return;
         }
         draft = {
             name, time, ingredients: JSON.parse(JSON.stringify(ingredients)), steps,
@@ -430,14 +425,14 @@
         try {
             const recipe = draft;
             save(recipeStore, [...recipeStore.getData(), recipe]);
-            resetForm(); renderRecipes(); openRecipe(recipe); message("Recipe saved.");
-        } catch (error) { message(`Could not save: ${error.message}`); }
+            resetForm(); renderRecipes(); openRecipe(recipe); alert("Recipe saved.");
+        } catch (error) { alert(`Could not save: ${error.message}`); }
     });
     function refresh() {
         try {
             renderRecipes();
             if (currentView === "recipe-details" && selectedRecipe) openRecipe(selectedRecipe);
-        } catch (error) { message(error.message); }
+        } catch (error) { alert(error.message); }
     }
     window.addEventListener("pageshow", refresh);
     window.addEventListener("storage", refresh);
