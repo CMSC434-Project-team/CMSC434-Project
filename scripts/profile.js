@@ -17,6 +17,23 @@ const closePersonFormButton = document.getElementById("close-add-person-form");
 const deletePersonButton = document.getElementById("delete-person-button");
 const personFormTitle = document.getElementById("person-form-title");
 const personNameInput = document.getElementById("person-name");
+const tagOptions = document.getElementById("tag-options");
+
+// tags from recipes
+for (const [tag, text] of Object.entries(DIETARY_LABELS)) {
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.id = `tag-${tag}`;
+    input.name = "restricted_tags";
+    input.value = tag;
+
+    const label = document.createElement("label");
+    label.htmlFor = input.id;
+    label.className = "btn";
+    label.textContent = text;
+
+    tagOptions.append(input, label);
+}
 
 function openPersonForm(index = null) {
     editPersonKey = index;
@@ -113,7 +130,7 @@ function renderPeopleList() {
 
         const personTags = document.createElement("p");
         personTags.className = "text-sm";
-        personTags.textContent = person.restricted_tags.join(", ") || "No dietary restrictions";
+        personTags.textContent = person.restricted_tags.map(dietaryLabel).join(", ") || "No dietary restrictions";
 
         rowDiv.appendChild(personName);
         rowDiv.appendChild(personTags);

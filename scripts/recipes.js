@@ -2,6 +2,7 @@
     const $ = id => document.getElementById(id);
     const recipeStore = new JsonData("recipes");
     const inventoryStore = new JsonData("inventory");
+    const peopleStore = new JsonData("people");
     const normalize = value => String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
     const unit = value => ({
         units: "each", unit: "each", pcs: "each",
@@ -19,15 +20,27 @@
     let inventoryDraft = new Map();
     let inventoryOriginal = new Map();
 
-    const dietaryLabels = {
-        vegetarian: "Vegetarian", vegan: "Vegan", pescatarian: "Pescatarian",
-        "gluten-free": "Gluten-free", "dairy-free": "Dairy-free", "nut-free": "Nut-free"
-    };
+    const dietaryLabels = DIETARY_LABELS; // shared with the profile page (_global.js)
     function dietaryTags(recipe) {
         if (recipe.dietary_tags) return recipe.dietary_tags;
         const originals = ["Black Bean Rice Bowl", "Tomato Rice", "Three Ingredient Salad"];
         return originals.includes(recipe.name) ? Object.keys(dietaryLabels) : [];
     }
+    // get people who can eat the food
+    function goodFor(recipe) {
+        const people = peopleStore.getData() || [];
+        return { people, suited: peopleSuitedTo(people, dietaryTags(recipe)) };
+    }
+
+    function goodForText(recipe) {
+        const { people, suited } = goodFor(recipe);
+        if (!people.length) return "";
+        if (!suited.length) return "Fits 0 diets";
+        const diets = suited.length === 1 ? "diet" : "diets";
+        return `Fits ${suited.length} ${diets}: ${suited.map(person => person.name).join(", ")}`;
+    }
+    const goodForSummary = goodForText;
+    const goodForDetails = goodForText;
     const checkedTags = id => [...$(id).querySelectorAll("input:checked")].map(input => input.value);
     const dietaryText = recipe => dietaryTags(recipe).map(tag => dietaryLabels[tag]).join(" · ") || "No dietary labels";
     for (const id of ["dietary-filters", "new-dietary"]) {
@@ -170,6 +183,14 @@
             labels.textContent = tags.length ? tags.slice(0, 2).map(tag => dietaryLabels[tag]).join(" · ") +
                 (tags.length > 2 ? ` · +${tags.length - 2}` : "") : "No dietary labels";
             button.append(title, info, labels);
+            const peopleText = goodForSummary(recipe);
+            if (peopleText) {
+                const people = document.createElement("span");
+                people.className = "recipe-people";
+                people.textContent = peopleText;
+                people.title = peopleText; // full text on hover if truncated
+                button.append(people);
+            }
             button.addEventListener("click", () => openRecipe(recipe));
             $("recipe-list").append(button);
         }
@@ -189,6 +210,8 @@
         $("recipe-name").textContent = recipe.name;
         $("recipe-time").textContent = `${recipe.time} minutes`;
         $("recipe-dietary").textContent = dietaryText(recipe);
+        $("recipe-people").textContent = goodForDetails(recipe);
+        $("recipe-people").hidden = !$("recipe-people").textContent;
         $("recipe-stock-status").textContent = status.missing.length ?
             `Missing ${status.missing.length} ingredient(s)` : "You have enough usable ingredients.";
         renderRecipeIngredients(status);

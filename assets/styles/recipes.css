@@ -109,6 +109,13 @@
     color: var(--color-text-muted);
 }
 
+/* "Good for ..." row: keep to one line, cut off with … when names don't fit */
+.recipe-card .recipe-people {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 #recipe-time,
 #recipe-stock-status {
     font-size: var(--text-base);

@@ -5,7 +5,7 @@
 console.log("_global.js loaded");
 
 /**
- * @typedef {"gluten-free"|"dairy-free"|"nut-free"|"vegan"|"vegetarian"|"pescatarian"|"kosher"|"halal"|"low-carb"|"low-fat"|"low-sodium"|"high-protein"|"high-fiber"|"sugar-free"|"organic"} Tag
+ * @typedef {"vegetarian"|"vegan"|"pescatarian"|"gluten-free"|"dairy-free"|"nut-free"} Tag
  * 
  * @typedef {Object} Ingredient
  * @property {string} name
@@ -50,6 +50,30 @@ console.log("_global.js loaded");
  * @property {number} quantity
  * @property {boolean} checked
  */
+
+/**
+ * @type {Record<Tag, string>}
+ */
+const DIETARY_LABELS = {
+    vegetarian: "Vegetarian", vegan: "Vegan", pescatarian: "Pescatarian",
+    "gluten-free": "Gluten-free", "dairy-free": "Dairy-free", "nut-free": "Nut-free"
+};
+
+/**
+ * @param {string} tag
+ */
+function dietaryLabel(tag) {
+    return DIETARY_LABELS[/** @type {Tag} */ (tag)] || tag;
+}
+
+/**
+ * @param {PeopleItem[]} people
+ * @param {string[]} recipeTags
+ */
+function peopleSuitedTo(people, recipeTags) {
+    return people.filter(person =>
+        (person.restricted_tags || []).every(tag => recipeTags.includes(tag)));
+}
 
 class JsonData {
     /**
